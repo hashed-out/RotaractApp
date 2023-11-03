@@ -16,6 +16,7 @@ export const createPostAction =
       dispatch({
         type: 'postCreateRequest',
       });
+      console.log("-------------Create Post----------------")
 
       const token = await AsyncStorage.getItem('token');
 
@@ -46,6 +47,7 @@ export const getAllPosts = () => async (dispatch: Dispatch<any>) => {
     dispatch({
       type: 'getAllPostsRequest',
     });
+    console.log("-------------Get All Posts----------------")
 
     const token = await AsyncStorage.getItem('token');
 
@@ -81,6 +83,8 @@ export const addLikes =
   ({postId, posts, user}: LikesParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Add Like----------------")
+
       const token = await AsyncStorage.getItem('token');
 
       const updatedPosts = posts.map((userObj: any) =>
@@ -124,6 +128,8 @@ export const removeLikes =
   ({postId, posts, user}: LikesParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Remove Like----------------")
+
       const token = await AsyncStorage.getItem('token');
 
       const updatedPosts = posts.map((userObj: any) =>
@@ -160,6 +166,8 @@ export const addLikesToReply =
   ({postId, posts, user, replyId, title}: LikesParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Add Like to Reply----------------")
+
       const token = await AsyncStorage.getItem('token');
       const updatedPosts = posts.map((post: any) =>
         post._id === postId
@@ -207,6 +215,8 @@ export const removeLikesFromReply =
   ({postId, posts, user, replyId}: LikesParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Remove Like from Reply----------------")
+
       const token = await AsyncStorage.getItem('token');
 
       const updatedPosts = posts.map((post: any) =>
@@ -251,6 +261,8 @@ export const addLikesToRepliesReply =
   ({postId, posts, user, replyId, singleReplyId, title}: LikesParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Add Like to Reply's Reply----------------")
+
       const token = await AsyncStorage.getItem('token');
 
       const updatedPosts = posts.map((post: any) =>
@@ -306,6 +318,8 @@ export const removeLikesFromRepliesReply =
   ({postId, posts, user, replyId, singleReplyId}: LikesParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Remove Like From Reply's Reply----------------")
+
       const token = await AsyncStorage.getItem('token');
 
       const updatedPosts = posts.map((post: any) =>

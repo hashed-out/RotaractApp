@@ -8,8 +8,9 @@ const Notification = require("../models/NotificationModel");
 // Register user
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Create User----------------")
     const { name, email, password, avatar } = req.body;
-
+    console.log(req.body)
     let user = await User.findOne({ email });
     if (user) {
       return res
@@ -20,6 +21,7 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
     let myCloud;
 
     if (avatar) {
+      console.log("--------Avatar------------")
       myCloud = await cloudinary.v2.uploader.upload(avatar, {
         folder: "avatars",
       });
@@ -28,19 +30,28 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
     const userNameWithoutSpace = name.replace(/\s/g, "");
 
     const uniqueNumber = Math.floor(Math.random() * 1000);
-
-    user = await User.create({
+    const userObject = {
       name,
       email,
       password,
       userName: userNameWithoutSpace + uniqueNumber,
-      avatar: avatar
-        ? { public_id: myCloud.public_id, url: myCloud.secure_url }
-        : null,
-    });
+    };
+    if (avatar.length>0) {
+      userObject.avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+    }
+  }else{
+      userObject.avatar = {
+        public_id: '',
+        url: '',
+      }
+    }
+    user = await User.create(userObject);
 
     sendToken(user, 201, res);
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       success: false,
       message: error.message,
@@ -115,6 +126,7 @@ exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
 // Follow and unfollow user
 exports.followUnfollowUser = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Follow Unfollow----------------")
     const loggedInUser = req.user;
     const { followUserId } = req.body;
 
@@ -168,6 +180,7 @@ exports.followUnfollowUser = catchAsyncErrors(async (req, res, next) => {
       });
     }
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -175,6 +188,7 @@ exports.followUnfollowUser = catchAsyncErrors(async (req, res, next) => {
 // get user notification
 exports.getNotification = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------GetNotification----------------")
     const notifications = await Notification.find({ userId: req.user.id }).sort(
       { createdAt: -1 }
     );
@@ -184,6 +198,7 @@ exports.getNotification = catchAsyncErrors(async (req, res, next) => {
       notifications,
     });
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -191,10 +206,12 @@ exports.getNotification = catchAsyncErrors(async (req, res, next) => {
 // get signle user
 exports.getUser = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Get User----------------")
     const user = await User.findById(req.params.id);
 
     res.status(201).json({ success: true, user });
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -202,6 +219,7 @@ exports.getUser = catchAsyncErrors(async (req, res, next) => {
 // update user avatar
 exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Update User Avatar----------------")
     let existsUser = await User.findById(req.user.id);
 
     if (req.body.avatar !== "") {
@@ -226,6 +244,7 @@ exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
       user: existsUser,
     });
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -233,6 +252,7 @@ exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
 // update user info
 exports.updateUserInfo = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Update UserInfo----------------")
     const user = await User.findById(req.user.id);
 
     user.name = req.body.name;
@@ -246,6 +266,7 @@ exports.updateUserInfo = catchAsyncErrors(async (req, res, next) => {
       user,
     });
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler(error.message, 401));
   }
 });

@@ -132,6 +132,7 @@ const FollowerCard = ({navigation, route}: Props) => {
                   })(dispatch);
                 }
               } catch (error) {
+                console.log(error)
                 console.log(error, 'error');
               }
               loadUser()(dispatch);

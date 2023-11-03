@@ -8,12 +8,12 @@ export const registerUser =
   (name: string, email: string, password: string, avatar: string) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("--------------Register------------------")
       dispatch({
         type: 'userRegisterRequest',
       });
 
       const config = {headers: {'Content-Type': 'application/json'}};
-      console.log("--------------Register------------------")
       const {data} = await axios.post(
         `${URI}/registration`,
         {name, email, password, avatar},
@@ -36,14 +36,12 @@ export const registerUser =
 // load user
 export const loadUser = () => async (dispatch: Dispatch<any>) => {
   const token = await AsyncStorage.getItem('token');
-  if(token){
+  
     try {
+      console.log("--------------Loading User------------------")
       dispatch({
         type: 'userLoadRequest',
       });
-  
-  
-      console.log("------------------------"+token)
       const {data} = await axios.get(`${URI}/me`, {
         headers: {Authorization: `Bearer ${token}`},
       });
@@ -56,18 +54,19 @@ export const loadUser = () => async (dispatch: Dispatch<any>) => {
         },
       });
     } catch (error: any) {
+      console.log(error)
       dispatch({
         type: 'userLoadFailed',
         payload: error.response.data.message,
       });
     }
 
-  }else{
+ 
     dispatch({
       type: 'userLoadFailed',
       payload: "Login Failed",
     });
-  }
+  
  
 };
 
@@ -75,12 +74,12 @@ export const loadUser = () => async (dispatch: Dispatch<any>) => {
 export const loginUser =
   (email: string, password: string) => async (dispatch: Dispatch<any>) => {
     try {
+      console.log("--------------Login------------------")
       dispatch({
         type: 'userLoginRequest',
       });
 
       const config = {headers: {'Content-Type': 'application/json'}};
-      console.log("-----------------Login"+URI)
       const {data} = await axios.post(
         `${URI}/login`,
         {email, password},
@@ -94,6 +93,7 @@ export const loginUser =
         await AsyncStorage.setItem('token', data.token);
       }
     } catch (error: any) {
+      console.log(error)
       dispatch({
         type: 'userLoginFailed',
         payload: error.response.data.message,
@@ -104,6 +104,7 @@ export const loginUser =
 // log out user
 export const logoutUser = () => async (dispatch: Dispatch<any>) => {
   try {
+    console.log("--------------Logout------------------")
     dispatch({
       type: 'userLogoutRequest',
     });
@@ -115,6 +116,7 @@ export const logoutUser = () => async (dispatch: Dispatch<any>) => {
       payload: {},
     });
   } catch (error) {
+    console.log(error)
     dispatch({
       type: 'userLogoutFailed',
     });
@@ -124,6 +126,8 @@ export const logoutUser = () => async (dispatch: Dispatch<any>) => {
 // get all users
 export const getAllUsers = () => async (dispatch: Dispatch<any>) => {
   try {
+    console.log("-------------Get All Users----------------")
+
     dispatch({
       type: 'getUsersRequest',
     });
@@ -157,6 +161,7 @@ export const followUserAction =
   ({userId, users, followUserId}: FollowUnfollowParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Follow User----------------")
       const token = await AsyncStorage.getItem('token');
       const updatedUsers = users.map((userObj: any) =>
         userObj._id === followUserId
@@ -183,6 +188,7 @@ export const followUserAction =
         },
       );
     } catch (error) {
+      console.log(error)
       console.log('Error following user:', error);
     }
   };
@@ -192,6 +198,7 @@ export const unfollowUserAction =
   ({userId, users, followUserId}: FollowUnfollowParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("-------------Unfollow User----------------")
       const token = await AsyncStorage.getItem('token');
       const updatedUsers = users.map((userObj: any) =>
         userObj._id === followUserId
@@ -220,6 +227,7 @@ export const unfollowUserAction =
         },
       );
     } catch (error) {
+      console.log(error)
       console.log('Error following user:', error);
     }
   };

@@ -7,6 +7,7 @@ const Notification = require("../models/NotificationModel");
 // create post
 exports.createPost = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Create User----------------")
     const { image } = req.body;
 
     let myCloud;
@@ -49,6 +50,7 @@ exports.createPost = catchAsyncErrors(async (req, res, next) => {
       post,
     });
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler(error.message, 400));
   }
 });
@@ -56,12 +58,15 @@ exports.createPost = catchAsyncErrors(async (req, res, next) => {
 // get all posts
 exports.getAllPosts = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Get All Posts----------------")
+
     const posts = await Post.find().sort({
       createdAt: -1,
     });
 
     res.status(201).json({ success: true, posts });
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler(error.message, 400));
   }
 });
@@ -69,6 +74,7 @@ exports.getAllPosts = catchAsyncErrors(async (req, res, next) => {
 // add or remove likes
 exports.updateLikes = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Update Likes----------------")
     const postId = req.body.postId;
 
     const post = await Post.findById(postId);
@@ -139,6 +145,7 @@ exports.updateLikes = catchAsyncErrors(async (req, res, next) => {
 exports.addReplies = catchAsyncErrors(async (req, res, next) => {
   console.log("Replying to a post")
   try {
+    console.log("-------------Add Reply----------------")
     const postId = req.body.postId;
 
     let myCloud;
@@ -192,6 +199,7 @@ exports.addReplies = catchAsyncErrors(async (req, res, next) => {
 // add or remove likes on replies
 exports.updateReplyLikes = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Update Reply Likes----------------")
     const postId = req.body.postId;
     const replyId = req.body.replyId;
     const replyTitle = req.body.replyTitle;
@@ -277,6 +285,7 @@ exports.updateReplyLikes = catchAsyncErrors(async (req, res, next) => {
 // add reply in replies
 exports.addReply = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Add Reply----------------")
     const replyId = req.body.replyId;
     const postId = req.body.postId;
 
@@ -335,6 +344,7 @@ exports.addReply = catchAsyncErrors(async (req, res, next) => {
 // add or remove likes on replies reply
 exports.updateRepliesReplyLike = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Update Reply's Reply Likes----------------")
     const postId = req.body.postId;
     const replyId = req.body.replyId;
     const singleReplyId = req.body.singleReplyId;
@@ -433,6 +443,7 @@ exports.updateRepliesReplyLike = catchAsyncErrors(async (req, res, next) => {
 // delete post
 exports.deletePost = catchAsyncErrors(async (req, res, next) => {
   try {
+    console.log("-------------Delete Posts----------------")
     const post = await Post.findById(req.params.id);
     if (!post) {
       return next(new ErrorHandler("Post is not found with this id", 404));

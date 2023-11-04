@@ -16,6 +16,17 @@ const postSchema = new mongoose.Schema(
     user: {
       type: Object,
     },
+    isEvent : {
+      type: Boolean,
+      default:false
+    },
+    eventDate:{
+      type:Date
+    },
+    eventVenue:{
+      type: String
+    }
+
     likes: [
       {
         name: {
@@ -108,6 +119,7 @@ const postSchema = new mongoose.Schema(
         ],
       },
     ],
+   
   },
   { timestamps: true }
 );

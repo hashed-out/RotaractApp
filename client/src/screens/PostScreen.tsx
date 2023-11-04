@@ -24,13 +24,13 @@ const PostScreen = ({navigation}: Props) => {
   const {isSuccess, isLoading} = useSelector((state: any) => state.post);
   const [activeIndex, setActiveIndex] = useState(0);
   const [active, setActive] = useState(false);
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
-  const [loaction,setLocation]=useState('');\
-  const [isEvent, setIsEvent]=useState(false);
+  const [loaction,setLocation] = useState('');
+  const [isEvent, setIsEvent] = useState(false);
 
   useEffect(() => {
     if (

@@ -1,4 +1,4 @@
-package com.becodemy.threads;
+package com.hashedout.rotaryconnect;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

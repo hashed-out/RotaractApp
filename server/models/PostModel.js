@@ -25,8 +25,7 @@ const postSchema = new mongoose.Schema(
     },
     eventVenue:{
       type: String
-    }
-
+    },
     likes: [
       {
         name: {

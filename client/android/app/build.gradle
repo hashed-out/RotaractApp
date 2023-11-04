@@ -76,9 +76,9 @@ android {
     buildToolsVersion "31.0.0"
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.becodemy.threads"
+    namespace "com.hashedout.rotaryconnect"
     defaultConfig {
-        applicationId "com.becodemy.threads"
+        applicationId "com.hashedout.rotaryconnect"
         minSdkVersion rootProject.ext.minSdkVersion
         vectorDrawables.useSupportLibrary = true
         targetSdkVersion rootProject.ext.targetSdkVersion

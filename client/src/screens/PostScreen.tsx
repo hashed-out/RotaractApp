@@ -189,10 +189,15 @@ const PostScreen = ({navigation}: Props) => {
               onChangeText={text => setTitle(text)}
               className="mt-1 text-[#000] text-[16px]"
             />
-            <Switch
+            <View style={background-color:'red'}>
+              <Text>This post is about an Event</Text>
+            <Switch 
+            color='red'
               value={isEvent}
               onValueChange={(value) => setIsEvent(value)}
             />
+            </View>
+            
             {
               isEvent && (
               <>
@@ -204,7 +209,7 @@ const PostScreen = ({navigation}: Props) => {
               className="mt-1 text-[#000] text-[16px]"
             />
             <>
-              <Button title="Open" onPress={() => setOpen(true)} />
+              <Button title="Open" size='sm' onPress={() => setOpen(true)} />
               <DatePicker
                 modal
                 open={open}

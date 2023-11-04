@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface ThreadscloneTests : XCTestCase
+@interface RotaryConnectTests : XCTestCase
 
 @end
 
-@implementation ThreadscloneTests
+@implementation RotaryConnectTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

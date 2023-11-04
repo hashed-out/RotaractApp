@@ -7,10 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Switch } from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {createPostAction, getAllPosts} from '../../redux/actions/postAction';
+import DatePicker from 'react-native-date-picker';
+import { Button } from '@rneui/base';
 
 type Props = {
   navigation: any;
@@ -21,9 +24,13 @@ const PostScreen = ({navigation}: Props) => {
   const {isSuccess, isLoading} = useSelector((state: any) => state.post);
   const [activeIndex, setActiveIndex] = useState(0);
   const [active, setActive] = useState(false);
+  const [date, setDate] = useState(new Date())
+  const [open, setOpen] = useState(false)
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
+  const [loaction,setLocation]=useState('');\
+  const [isEvent, setIsEvent]=useState(false);
 
   useEffect(() => {
     if (
@@ -182,6 +189,39 @@ const PostScreen = ({navigation}: Props) => {
               onChangeText={text => setTitle(text)}
               className="mt-1 text-[#000] text-[16px]"
             />
+            <Switch
+              value={isEvent}
+              onValueChange={(value) => setIsEvent(value)}
+            />
+            {
+              isEvent && (
+              <>
+              <TextInput
+              placeholder="Venue of the Event"
+              placeholderTextColor={'#000'}
+              value={loaction}
+              onChangeText={text => setLocation(text)}
+              className="mt-1 text-[#000] text-[16px]"
+            />
+            <>
+              <Button title="Open" onPress={() => setOpen(true)} />
+              <DatePicker
+                modal
+                open={open}
+                date={date}
+                onConfirm={(date) => {
+                  setOpen(false)
+                  setDate(date)
+                }}
+                onCancel={() => {
+                  setOpen(false)
+                }}
+              />
+            </>
+            </>
+            )
+
+            }
             <TouchableOpacity className="mt-2" onPress={postImageUpload}>
               <Image
                 source={{

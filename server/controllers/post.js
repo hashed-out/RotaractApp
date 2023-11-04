@@ -7,7 +7,7 @@ const Notification = require("../models/NotificationModel");
 // create post
 exports.createPost = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("-------------Create User----------------")
+    console.log("-------------Create Post----------------")
     const { image } = req.body;
 
     let myCloud;

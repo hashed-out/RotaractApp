@@ -189,43 +189,39 @@ const PostScreen = ({navigation}: Props) => {
               onChangeText={text => setTitle(text)}
               className="mt-1 text-[#000] text-[16px]"
             />
-            <View style={background-color:'red'}>
+            <View>
               <Text>This post is about an Event</Text>
-            <Switch 
-            color='red'
-              value={isEvent}
-              onValueChange={(value) => setIsEvent(value)}
-            />
+              <Switch 
+              color='red'
+                value={isEvent}
+                onValueChange={(value) => setIsEvent(value)}
+              />
             </View>
-            
             {
               isEvent && (
-              <>
-              <TextInput
-              placeholder="Venue of the Event"
-              placeholderTextColor={'#000'}
-              value={loaction}
-              onChangeText={text => setLocation(text)}
-              className="mt-1 text-[#000] text-[16px]"
-            />
-            <>
-              <Button title="Open" size='sm' onPress={() => setOpen(true)} />
-              <DatePicker
-                modal
-                open={open}
-                date={date}
-                onConfirm={(date) => {
-                  setOpen(false)
-                  setDate(date)
-                }}
-                onCancel={() => {
-                  setOpen(false)
-                }}
-              />
-            </>
-            </>
-            )
-
+                <View>
+                  <TextInput
+                      placeholder="Venue of the Event"
+                      placeholderTextColor={'#000'}
+                      value={loaction}
+                      onChangeText={text => setLocation(text)}
+                      className="mt-1 text-[#000] text-[16px]"
+                  />
+                  <Button title="Open" size='sm' onPress={() => setOpen(true)} />
+                  <DatePicker
+                      modal
+                      open={open}
+                      date={date}
+                      onConfirm={(date) => {
+                        setOpen(false)
+                        setDate(date)
+                      }}
+                      onCancel={() => {
+                        setOpen(false)
+                      }}
+                  />
+                </View>
+              )
             }
             <TouchableOpacity className="mt-2" onPress={postImageUpload}>
               <Image

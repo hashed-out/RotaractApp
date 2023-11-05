@@ -8,9 +8,10 @@ const Notification = require("../models/NotificationModel");
 // Register user
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("-------------Create User----------------")
+    console.log("--------------Create User ------------------")
     const { name, email, password, avatar } = req.body;
     console.log(req.body)
+
     let user = await User.findOne({ email });
     if (user) {
       return res
@@ -21,7 +22,6 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
     let myCloud;
 
     if (avatar) {
-      console.log("--------Avatar------------")
       myCloud = await cloudinary.v2.uploader.upload(avatar, {
         folder: "avatars",
       });
@@ -30,24 +30,16 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
     const userNameWithoutSpace = name.replace(/\s/g, "");
 
     const uniqueNumber = Math.floor(Math.random() * 1000);
-    const userObject = {
+
+    user = await User.create({
       name,
       email,
       password,
       userName: userNameWithoutSpace + uniqueNumber,
-    };
-    if (avatar.length>0) {
-      userObject.avatar = {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
-    }
-  }else{
-      userObject.avatar = {
-        public_id: '',
-        url: '',
-      }
-    }
-    user = await User.create(userObject);
+      avatar: avatar
+        ? { public_id: myCloud.public_id, url: myCloud.secure_url }
+        : null,
+    });
 
     sendToken(user, 201, res);
   } catch (error) {

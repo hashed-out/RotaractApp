@@ -48,10 +48,11 @@ const SignupScreen = ({navigation}: Props) => {
       includeBase64: true,
     }).then((image: ImageOrVideo | null) => {
       if (image) {
-        setAvatar('data:image/jpeg;base64,' + image);
+        setAvatar('data:image/jpeg;base64,' + image.data);
       }
     });
   };
+  console.log(avatar)
 
   const submitHandler = (e: any) => {
    if(  name === '' || email === ''){

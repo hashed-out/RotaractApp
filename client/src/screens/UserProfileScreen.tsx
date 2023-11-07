@@ -13,6 +13,7 @@ import {
   unfollowUserAction,
 } from '../../redux/actions/userAction';
 import PostCard from '../components/PostCard';
+import DefaultAvatar from '../assets/user-avatar.png';
 
 type Props = {
   route: any;
@@ -66,7 +67,6 @@ const UserProfileScreen = ({navigation, route}: Props) => {
       console.log(error, 'error');
     }
   };
-
   return (
     <>
       {data && (
@@ -75,10 +75,12 @@ const UserProfileScreen = ({navigation, route}: Props) => {
             <TouchableOpacity
               className="h-screen bg-white w-full items-center justify-center"
               onPress={() => setImagePreview(!imagePreview)}>
+                
               <Image
-                source={{uri: data.avatar.url}}
+                source={data.avatar?.url ? { uri: data.avatar?.url } : DefaultAvatar}
                 width={250}
                 height={250}
+                style={{height:250,width:250}}
                 borderRadius={500}
               />
             </TouchableOpacity>
@@ -125,11 +127,13 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                   <TouchableOpacity
                     onPress={() => setImagePreview(!imagePreview)}>
                     <View className="relative">
+                    <Text>Hi</Text>
                       <Image
-                        source={{uri: data.avatar.url}}
+                        source={data.avatar?.url ? { uri: data.avatar?.url } : DefaultAvatar}
                         width={60}
                         height={60}
                         borderRadius={100}
+                        style={{height:80,width:80}}
                       />
                       {data.role === 'Admin' && (
                         <Image

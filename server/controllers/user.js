@@ -10,8 +10,6 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
   try {
     console.log("--------------Create User ------------------")
     const { name, email, password, avatar } = req.body;
-    console.log(req.body)
-
     let user = await User.findOne({ email });
     if (user) {
       return res

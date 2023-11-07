@@ -36,16 +36,17 @@ export const registerUser =
 // load user
 export const loadUser = () => async (dispatch: Dispatch<any>) => {
   const token = await AsyncStorage.getItem('token');
+  console.log(token)
   
     try {
-      console.log("--------------Loading User------------------")
+      console.log("--------------Loading User Now------------------")
       dispatch({
         type: 'userLoadRequest',
       });
       const {data} = await axios.get(`${URI}/me`, {
         headers: {Authorization: `Bearer ${token}`},
       });
-  
+      console.log(data)
       dispatch({
         type: 'userLoadSuccess',
         payload: {
@@ -91,6 +92,7 @@ export const loginUser =
       });
       if (data.token) {
         await AsyncStorage.setItem('token', data.token);
+        console.log(data.token)
       }
     } catch (error: any) {
       console.log(error)

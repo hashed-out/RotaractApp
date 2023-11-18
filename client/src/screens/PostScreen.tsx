@@ -14,6 +14,7 @@ import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {createPostAction, getAllPosts} from '../../redux/actions/postAction';
 import DatePicker from 'react-native-date-picker';
 import { Button } from '@rneui/base';
+import DefaultAvatar from '../assets/user-avatar.png';
 
 type Props = {
   navigation: any;
@@ -150,10 +151,9 @@ const PostScreen = ({navigation}: Props) => {
       <View style={{ flexDirection: 'row', alignItems: 'center', margin: 16 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
-            }}
-            style={{ width: 20, height: 20 }}
+            source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
+            style={{width: 40, height: 40}}
+            borderRadius={100}
           />
         </TouchableOpacity>
         <Text style={{ paddingLeft: 16, fontSize: 20, fontWeight: '500', color: '#000' }}>

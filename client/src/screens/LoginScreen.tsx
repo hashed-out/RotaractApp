@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,31 +7,35 @@ import {
   Alert,
   ToastAndroid,
   Platform,
+  Image,
+  StyleSheet,
+  Animated,
+  Easing,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {loadUser, loginUser} from '../../redux/actions/userAction';
-import {useDispatch, useSelector} from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
+
+import { loadUser, loginUser } from '../../redux/actions/userAction';
+import { useDispatch, useSelector } from 'react-redux';
 
 type Props = {
   navigation: any;
 };
 
-const LoginScreen = ({navigation}: Props) => {
-  const {error, isAuthenticated} = useSelector((state: any) => state.user);
+const LoginScreen = ({ navigation }: Props) => {
+  const { error, isAuthenticated } = useSelector((state: any) => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const submitHandler = (e: any) => {
+
+  const submitHandler = () => {
     loginUser(email, password)(dispatch);
   };
 
   useEffect(() => {
     if (error) {
       if (Platform.OS === 'android') {
-        ToastAndroid.show(
-          'Email and password not matching!',
-          ToastAndroid.LONG,
-        );
+        ToastAndroid.show('Email and password not matching!', ToastAndroid.LONG);
       } else {
         Alert.alert('Email and password not matching');
       }
@@ -38,40 +43,51 @@ const LoginScreen = ({navigation}: Props) => {
     if (isAuthenticated) {
       loadUser()(dispatch);
       if (Platform.OS === 'android') {
-      ToastAndroid.show('Login successful!', ToastAndroid.LONG);
-      } else{
+        ToastAndroid.show('Login successful!', ToastAndroid.LONG);
+      } else {
         Alert.alert('Login successful!');
       }
     }
   }, [isAuthenticated, error]);
 
   return (
-    <View className="flex-[1] items-center justify-center">
-      <View className="w-[70%]">
-        <Text className="text-[25px] font-[600] text-center text-black">
-          Login
-        </Text>
+    <LinearGradient
+      colors={['#001f3f', '#0074e4']}
+      style={styles.container}
+    >
+      <Animatable.View
+        animation="fadeInDown"
+        duration={1500}
+        style={styles.logoContainer}
+      >
+        <Image
+          style={styles.logo}
+          source={require('../assets/rl.png')}
+        />
+      </Animatable.View>
+      <Animatable.View
+        animation="fadeInUp"
+        duration={1500}
+        style={styles.formContainer}
+      >
+        <Text style={styles.welcomeText}>Welcome Back Rotarian!!</Text>
         <TextInput
+          style={styles.input}
           placeholder="Enter your email"
           value={email}
-          placeholderTextColor={'#000'}
-          onChangeText={text => setEmail(text)}
-          className="w-full h-[35px] border border-[#00000072] px-2 my-2 text-black"
+          placeholderTextColor="#fff"
+          onChangeText={(text) => setEmail(text)}
         />
         <TextInput
+          style={styles.input}
           placeholder="Enter your password"
-          className="w-full h-[35px] border border-[#00000072] px-2 my-2 text-black"
           value={password}
-          placeholderTextColor={'#000'}
-          onChangeText={text => setPassword(text)}
-          secureTextEntry={true}
+          placeholderTextColor="#fff"
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry
         />
-        <TouchableOpacity className="mt-6">
-          <Text
-            className="w-full text-[#fff] text-center pt-[8px] text-[20px] h-[40px] bg-black"
-            onPress={submitHandler}>
-            Login
-          </Text>
+        <TouchableOpacity style={styles.loginButton} onPress={submitHandler}>
+          <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <Text
           className="pt-3 text-black"
@@ -87,5 +103,57 @@ const LoginScreen = ({navigation}: Props) => {
     </View>
   );
 };
+
+      </Animatable.View>
+    </LinearGradient>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  formContainer: {
+    flex: 1,
+    alignItems: 'center',
+    width: '80%',
+    padding: 20,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+  },
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    marginVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+    color: '#fff',
+  },
+  loginButton: {
+    backgroundColor: '#0074e4',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  loginButtonText: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+});
 
 export default LoginScreen;

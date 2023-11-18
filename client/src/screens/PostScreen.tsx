@@ -137,213 +137,230 @@ const PostScreen = ({navigation}: Props) => {
   };
 
   return (
-   <SafeAreaView className='flex-1'>
-     <View className="w-full flex-row items-center m-3">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
-              }}
-              style={{
-                width: 20,
-                height: 20,
-              }}
-            />
-          </TouchableOpacity>
-          <Text className="pl-4 text-[20px] font-[500] text-[#000]">
-            New Thread
-          </Text>
-     </View>
-     <ScrollView
-     showsVerticalScrollIndicator={false}
-     >
-      <View className="m-3 flex-[1] justify-between">
-      <View>
-        {/* create post */}
-        <View className="mt-3 flex-row">
+<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',}}>
+        <Image
+          style={{ width: 250, height: 100, resizeMode: "contain",  }}
+          source={
+            require('../assets/rl.png')
+          }
+        />
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', margin: 16 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
             style={{width: 40, height: 40}}
             borderRadius={100}
           />
-          <View className="pl-3">
-            <View className="w-[78%] flex-row justify-between">
-              <Text className="text-[20px] font-[400] text-black">
-                {user?.name}
-              </Text>
-              <TouchableOpacity>
-                <Image
-                  source={{
-                    uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
-                  }}
-                  style={{
-                    width: 20,
-                    height: 20,
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-            <TextInput
-              placeholder="Start a thread..."
-              placeholderTextColor={'#000'}
-              value={title}
-              onChangeText={text => setTitle(text)}
-              className="mt-1 text-[#000] text-[16px]"
+        </TouchableOpacity>
+        <Text style={{ paddingLeft: 16, fontSize: 20, fontWeight: '500', color: '#000' }}>
+          New Post/Event
+        </Text>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ margin: 16 }}>
+          <View style={{ marginBottom: 16, flexDirection: 'row' }}>
+            <Image
+              source={{ uri: user?.avatar.url }}
+              style={{ width: 40, height: 40, borderRadius: 100 }}
             />
-            <View>
-              <Text>This post is about an Event</Text>
-              <Switch 
-              color='red'
-                value={isEvent}
-                onValueChange={(value) => setIsEvent(value)}
-              />
-            </View>
-            {
-              isEvent && (
-                <View>
-                  <TextInput
-                      placeholder="Venue of the Event"
-                      placeholderTextColor={'#000'}
-                      value={loaction}
-                      onChangeText={text => setLocation(text)}
-                      className="mt-1 text-[#000] text-[16px]"
-                  />
-                  <Button title="Open" size='sm' onPress={() => setOpen(true)} />
-                  <DatePicker
+            <View style={{ width:'90%' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontSize: 20, fontWeight: '400', color: 'black' }}>
+                  {user?.name}
+                </Text>
+                <TouchableOpacity>
+                  {/* <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
+                    }}
+                    style={{ width: 20, height: 20 }}
+                  /> */}
+                </TouchableOpacity>
+              </View>
+              <TextInput
+  placeholder="Write your post..."
+  placeholderTextColor="#000"
+  value={title}
+  onChangeText={(text) => setTitle(text)}
+  underlineColorAndroid='black'
+  style={{
+    color: '#000',
+    fontSize: 16,
+    maxHeight: 50,  
+    paddingTop: 20, 
+    maxWidth:'100%',  
+  }}
+  multiline={true}   
+  numberOfLines={4}  
+/>
+
+              <View style={{ marginTop: 20 }}>
+                <Text>This post is about an Event</Text>
+                <Switch
+                  trackColor={{ false: 'red', true: 'green' }}
+                  thumbColor={isEvent ? 'green' : 'red'}
+                  value={isEvent}
+                  onValueChange={(value) => setIsEvent(value)}
+                />
+              </View>
+              {isEvent && (
+                <>
+      <View style={{ flexDirection: 'row',alignItems: 'center',borderColor: '#ccc',borderWidth: 1,borderRadius: 8,
+    padding: 8,}}>
+      <Image
+        source={{uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',}}
+        style={{ width: 24,height: 24,marginRight: 8,}}
+      />
+      <TextInput
+        placeholder="Venue of the Event"
+        placeholderTextColor="#000"
+        value={loaction}
+        onChangeText={(text) => setLocation(text)}
+        style={{flex: 1,fontSize: 16,color: '#000',}}
+      />
+    </View>
+                  <>
+                    <Button
+                      title="Event Date & Time"
+                      size="sm"
+                      onPress={() => setOpen(true)}
+                      color={'black'}
+                    />
+                    <DatePicker
                       modal
                       open={open}
                       date={date}
                       onConfirm={(date) => {
-                        setOpen(false)
-                        setDate(date)
+                        setOpen(false);
+                        setDate(date);
                       }}
                       onCancel={() => {
-                        setOpen(false)
+                        setOpen(false);
                       }}
-                  />
-                </View>
-              )
-            }
-            <TouchableOpacity className="mt-2" onPress={postImageUpload}>
+                      theme="dark"
+                      minimumDate={new Date()}
+                    />
+                  </>
+                </>
+              )}
+              <TouchableOpacity
+                style={{ marginTop: 8 }}
+                onPress={postImageUpload}
+              >
+                <Image
+                  source={{
+                    uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',
+                  }}
+                  style={{ width: 20, height: 20, tintColor: '#000' }}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          {image && (
+            <View style={{ margin: 8 }}>
               <Image
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',
-                }}
-                style={{
-                  width: 20,
-                  height: 20,
-                }}
-                tintColor={"#000"}
+                source={{ uri: image }}
+                style={{ width: 200, height: 300 }}
               />
-            </TouchableOpacity>
-          </View>
-        </View>
-        {image && (
-          <View className="m-2">
-            <Image
-              source={{uri: image}}
-              width={200}
-              height={300}
-              resizeMethod="auto"
-              alt=""
-            />
-          </View>
-        )}
-        {replies.length === 0 && (
-          <View className="flex-row m-3 w-full items-start mt-5 opacity-7">
-            <Image
-              source={{uri: user?.avatar.url}}
-              style={{width: 30, height: 30}}
-              borderRadius={100}
-            />
-            <Text className="pl-3 text-black" onPress={addFreshNewThread}>
-              Add to thread ...
-            </Text>
-          </View>
-        )}
+            </View>
+          )}
+          {replies.length === 0 && (
+            <View style={{ flexDirection: 'row', margin: 16, marginTop: 24, opacity: 0.7 }}>
+              <Image
+                source={{ uri: user?.avatar.url }}
+                style={{ width: 30, height: 30, borderRadius: 100 }}
+              />
 
-        {replies.map((item, index) => (
-          <View key={index}>
-            <View className="mt-3 flex-row">
-              <Image
-                source={{uri: user?.avatar.url}}
-                style={{width: 40, height: 40}}
-                borderRadius={100}
-              />
-              <View className="pl-3">
-                <View className="w-[78%] flex-row justify-between">
-                  <Text className="text-[20px] font-[400] text-black">
-                    {user?.name}
-                  </Text>
-                  <TouchableOpacity onPress={() => removeThread(index)}>
+              {/* <Text
+                style={{ paddingLeft: 16, color: 'black' }}
+                onPress={addFreshNewThread}
+              >
+                Add to thread ...
+              </Text> */}
+            </View>
+          )}
+          {replies.map((item, index) => (
+            <View key={index}>
+              <View style={{ marginTop: 8, flexDirection: 'row' }}>
+                <Image
+                  source={{ uri: user?.avatar.url }}
+                  style={{ width: 40, height: 40, borderRadius: 100 }}
+                />
+                <View style={{ paddingLeft: 16 }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={{ fontSize: 20, fontWeight: '400', color: 'black' }}>
+                      {user?.name}
+                    </Text>
+                    <TouchableOpacity onPress={() => removeThread(index)}>
+                      <Image
+                        source={{
+                          uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
+                        }}
+                        style={{ width: 20, height: 20 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  {/* <TextInput
+                    placeholder="Start a thread..."
+                    placeholderTextColor="#000"
+                    value={item.title}
+                    onChangeText={(text) => handleTitleChange(index, text)}
+                    style={{ marginTop: 8, color: '#000', fontSize: 16 }}
+                  /> */}
+                  <TouchableOpacity
+                    style={{ marginTop: 8 }}
+                    onPress={() => uploadImage(index)}
+                  >
+                    <Button
+                      title="Upload your photo"
+                      size="sm"
+                    />
                     <Image
                       source={{
-                        uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
+                        uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',
                       }}
-                      style={{
-                        width: 20,
-                        height: 20,
-                      }}
+                      style={{ width: 20, height: 20 }}
                     />
                   </TouchableOpacity>
                 </View>
-                <TextInput
-                  placeholder="Start a thread..."
-                  placeholderTextColor={'#000'}
-                  value={item.title}
-                  onChangeText={text => handleTitleChange(index, text)}
-                  className="mt-2 text-[#000] text-[16px]"
-                />
-                <TouchableOpacity
-                  className="mt-2"
-                  onPress={() => uploadImage(index)}>
+              </View>
+              {item.image && (
+                <View style={{ margin: 8 }}>
                   <Image
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',
-                    }}
-                    style={{
-                      width: 20,
-                      height: 20,
-                    }}
+                    source={{ uri: item.image }}
+                    style={{ width: 200, height: 300 }}
                   />
-                </TouchableOpacity>
-              </View>
+                </View>
+              )}
+              {index === activeIndex && (
+                <View style={{ flexDirection: 'row', margin: 16, marginTop: 24, opacity: 0.7 }}>
+                  <Image
+                    source={{ uri: user?.avatar.url }}
+                    style={{ width: 30, height: 30, borderRadius: 100 }}
+                  />
+                  <Text
+                    style={{ paddingLeft: 16, color: 'black' }}
+                    onPress={addNewThread}
+                  >
+                    Add to thread ...
+                  </Text>
+                </View>
+              )}
             </View>
-            {item.image && (
-              <View className="m-2">
-                <Image
-                  source={{uri: item.image}}
-                  width={200}
-                  height={300}
-                  resizeMethod="auto"
-                  alt=""
-                />
-              </View>
-            )}
-            {index === activeIndex && (
-              <View className="flex-row m-3 w-full items-start mt-5 opacity-7">
-                <Image
-                  source={{uri: user?.avatar.url}}
-                  style={{width: 30, height: 30}}
-                  borderRadius={100}
-                />
-                <Text className="pl-3 text-black" onPress={addNewThread}>
-                  Add to thread ...
-                </Text>
-              </View>
-            )}
-          </View>
-        ))}
-      </View>
-    </View>
-    </ScrollView>
-    <View className="p-2 flex-row justify-between">
-        <Text className='text-black px-1 py-1'>Anyone can reply</Text>
+          ))}
+        </View>
+      </ScrollView>
+      <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ color: 'black', padding: 8, fontSize: 16 }}>Anyone can reply</Text>
         <TouchableOpacity onPress={createPost}>
-          <Text className="text-[#1977f2]">Post</Text>
+          <Text style={{ color: '#1977f2' }}>Post</Text>
         </TouchableOpacity>
       </View>
-   </SafeAreaView>
+    </SafeAreaView>
   );
 };
 

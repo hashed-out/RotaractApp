@@ -32,7 +32,7 @@ const LoginScreen = ({navigation}: Props) => {
           ToastAndroid.LONG,
         );
       } else {
-        Alert.alert('Email and password not matching!');
+        Alert.alert('Email and password not matching');
       }
     }
     if (isAuthenticated) {
@@ -77,6 +77,11 @@ const LoginScreen = ({navigation}: Props) => {
           className="pt-3 text-black"
           onPress={() => navigation.navigate('Signup')}>
           Don't have any account? <Text>Sign up</Text>
+        </Text>
+        <Text
+          className="pt-3 text-black"
+          onPress={() => navigation.navigate('RecoverPassword')}>
+            Forgot Password
         </Text>
       </View>
     </View>

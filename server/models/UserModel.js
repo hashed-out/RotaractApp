@@ -47,8 +47,13 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-  },
+    recoveryCode:{
+      type:String,
+      default:'',
+      required:false}
+    },
   { timestamps: true }
+
 );
 
 // Hash password

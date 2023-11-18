@@ -125,6 +125,58 @@ export const logoutUser = () => async (dispatch: Dispatch<any>) => {
   }
 };
 
+export const sendRecoverPasswordEmail =
+  (email: string) => async (dispatch: Dispatch<any>) => {
+    try {
+      console.log("--------------Password Recovery------------------")
+      dispatch({
+        type: 'sendRecoveryCode',
+      });
+
+      const config = {headers: {'Content-Type': 'application/json'}};
+      const {data} = await axios.post(
+        `${URI}/sendRecoveryCode`,
+        {email},
+        config,
+      );
+      return true;
+      
+    } catch (error: any) {
+      console.log(error)
+      dispatch({
+        type: 'email send failed',
+        payload: error.response.data.message,
+      });
+      return false
+    }
+  };
+export const validateRecoveryCode =
+  (email: string, code:string) => async (dispatch: Dispatch<any>) => {
+    try {
+      console.log("--------------Validate OTP------------------")
+      dispatch({
+        type: 'validateRecoveryCode',
+      });
+
+      const config = {headers: {'Content-Type': 'application/json'}};
+      const {data} = await axios.post(
+        `${URI}/validateRecoveryCode`,
+        {email,code},
+        config,
+      );
+      return true;
+      
+    } catch (error: any) {
+      console.log(error)
+      dispatch({
+        type: 'email send failed',
+        payload: error.response.data.message,
+      });
+      return false
+    }
+  };
+
+
 // get all users
 export const getAllUsers = () => async (dispatch: Dispatch<any>) => {
   try {

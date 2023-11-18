@@ -14,6 +14,7 @@ import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {createPostAction, getAllPosts} from '../../redux/actions/postAction';
 import DatePicker from 'react-native-date-picker';
 import { Button } from '@rneui/base';
+import DefaultAvatar from '../assets/user-avatar.png';
 
 type Props = {
   navigation: any;
@@ -161,7 +162,7 @@ const PostScreen = ({navigation}: Props) => {
         {/* create post */}
         <View className="mt-3 flex-row">
           <Image
-            source={{uri: user?.avatar.url}}
+            source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
             style={{width: 40, height: 40}}
             borderRadius={100}
           />

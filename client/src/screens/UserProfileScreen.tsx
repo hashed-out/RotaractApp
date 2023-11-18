@@ -127,7 +127,6 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                   <TouchableOpacity
                     onPress={() => setImagePreview(!imagePreview)}>
                     <View className="relative">
-                    <Text>Hi</Text>
                       <Image
                         source={data.avatar?.url ? { uri: data.avatar?.url } : DefaultAvatar}
                         width={60}

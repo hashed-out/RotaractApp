@@ -15,6 +15,32 @@ export const userReducer = createReducer(intialState, {
     state.loading = true;
     state.isAuthenticated = false;
   },
+  // sendRecoveryCode: state => {
+  //   state.loading = true;
+  //   state.isAuthenticated = false;
+  // },
+  // validateRecoveryCode: state => {
+  //   state.loading = true;
+  //   state.isAuthenticated = false;
+  // },
+  // validateRecoveryCodeSuccess: state => {
+  //   state.loading = false;
+  //   state.isAuthenticated = false;
+  // },
+  // sendRecoveryCodeSuccess: state => {
+  //   state.loading = false;
+  //   state.isAuthenticated = false;
+  // },
+  // validateRecoveryCodeFailed:  (state, action) => {
+  //   state.loading = false;
+  //   state.isAuthenticated = false;
+  //   state.error = action.payload;
+  // },
+  // sendRecoveryCodeFailed:  (state, action) => {
+  //   state.loading = false;
+  //   state.isAuthenticated = false;
+  //   state.error = action.payload;
+  // },
   userRegisterSuccess: (state, action) => {
     state.loading = false;
     state.isAuthenticated = true;
@@ -80,4 +106,5 @@ export const userReducer = createReducer(intialState, {
     state.error = null;
     state.isAuthenticated = false;
   },
+  
 });

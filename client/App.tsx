@@ -21,6 +21,8 @@ function App() {
 
 const AppStack = () => {
   const {isAuthenticated, loading} = useSelector((state: any) => state.user);
+
+  console.log("Authenticated : ",isAuthenticated)
   // const dispatch = useDispatch();
 
   React.useEffect(() => {

@@ -13,6 +13,7 @@ import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import axios from 'axios';
 import {URI} from '../../redux/URI';
 import {loadUser} from '../../redux/actions/userAction';
+import DefaultAvatar from '../assets/user-avatar.png';
 
 type Props = {
   navigation: any;
@@ -117,9 +118,10 @@ const EditProfile = ({navigation}: Props) => {
               </View>
               <TouchableOpacity onPress={ImageUpload}>
                 <Image
-                  source={{uri: avatar}}
+                  source={avatar ? {uri: avatar} : DefaultAvatar}
                   width={60}
                   height={60}
+                  style={{height:60,width:60}}
                   borderRadius={100}
                 />
               </TouchableOpacity>

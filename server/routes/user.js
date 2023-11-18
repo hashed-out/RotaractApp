@@ -10,6 +10,8 @@ const {
   getUser,
   updateUserAvatar,
   updateUserInfo,
+  sendRecoveryCode,
+  updatePassword,
 } = require("../controllers/user");
 const { isAuthenticatedUser } = require("../middleware/auth");
 const router = express.Router();
@@ -17,6 +19,10 @@ const router = express.Router();
 router.route("/registration").post(createUser);
 
 router.route("/login").post(loginUser);
+
+router.route("/sendRecoveryCode").post(sendRecoveryCode);
+
+router.route("/updatePassword").post(updatePassword);
 
 router.route("/logout").get(logoutUser);
 

@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Dimensions} from 'react-native';
 import {loadUser, logoutUser} from '../../redux/actions/userAction';
 import PostCard from '../components/PostCard';
+import DefaultAvatar from '../assets/user-avatar.png';
 
 type Props = {
   navigation: any;
@@ -44,6 +45,7 @@ const ProfileScreen = ({navigation}: Props) => {
       setRepliesData(myReplies.filter((post: any) => post.replies.length > 0));
     }
   }, [posts, user]);
+  console.log(user)
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -61,10 +63,11 @@ const ProfileScreen = ({navigation}: Props) => {
 
             <View className="relative">
               <Image
-                source={{uri: user?.avatar.url}}
+                source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
                 height={80}
                 width={80}
                 borderRadius={100}
+                style={{height:80,width:80}}
               />
               {user.role === 'Admin' && (
                 <Image

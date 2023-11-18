@@ -4,14 +4,13 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken.js");
 const cloudinary = require("cloudinary");
 const Notification = require("../models/NotificationModel");
+const sendRecoveryCode = require("../utils/SendRecoveryCode.js");
 
 // Register user
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
   try {
     console.log("--------------Create User ------------------")
     const { name, email, password, avatar } = req.body;
-    console.log(req.body)
-
     let user = await User.findOne({ email });
     if (user) {
       return res
@@ -53,6 +52,7 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
 
 // Login User
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
+  console.log("----------------Logging in User-------------------------")
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -92,6 +92,41 @@ exports.logoutUser = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+exports.sendRecoveryCode = catchAsyncErrors(async (req, res, next) => {
+  console.log("----------------Send Recovery Code-------------------------")
+  const { email} = req.body;
+  console.log(email);
+  if (!email) {
+    return next(new ErrorHandler("Please enter the email", 400));
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return next(
+      new ErrorHandler("User is not found with this email", 401)
+    );
+  }
+  console.log("User found")
+  await sendRecoveryCode(email)
+});
+
+exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
+  console.log("----------------Update Password-------------------------")
+  const { email} = req.body;
+
+  if (!email) {
+    return next(new ErrorHandler("Please enter the email", 400));
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return next(
+      new ErrorHandler("User is not found with this email", 401)
+    );
+  }
+  console.log("User founf")
+  SendRecoveryCode(email)
+});
 //  Get user Details
 exports.userDetails = catchAsyncErrors(async (req, res, next) => {
   console.log("--------Get My Profile------------")
@@ -213,21 +248,27 @@ exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
   try {
     console.log("-------------Update User Avatar----------------")
     let existsUser = await User.findById(req.user.id);
-
+    let myCloud;
     if (req.body.avatar !== "") {
       const imageId = existsUser.avatar.public_id;
+      if(imageId !=null){
+        await cloudinary.v2.uploader.destroy(imageId);
 
-      await cloudinary.v2.uploader.destroy(imageId);
-
-      const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-        folder: "avatars",
-        width: 150,
-      });
-
+        myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+          folder: "avatars",
+          width: 150,
+        });
+      }else{
+        myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+          folder: "avatars",
+          width: 150,
+        });
+      }
       existsUser.avatar = {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
       };
+
     }
     await existsUser.save();
 

@@ -15,6 +15,7 @@ import {
   unfollowUserAction,
 } from '../../redux/actions/userAction';
 import Loader from '../common/Loader';
+import DefaultAvatar from '../assets/user-avatar.png';
 
 type Props = {
   navigation: any;
@@ -111,10 +112,11 @@ const SearchScreen = ({navigation}: Props) => {
                     }>
                     <View className="flex-row my-3">
                       <Image
-                        source={{uri: item?.avatar?.url}}
+                        source={item.avatar?.url ? { uri: item.avatar?.url } : DefaultAvatar}
                         width={30}
                         height={30}
                         borderRadius={100}
+                        style={{height:40,width:40}}
                       />
                       <View className="w-[90%] flex-row justify-between border-b border-[#00000020] pb-2">
                         <View>

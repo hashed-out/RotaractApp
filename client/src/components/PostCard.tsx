@@ -9,6 +9,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Image} from 'react-native';
 import getTimeDuration from '../common/TimeGenerator';
+import Share from 'react-native-share';
 import {
   addLikes,
   getAllPosts,
@@ -39,6 +40,8 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
   });
   const time = item?.createdAt;
   const formattedDuration = getTimeDuration(time);
+  const datetime= item?.eventDate;
+
 
   const profileHandler = async (e: any) => {
     await axios
@@ -70,16 +73,20 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
   };
 
   const deletePostHandler = async (e: any) => {
-    await axios
-      .delete(`${URI}/delete-post/${e}`, {
+    console.log("deletepost")
+    console.log(`${URI}/delete-post/${e}`)
+    try {
+      await axios.delete(`${URI}/delete-post/${e}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      .then(res => {
-        getAllPosts()(dispatch);
       });
+      getAllPosts()(dispatch);
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
   };
+  
 
   useEffect(() => {
    if(users){
@@ -90,7 +97,22 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
      setUserInfo(userData);
    }
   }, [users]);
+const url = "https://rotoconnect.com/";
+const title = item?.title;
+const message = "mesgsds";
 
+const options = {
+  title,
+  url,
+  message,
+};
+  const share = async (customOptions = options) => {
+    try {
+      await Share.open(customOptions);
+    } catch (err) {
+      console.log(err);
+        }
+  };
   return (
     <View className="p-[15px] border-b border-b-[#00000017]">
       <View className="relative">
@@ -123,7 +145,7 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
                 )}
               </TouchableOpacity>
               <Text className="text-black font-[500] text-[13px]">
-                {item.title}
+                 {item.title}
               </Text>
             </View>
           </View>
@@ -198,7 +220,7 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
               className="ml-5"
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Image
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/512/3905/3905866.png',
@@ -207,8 +229,10 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
               height={25}
               className="ml-5"
             />
-          </TouchableOpacity>
-          <TouchableOpacity>
+          </TouchableOpacity> */}
+          <TouchableOpacity onPress={async () =>{
+            await share();
+          }}>
             <Image
               source={{
                 uri: 'https://cdn-icons-png.flaticon.com/512/10863/10863770.png',

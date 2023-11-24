@@ -40,6 +40,7 @@ const EditProfile = ({navigation}: Props) => {
                 Authorization: `Bearer ${token}`,
               },
         }).then((res:any) => {
+          navigation.navigate('ProfileScreen')
             loadUser()(dispatch);
         })
     }

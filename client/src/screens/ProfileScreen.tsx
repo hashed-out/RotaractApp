@@ -88,7 +88,7 @@ const ProfileScreen = ({navigation}: Props) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('FollowerCard', {
-                  followers: user?.followers,
+                  followers: user?.followers.name,
                   following: user?.following,
                 })
               }>
@@ -106,6 +106,7 @@ const ProfileScreen = ({navigation}: Props) => {
                   borderColor: '#666',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
+                  borderRadius:15,
                 }}>
                 Edit Profile
               </Text>
@@ -117,6 +118,7 @@ const ProfileScreen = ({navigation}: Props) => {
                   borderColor: '#666',
                   borderWidth: 1,
                   backgroundColor: 'transparent',
+                  borderRadius:15,
                 }}>
                 Log Out
               </Text>
@@ -130,7 +132,7 @@ const ProfileScreen = ({navigation}: Props) => {
                 <Text
                   className="text-[18px] pl-3 text-[#000]"
                   style={{opacity: active === 0 ? 1 : 0.6}}>
-                  Threads
+                  Posts
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setActive(1)}>

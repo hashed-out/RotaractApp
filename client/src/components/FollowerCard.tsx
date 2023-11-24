@@ -104,6 +104,7 @@ const FollowerCard = ({navigation, route}: Props) => {
         <Text className="py-2 text-center text-black text-[16px]">
           {followers?.length} followers
         </Text>
+        
       )}
 
       {active === 1 && (

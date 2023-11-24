@@ -9,12 +9,15 @@ import ProfileScreen from '../src/screens/ProfileScreen';
 import {getAllPosts} from '../redux/actions/postAction';
 import {useDispatch} from 'react-redux';
 import {loadUser} from '../redux/actions/userAction';
+import { border } from 'native-base/lib/typescript/theme/styled-system';
+import { useSelector} from 'react-redux';
 
 type Props = {};
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = (props: Props) => {
+  const {user} = useSelector((state: any) => state.user);
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -31,8 +34,8 @@ const Tabs = (props: Props) => {
             <Image
               source={{
                 uri: focused
-                  ? 'https://cdn-icons-png.flaticon.com/128/3917/3917032.png'
-                  : 'https://cdn-icons-png.flaticon.com/128/3917/3917014.png',
+                  ? 'https://cdn-icons-png.flaticon.com/128/738/738822.png'
+                  : 'https://cdn-icons-png.flaticon.com/128/738/738822.png',
               }}
               style={{
                 width: 30,
@@ -52,13 +55,14 @@ const Tabs = (props: Props) => {
             <Image
               source={{
                 uri: focused
-                  ? 'https://cdn-icons-png.flaticon.com/128/3917/3917132.png'
-                  : 'https://cdn-icons-png.flaticon.com/128/3917/3917132.png',
+                  ? 'https://cdn-icons-png.flaticon.com/128/4399/4399673.png'
+                  : 'https://cdn-icons-png.flaticon.com/128/4399/4399673.png',
               }}
               style={{
-                width: 30,
+                width: 35,
                 height: 30,
                 tintColor: focused ? '#000' : '#444',
+                
               }}
             />
           ),
@@ -74,11 +78,11 @@ const Tabs = (props: Props) => {
             <Image
               source={{
                 uri: focused
-                  ? 'https://cdn-icons-png.flaticon.com/512/10015/10015412.png'
-                  : 'https://cdn-icons-png.flaticon.com/512/10015/10015412.png',
+                  ? 'https://cdn-icons-png.flaticon.com/128/4792/4792960.png'
+                  : 'https://cdn-icons-png.flaticon.com/128/4792/4792960.png',
               }}
               style={{
-                width: 30,
+                width: 35,
                 height: 30,
                 tintColor: focused ? '#000' : '#444',
               }}
@@ -95,13 +99,14 @@ const Tabs = (props: Props) => {
             <Image
               source={{
                 uri: focused
-                  ? 'https://cdn-icons-png.flaticon.com/512/1077/1077086.png'
-                  : 'https://cdn-icons-png.flaticon.com/512/1077/1077035.png',
+                  ? 'https://cdn-icons-png.flaticon.com/128/2645/2645897.png'
+                  : 'https://cdn-icons-png.flaticon.com/128/2645/2645897.png',
               }}
               style={{
                 width: 30,
                 height: 30,
                 tintColor: focused ? '#000' : '#444',
+                zIndex: focused ? 50: 0,
               }}
             />
           ),
@@ -114,15 +119,12 @@ const Tabs = (props: Props) => {
         options={({route}) => ({
           tabBarIcon: ({focused}) => (
             <Image
-              source={{
-                uri: focused
-                  ? 'https://cdn-icons-png.flaticon.com/512/1077/1077063.png'
-                  : 'https://cdn-icons-png.flaticon.com/512/1077/1077063.png',
-              }}
+            source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
               style={{
                 width: 30,
                 height: 30,
-                tintColor: focused ? '#000' : '#444',
+                borderRadius:20,
+                borderWidth:2,
               }}
             />
           ),

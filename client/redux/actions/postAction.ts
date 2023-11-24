@@ -10,6 +10,8 @@ export const createPostAction =
     image: string,
     user: Object,
     replies: Array<{title: string; image: string; user: any}>,
+    eventVenue: string,
+    eventDate: Date,
   ) =>
   async (dispatch: Dispatch<any>) => {
     try {
@@ -22,7 +24,7 @@ export const createPostAction =
 
       const {data} = await axios.post(
         `${URI}/create-post`,
-        {title, image, user, replies},
+        {title, image, user, replies,eventVenue,eventDate},
         {
           headers: {
             Authorization: `Bearer ${token}`,

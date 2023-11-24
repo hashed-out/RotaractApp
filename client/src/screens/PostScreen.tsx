@@ -25,12 +25,12 @@ const PostScreen = ({navigation}: Props) => {
   const {isSuccess, isLoading} = useSelector((state: any) => state.post);
   const [activeIndex, setActiveIndex] = useState(0);
   const [active, setActive] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [eventDate, seteventDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
-  const [loaction,setLocation] = useState('');
+  const [eventVenue,seteventVenue] = useState('');
   const [isEvent, setIsEvent] = useState(false);
 
   useEffect(() => {
@@ -132,7 +132,7 @@ const PostScreen = ({navigation}: Props) => {
 
   const createPost = () => {
     if (title !== '' || (image !== '' && !isLoading)) {
-      createPostAction(title, image, user, replies)(dispatch);
+      createPostAction(title, image, user, replies,eventVenue,eventDate)(dispatch);
     }
   };
 
@@ -150,11 +150,12 @@ const PostScreen = ({navigation}: Props) => {
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', margin: 16 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
-            style={{width: 40, height: 40}}
-            borderRadius={100}
-          />
+        <Image
+                    source={{
+                      uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
+                    }}
+                    style={{ width: 20, height: 20 }}
+                  /> 
         </TouchableOpacity>
         <Text style={{ paddingLeft: 16, fontSize: 20, fontWeight: '500', color: '#000' }}>
           New Post/Event
@@ -172,14 +173,7 @@ const PostScreen = ({navigation}: Props) => {
                 <Text style={{ fontSize: 20, fontWeight: '400', color: 'black' }}>
                   {user?.name}
                 </Text>
-                <TouchableOpacity>
-                  {/* <Image
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
-                    }}
-                    style={{ width: 20, height: 20 }}
-                  /> */}
-                </TouchableOpacity>
+               
               </View>
               <TextInput
   placeholder="Write your post..."
@@ -218,8 +212,8 @@ const PostScreen = ({navigation}: Props) => {
       <TextInput
         placeholder="Venue of the Event"
         placeholderTextColor="#000"
-        value={loaction}
-        onChangeText={(text) => setLocation(text)}
+        value={eventVenue}
+        onChangeText={(text) => seteventVenue(text)}
         style={{flex: 1,fontSize: 16,color: '#000',}}
       />
     </View>
@@ -233,10 +227,10 @@ const PostScreen = ({navigation}: Props) => {
                     <DatePicker
                       modal
                       open={open}
-                      date={date}
+                      date={eventDate}
                       onConfirm={(date) => {
                         setOpen(false);
-                        setDate(date);
+                        seteventDate(date);
                       }}
                       onCancel={() => {
                         setOpen(false);

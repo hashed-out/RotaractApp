@@ -63,11 +63,11 @@ const SearchScreen = ({navigation}: Props) => {
       ) : (
         <SafeAreaView>
           <View className="p-3">
-            <Text className="text-[30px] text-[#000] font-[600]">Search</Text>
+            <Text className="text-[30px] text-[#000] font-[600]">Bengaluru Rotarians</Text>
             <View className="relative">
               <Image
                 source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/2811/2811806.png',
+                  uri: 'https://cdn-icons-png.flaticon.com/512/2811/5069162.png',
                 }}
                 height={20}
                 width={20}

@@ -9,8 +9,6 @@ import {
   Platform,
   Image,
   StyleSheet,
-  Animated,
-  Easing,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
@@ -90,20 +88,17 @@ const LoginScreen = ({ navigation }: Props) => {
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <Text
-          className="pt-3 text-black"
-          onPress={() => navigation.navigate('Signup')}>
+          style={{ paddingTop: 3, color: 'black' }}
+          onPress={() => navigation.navigate('Signup')}
+        >
           Don't have any account? <Text>Sign up</Text>
         </Text>
         <Text
-          className="pt-3 text-black"
-          onPress={() => navigation.navigate('RecoverPassword')}>
-            Forgot Password
+          style={{ paddingTop: 3, color: 'black' }}
+          onPress={() => navigation.navigate('RecoverPassword')}
+        >
+          Forgot Password
         </Text>
-      </View>
-    </View>
-  );
-};
-
       </Animatable.View>
     </LinearGradient>
   );

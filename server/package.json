@@ -24,6 +24,8 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.3.2",
     "nodemailer": "^6.9.7",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "react": "^18.2.0",
+    "react-native": "^0.72.7"
   }
 }

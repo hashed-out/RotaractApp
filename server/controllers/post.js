@@ -8,6 +8,7 @@ const Notification = require("../models/NotificationModel");
 exports.createPost = catchAsyncErrors(async (req, res, next) => {
   try {
     console.log("-------------Create Post----------------")
+    console.log(req.body)
     const { image } = req.body;
 
     let myCloud;
@@ -41,6 +42,8 @@ exports.createPost = catchAsyncErrors(async (req, res, next) => {
         : null,
       user: req.body.user,
       replies,
+      eventDate:req.body.eventDate,
+      eventVenue:req.body.eventVenue,
     });
 
     await post.save();

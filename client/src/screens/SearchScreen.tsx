@@ -16,6 +16,7 @@ import {
 } from '../../redux/actions/userAction';
 import Loader from '../common/Loader';
 import DefaultAvatar from '../assets/user-avatar.png';
+import HeaderCard from '../components/HeaderCard';
 
 type Props = {
   navigation: any;
@@ -61,13 +62,14 @@ const SearchScreen = ({navigation}: Props) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+          <HeaderCard/>
           <View className="p-3">
             <Text className="text-[30px] text-[#000] font-[600]">Bengaluru Rotarians</Text>
             <View className="relative">
               <Image
                 source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/2811/5069162.png',
+                  uri: 'https://cdn-icons-png.flaticon.com/128/8992/8992459.png',
                 }}
                 height={20}
                 width={20}
@@ -75,7 +77,7 @@ const SearchScreen = ({navigation}: Props) => {
               />
               <TextInput
                 onChangeText={e => handleSearchChange(e)}
-                placeholder="Search"
+                placeholder="Search Rotarians...."
                 placeholderTextColor={'#000'}
                 className="w-full h-[38px] bg-[#0000000e] rounded-[8px] pl-8 text-[#000] mt-[10px]"
               />
@@ -143,7 +145,7 @@ const SearchScreen = ({navigation}: Props) => {
                             {item.followers.length} followers
                           </Text>
                         </View>
-                        <View>
+                        <View style={{ paddingRight:10, paddingTop:18 }}>
                           <TouchableOpacity
                             className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
                             onPress={() => handleFollowUnfollow(item)}>

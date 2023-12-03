@@ -1,36 +1,38 @@
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
-  ToastAndroid,
   Alert,
+  ToastAndroid,
   Image,
   Platform,
+  StyleSheet,
 } from 'react-native';
-import {useEffect, useState} from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadUser, registerUser} from '../../redux/actions/userAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUser, registerUser } from '../../redux/actions/userAction';
 
 type Props = {
   navigation: any;
 };
 
-const SignupScreen = ({navigation}: Props) => {
+const SignupScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [avatar, setAvatar] = useState('');
   const dispatch = useDispatch();
-  const {error, isAuthenticated} = useSelector((state: any) => state.user);
+  const { error, isAuthenticated } = useSelector((state: any) => state.user);
 
   useEffect(() => {
     if (error) {
-      if(Platform.OS === 'android'){
+      if (Platform.OS === 'android') {
         ToastAndroid.show(error, ToastAndroid.LONG);
-      } else{
+      } else {
         Alert.alert(error);
       }
     }
@@ -54,72 +56,132 @@ const SignupScreen = ({navigation}: Props) => {
   };
   console.log(avatar)
 
-  const submitHandler = (e: any) => {
-   if(  name === '' || email === ''){
-    if(Platform.OS === 'android'){
-    ToastAndroid.show('Please fill the all fields and upload avatar', ToastAndroid.LONG);
-    } else{
-      Alert.alert('Please fill the all fields and upload avatar')
+  const submitHandler = () => {
+    if (name === '' || email === '') {
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Please fill all fields and upload an avatar', ToastAndroid.LONG);
+      } else {
+        Alert.alert('Please fill all fields and upload an avatar');
+      }
+    } else {
+      registerUser(name, email, password, avatar)(dispatch);
     }
-   } else{
-    registerUser(name, email, password, avatar)(dispatch);
-   }
   };
 
   return (
-    <View className="flex-[1] items-center justify-center">
-      <View className="w-[70%]">
-        <Text className="text-[25px] font-[600] text-center text-black">
-          Sign Up
-        </Text>
+    <LinearGradient colors={['#fff', '#0074e4']} style={styles.container}>
+      <Animatable.View animation="fadeInDown" duration={1500} style={styles.logoContainer}>
+        <Image style={styles.logo} source={require('../assets/rl.png')} />
+      </Animatable.View>
+      <Animatable.View animation="fadeInUp" duration={1500} style={styles.formContainer}>
+        <Text style={styles.welcomeText}>Sign Up</Text>
         <TextInput
           placeholder="Enter your name"
           value={name}
-          onChangeText={text => setName(text)}
-          placeholderTextColor={'#000'}
-          className="w-full h-[35px] border text-black border-[#00000072] px-2 my-2"
+          onChangeText={(text) => setName(text)}
+          placeholderTextColor="#000"
+          style={styles.input}
         />
         <TextInput
           placeholder="Enter your email"
           value={email}
-          onChangeText={text => setEmail(text)}
-          placeholderTextColor={'#000'}
-          className="w-full h-[35px] border border-[#00000072] text-black px-2 my-2"
+          onChangeText={(text) => setEmail(text)}
+          placeholderTextColor="#000"
+          style={styles.input}
         />
         <TextInput
           placeholder="Enter your password"
-          className="w-full h-[35px] border text-black border-[#00000072] px-2 my-2"
           value={password}
-          onChangeText={text => setPassword(text)}
-          secureTextEntry={true}
-          placeholderTextColor={'#000'}
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry
+          placeholderTextColor="#000"
+          style={styles.input}
         />
-        <TouchableOpacity
-          className="flex-row items-center"
-          onPress={uploadImage}>
-          <Image
-            source={{
-              uri: avatar
-                ? avatar
-                : 'https://cdn-icons-png.flaticon.com/128/568/568717.png',
-            }}
-            className="w-[30px] h-[30px] rounded-full"
-          />
-          <Text className="text-black pl-2">upload image</Text>
+        <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
+          <View style={styles.uploadButtonContainer}>
+            <Image
+              source={{ uri: avatar ? avatar : 'https://cdn-icons-png.flaticon.com/128/568/568717.png' }}
+              style={styles.uploadImage}
+            />
+            <Text style={styles.uploadText}>Upload Image</Text>
+          </View>
         </TouchableOpacity>
-        <TouchableOpacity className="mt-6" onPress={submitHandler}>
-          <Text className="w-full text-[#fff] text-center pt-[8px] text-[20px] h-[40px] bg-black">
-            Sign Up
-          </Text>
+        <TouchableOpacity style={styles.signupButton} onPress={submitHandler}>
+          <Text style={styles.signupButtonText}>Sign Up</Text>
         </TouchableOpacity>
-        <Text
-          className="pt-3 text-black"
-          onPress={() => navigation.navigate('Login')}>
+        <Text style={{ paddingTop: 3, color: 'black' }} onPress={() => navigation.navigate('Login')}>
           Already have an account? <Text>Sign in</Text>
         </Text>
-      </View>
-    </View>
+      </Animatable.View>
+    </LinearGradient>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingRight: 60,
+  },
+  formContainer: {
+    flex: 1,
+    alignItems: 'center',
+    width: '80%',
+    padding: 20,
+  },
+  logo: {
+    width: 470,
+    height: 100,
+    paddingLeft: 20,
+  },
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    marginVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
+    color: '#000',
+  },
+  uploadButton: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  uploadButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  uploadImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginRight: 10,
+  },
+  uploadText: {
+    color: 'black',
+  },
+  signupButton: {
+    backgroundColor: '#0074e4',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    width: 100,
+  },
+  signupButtonText: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+});
 
 export default SignupScreen;

@@ -15,6 +15,8 @@ import {createPostAction, getAllPosts} from '../../redux/actions/postAction';
 import DatePicker from 'react-native-date-picker';
 import { Button } from '@rneui/base';
 import DefaultAvatar from '../assets/user-avatar.png';
+import { Center } from 'native-base';
+import HeaderCard from '../components/HeaderCard';
 
 type Props = {
   navigation: any;
@@ -132,40 +134,31 @@ const PostScreen = ({navigation}: Props) => {
 
   const createPost = () => {
     if (title !== '' || (image !== '' && !isLoading)) {
-      createPostAction(title, image, user, replies,eventVenue,eventDate)(dispatch);
+      createPostAction(title, image, user, replies,isEvent,eventVenue,eventDate)(dispatch);
     }
   };
 
   return (
 <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View style={{flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',}}>
-        <Image
-          style={{ width: 250, height: 100, resizeMode: "contain",  }}
-          source={
-            require('../assets/rl.png')
-          }
-        />
-      </View>
+      <HeaderCard/>
       <View style={{ flexDirection: 'row', alignItems: 'center', margin: 16 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
         <Image
                     source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
+                      uri: 'https://cdn-icons-png.flaticon.com/128/545/545680.png',
                     }}
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: 30, height: 30 }}
                   /> 
         </TouchableOpacity>
         <Text style={{ paddingLeft: 16, fontSize: 20, fontWeight: '500', color: '#000' }}>
-          New Post/Event
+         Create Post/Event
         </Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ margin: 16 }}>
           <View style={{ marginBottom: 16, flexDirection: 'row' }}>
             <Image
-              source={{ uri: user?.avatar.url }}
+              source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
               style={{ width: 40, height: 40, borderRadius: 100 }}
             />
             <View style={{ width:'90%' }}>
@@ -176,7 +169,7 @@ const PostScreen = ({navigation}: Props) => {
                
               </View>
               <TextInput
-  placeholder="Write your post..."
+  placeholder="Title....."
   placeholderTextColor="#000"
   value={title}
   onChangeText={(text) => setTitle(text)}
@@ -192,21 +185,23 @@ const PostScreen = ({navigation}: Props) => {
   numberOfLines={4}  
 />
 
-              <View style={{ marginTop: 20 }}>
-                <Text>This post is about an Event</Text>
-                <Switch
-                  trackColor={{ false: 'red', true: 'green' }}
-                  thumbColor={isEvent ? 'green' : 'red'}
-                  value={isEvent}
-                  onValueChange={(value) => setIsEvent(value)}
-                />
-              </View>
+<View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+  <Text style={{ color:'#000'}}>Event Post?</Text>
+  <Switch
+    trackColor={{ false: 'grey', true: 'green' }}
+    thumbColor={isEvent ? 'green' : 'grey'}
+    value={isEvent}
+    onValueChange={(value) => setIsEvent(value)}
+  />
+  {isEvent ? <Text style={{ color:'white' }}>Yes</Text> : <Text style={{ color:'black' }}>No</Text>}
+</View>
+
               {isEvent && (
                 <>
       <View style={{ flexDirection: 'row',alignItems: 'center',borderColor: '#ccc',borderWidth: 1,borderRadius: 8,
     padding: 8,}}>
       <Image
-        source={{uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',}}
+        source={{uri: 'https://cdn-icons-png.flaticon.com/128/11529/11529542.png',}}
         style={{ width: 24,height: 24,marginRight: 8,}}
       />
       <TextInput
@@ -218,12 +213,29 @@ const PostScreen = ({navigation}: Props) => {
       />
     </View>
                   <>
-                    <Button
-                      title="Event Date & Time"
-                      size="sm"
-                      onPress={() => setOpen(true)}
-                      color={'black'}
-                    />
+                  <TouchableOpacity onPress={() => setOpen(true)}>
+                  <View style={{
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderColor: 'red',
+  borderWidth: 1,
+  borderRadius: 8,
+  padding: 10,
+}}>
+  
+    <Image
+      source={{uri: 'https://cdn-icons-png.flaticon.com/128/591/591576.png'}}
+      style={{width: 25, height: 25, marginTop: 5}}
+    />
+    <Text style={{ fontSize:18, alignContent:'Center' }}>
+      {`${eventDate.toDateString()} `}
+      <Image source={{uri: "https://cdn-icons-png.flaticon.com/128/2784/2784459.png"}} style={{width: 25, height: 25}} />
+      {` ${eventDate.toLocaleTimeString()}`}
+    </Text>
+ 
+</View>
+</TouchableOpacity>
+                  
                     <DatePicker
                       modal
                       open={open}
@@ -238,6 +250,7 @@ const PostScreen = ({navigation}: Props) => {
                       theme="dark"
                       minimumDate={new Date()}
                     />
+
                   </>
                 </>
               )}
@@ -247,7 +260,7 @@ const PostScreen = ({navigation}: Props) => {
               >
                 <Image
                   source={{
-                    uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',
+                    uri: 'https://cdn-icons-png.flaticon.com/128/11737/11737443.png',
                   }}
                   style={{ width: 20, height: 20, tintColor: '#000' }}
                 />
@@ -258,104 +271,19 @@ const PostScreen = ({navigation}: Props) => {
             <View style={{ margin: 8 }}>
               <Image
                 source={{ uri: image }}
-                style={{ width: 200, height: 300 }}
+                style={{ width: 250, height: 250 }}
               />
             </View>
           )}
-          {replies.length === 0 && (
-            <View style={{ flexDirection: 'row', margin: 16, marginTop: 24, opacity: 0.7 }}>
-              <Image
-                source={{ uri: user?.avatar.url }}
-                style={{ width: 30, height: 30, borderRadius: 100 }}
-              />
-
-              {/* <Text
-                style={{ paddingLeft: 16, color: 'black' }}
-                onPress={addFreshNewThread}
-              >
-                Add to thread ...
-              </Text> */}
-            </View>
-          )}
-          {replies.map((item, index) => (
-            <View key={index}>
-              <View style={{ marginTop: 8, flexDirection: 'row' }}>
-                <Image
-                  source={{ uri: user?.avatar.url }}
-                  style={{ width: 40, height: 40, borderRadius: 100 }}
-                />
-                <View style={{ paddingLeft: 16 }}>
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={{ fontSize: 20, fontWeight: '400', color: 'black' }}>
-                      {user?.name}
-                    </Text>
-                    <TouchableOpacity onPress={() => removeThread(index)}>
-                      <Image
-                        source={{
-                          uri: 'https://cdn-icons-png.flaticon.com/512/2961/2961937.png',
-                        }}
-                        style={{ width: 20, height: 20 }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  {/* <TextInput
-                    placeholder="Start a thread..."
-                    placeholderTextColor="#000"
-                    value={item.title}
-                    onChangeText={(text) => handleTitleChange(index, text)}
-                    style={{ marginTop: 8, color: '#000', fontSize: 16 }}
-                  /> */}
-                  <TouchableOpacity
-                    style={{ marginTop: 8 }}
-                    onPress={() => uploadImage(index)}
-                  >
-                    <Button
-                      title="Upload your photo"
-                      size="sm"
-                    />
-                    <Image
-                      source={{
-                        uri: 'https://cdn-icons-png.flaticon.com/512/10857/10857463.png',
-                      }}
-                      style={{ width: 20, height: 20 }}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              {item.image && (
-                <View style={{ margin: 8 }}>
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{ width: 200, height: 300 }}
-                  />
-                </View>
-              )}
-              {index === activeIndex && (
-                <View style={{ flexDirection: 'row', margin: 16, marginTop: 24, opacity: 0.7 }}>
-                  <Image
-                    source={{ uri: user?.avatar.url }}
-                    style={{ width: 30, height: 30, borderRadius: 100 }}
-                  />
-                  <Text
-                    style={{ paddingLeft: 16, color: 'black' }}
-                    onPress={addNewThread}
-                  >
-                    Add to thread ...
-                  </Text>
-                </View>
-              )}
-            </View>
-          ))}
         </View>
       </ScrollView>
       <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ color: 'black', padding: 8, fontSize: 16 }}>Anyone can reply</Text>
         <TouchableOpacity onPress={createPost}>
-          <Text style={{ color: '#1977f2' }}>Post</Text>
+          <Text style={{ color: '#1977f2', alignContent:'flex-start' }}>Post</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );
+  ); 
 };
 
 export default PostScreen;

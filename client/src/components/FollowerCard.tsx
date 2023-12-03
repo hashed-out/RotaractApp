@@ -13,6 +13,7 @@ import {
   loadUser,
   unfollowUserAction,
 } from '../../redux/actions/userAction';
+import DefaultAvatar from '../assets/user-avatar.png'
 
 type Props = {
   route: any;
@@ -81,30 +82,19 @@ const FollowerCard = ({navigation, route}: Props) => {
               Following
             </Text>
           </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setActive(2)}>
-            <Text
-              className="text-[18px] pl-3 text-[#000]"
-              style={{opacity: active === 2 ? 1 : 0.6}}>
-              Pending
-            </Text>
-          </TouchableOpacity>
         </View>
 
         {active === 0 ? (
-          <View className="w-[40%] absolute h-[1px] bg-black left-[-10px] bottom-0" />
+          <View className="w-[50%] absolute h-[1px] bg-black left-[-10px] bottom-0" />
         ) : active === 1 ? (
-          <View className="w-[30%] absolute h-[1px] bg-black right-[31%] bottom-0" />
-        ) : (
-          <View className="w-[32%] absolute h-[1px] bg-black right-[0%] bottom-0" />
-        )}
+          <View className="w-[50%] absolute h-[1px] bg-black right-[31%] bottom-0" />
+        ) : null}
       </View>
 
       {active === 0 && (
         <Text className="py-2 text-center text-black text-[16px]">
-          {followers?.length} followers
+          {followers?.length || 0} followers
         </Text>
-        
       )}
 
       {active === 1 && (
@@ -133,7 +123,6 @@ const FollowerCard = ({navigation, route}: Props) => {
                   })(dispatch);
                 }
               } catch (error) {
-                console.log(error)
                 console.log(error, 'error');
               }
               loadUser()(dispatch);
@@ -149,10 +138,10 @@ const FollowerCard = ({navigation, route}: Props) => {
                 }>
                 <View className="flex-row">
                   <Image
-                    source={{uri: item?.avatar?.url}}
-                    width={40}
-                    height={40}
-                    borderRadius={100}
+                    source={item.avatar?.url ? { uri: item.avatar?.url } : DefaultAvatar}
+                   style={{ width:40,
+                    height:40,
+                    borderRadius:20,}}
                   />
                   <View className="pl-3">
                     <View className="flex-row items-center relative">
@@ -190,10 +179,6 @@ const FollowerCard = ({navigation, route}: Props) => {
             );
           }}
         />
-      )}
-
-      {active === 2 && (
-        <Text className="text-[18px] text-center pt-10 text-black">No Pending</Text>
       )}
     </SafeAreaView>
   );

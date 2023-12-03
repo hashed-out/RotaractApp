@@ -88,7 +88,7 @@ const ProfileScreen = ({navigation}: Props) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('FollowerCard', {
-                  followers: user?.followers.name,
+                  followers: user?.followers,
                   following: user?.following,
                 })
               }>

@@ -273,26 +273,6 @@ const PostDetailsCard = ({
               className="ml-5"
             />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/3905/3905866.png',
-              }}
-              width={25}
-              height={25}
-              className="ml-5"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/10863/10863770.png',
-              }}
-              width={25}
-              height={25}
-              className="ml-5"
-            />
-          </TouchableOpacity>
         </View>
         
           <View className="pl-[50px] pt-4 flex-row">

@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
   return (
     <LinearGradient
-      colors={['#001f3f', '#0074e4']}
+      colors={['#fff', '#0074e4']}
       style={styles.container}
     >
       <Animatable.View
@@ -73,14 +73,14 @@ const LoginScreen = ({ navigation }: Props) => {
           style={styles.input}
           placeholder="Enter your email"
           value={email}
-          placeholderTextColor="#fff"
+          placeholderTextColor="#000"
           onChangeText={(text) => setEmail(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Enter your password"
           value={password}
-          placeholderTextColor="#fff"
+          placeholderTextColor="#000"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
@@ -88,7 +88,7 @@ const LoginScreen = ({ navigation }: Props) => {
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <Text
-          style={{ paddingTop: 3, color: 'black' }}
+          style={{ paddingTop: 3, color: 'black'}}
           onPress={() => navigation.navigate('Signup')}
         >
           Don't have any account? <Text>Sign up</Text>
@@ -111,8 +111,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoContainer: {
+    height:50,
+    width:300,
     flex: 1,
     justifyContent: 'center',
+    
   },
   formContainer: {
     flex: 1,
@@ -121,13 +124,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 270,
+    height: 40,
+    paddingLeft:20,
   },
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
     marginBottom: 20,
   },
   input: {
@@ -135,14 +139,15 @@ const styles = StyleSheet.create({
     height: 40,
     marginVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#fff',
-    color: '#fff',
+    borderBottomColor: '#000',
+    color: '#000',
   },
   loginButton: {
     backgroundColor: '#0074e4',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
+    width:100,
   },
   loginButtonText: {
     color: 'white',

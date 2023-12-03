@@ -14,7 +14,7 @@ import getTimeDuration from '../common/TimeGenerator';
 import axios from 'axios';
 import {URI} from '../../redux/URI';
 import Loader from '../common/Loader';
-
+import DefaultAvatar from '../assets/user-avatar.png'
 type Props = {
   navigation: any;
 };
@@ -30,7 +30,7 @@ const NotificationScreen = ({navigation}: Props) => {
   const [active, setActive] = useState(0);
   const refreshingHeight = 100;
 
-  const labels = ['All', 'Replies', 'Mentions'];
+  const labels = ['All', 'Replies'];
 
   const handleTabPress = (index: number) => {
     setActive(index);
@@ -46,18 +46,17 @@ const NotificationScreen = ({navigation}: Props) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <>
-          <SafeAreaView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#337ccf' }}>
             <View className="p-3 mb-[190px]">
-              <Text className="text-3xl font-[700] text-black">Activity</Text>
+              <Text className="text-3xl font-[700] text-black">Notifications</Text>
 
               <View className="w-full flex-row my-3 justify-between">
                 {labels.map((label, index) => (
                   <TouchableOpacity
                     key={index}
-                    className="w-[105px] h-[38px] rounded-[8px]"
+                    className="w-[150px] h-[38px] rounded-[8px]"
                     style={{
-                      backgroundColor: active === index ? 'black' : '#fff',
+                      backgroundColor: active === index ? '#1450a3' : '#fff',
                       borderWidth: active === index ? 1 : 0,
                       borderColor: 'rgba(0,0,0,0.29)',
                     }}
@@ -75,14 +74,14 @@ const NotificationScreen = ({navigation}: Props) => {
               {/* All activites */}
               {active === 0 && notifications.length === 0 && (
                 <View className="w-full h-[80px] flex items-center justify-center">
-                  <Text className='text-[16px] text-black mt-5'>You have no activity yet!</Text>
+                  <Text className='text-[16px] text-black mt-5'>No Notification Yet!</Text>
                 </View>
               )}
 
               {/* All Replies */}
               {active === 1 && (
                 <View className="w-full h-[80px] flex items-center justify-center">
-                  <Text className='text-[16px] text-black mt-5'>You have no replies yet!</Text>
+                  <Text className='text-[16px] text-black mt-5'>No Replies Yet!</Text>
                 </View>
               )}
 
@@ -139,11 +138,14 @@ const NotificationScreen = ({navigation}: Props) => {
                         <View className="flex-row" key={item._id}>
                           <View className="relative">
                             <Image
-                              source={{
+                              source={users.find(
+                                (user: any) => user._id === item.creator._id,
+                              )?.avatar.url ? {
                                 uri: users.find(
                                   (user: any) => user._id === item.creator._id,
-                                )?.avatar.url,
-                              }}
+                                )?.avatar.url,} : DefaultAvatar
+                              }
+      
                               width={40}
                               height={40}
                               borderRadius={100}
@@ -201,7 +203,6 @@ const NotificationScreen = ({navigation}: Props) => {
               )}
             </View>
           </SafeAreaView>
-        </>
       )}
     </>
   );

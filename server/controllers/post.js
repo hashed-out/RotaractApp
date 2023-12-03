@@ -42,6 +42,7 @@ exports.createPost = catchAsyncErrors(async (req, res, next) => {
         : null,
       user: req.body.user,
       replies,
+      isEvent:req.body.isEvent,
       eventDate:req.body.eventDate,
       eventVenue:req.body.eventVenue,
     });

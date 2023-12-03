@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema(
       default:false
     },
     eventDate:{
-      type:Date
+      type:String,
     },
     eventVenue:{
       type: String

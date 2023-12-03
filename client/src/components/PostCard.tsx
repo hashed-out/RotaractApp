@@ -4,12 +4,14 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Image} from 'react-native';
 import getTimeDuration from '../common/TimeGenerator';
 import Share from 'react-native-share';
+import DefaultAvatar from '../assets/user-avatar.png'
 import {
   addLikes,
   getAllPosts,
@@ -27,7 +29,7 @@ type Props = {
   replies?: boolean | null;
 };
 
-const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
+const PostCard = ({item, isReply, navigation, postId, replies, isEvent,}: Props) => {
   const {user, token,users} = useSelector((state: any) => state.user);
   const {posts} = useSelector((state: any) => state.post);
   const [openModal, setOpenModal] = useState(false);
@@ -40,7 +42,22 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
   });
   const time = item?.createdAt;
   const formattedDuration = getTimeDuration(time);
-  const datetime= item?.eventDate;
+  //const datetime= item?.eventDate;
+  const Event= item?.isEvent;
+
+  const datetime = item.eventDate;
+const date = new Date(datetime);
+
+const extractedDate = date.toDateString(); 
+const hours = date.getHours(); 
+const minutes = date.getMinutes(); 
+
+let timedate;
+if (hours > 12) {
+  timedate = `${hours - 12}:${minutes} pm`; 
+} else {
+  timedate = `${hours}:${minutes} am`; 
+}
 
 
   const profileHandler = async (e: any) => {
@@ -98,8 +115,8 @@ const PostCard = ({item, isReply, navigation, postId, replies}: Props) => {
    }
   }, [users]);
 const url = "https://rotoconnect.com/";
-const title = item?.title;
-const message = "mesgsds";
+const title = "RotoConnect";
+const message = item.title +"mesgsd";
 
 const options = {
   title,
@@ -113,65 +130,63 @@ const options = {
       console.log(err);
         }
   };
+
+  const getCurrentDate = () => {
+    const currentDate = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return currentDate.toLocaleDateString(undefined, options);
+  };
+
   return (
-    <View className="p-[15px] border-b border-b-[#00000017]">
-      <View className="relative">
-        <View className="flex-row w-full">
-          <View className="flex-row w-[85%] items-center">
-            <TouchableOpacity onPress={() => profileHandler(item.user)}>
-              <Image
-                source={{uri: userInfo?.avatar?.url}}
-                width={40}
-                height={40}
-                borderRadius={100}
-              />
-            </TouchableOpacity>
-            <View className="pl-3 w-[70%]">
-              <TouchableOpacity
-                className="flex-row items-center"
+    <View>
+       
+    <View style={styles.cardContainer}>
+    <TouchableOpacity style={styles.deleteButton} onPress={() => item.user._id === user._id && setOpenModal(true)}>
+
+        <Text style={styles.deleteIcon}>...</Text>
+      </TouchableOpacity>
+      <View style={styles.headerContainer}>
+      <TouchableOpacity onPress={() => profileHandler(item.user)}>
+        <Image source={userInfo?.avatar?.url ? {uri: userInfo?.avatar?.url}: DefaultAvatar} style={styles.userProfilePhoto} />
+        </TouchableOpacity>
+        <View style={styles.userInfoContainer}>
+        <TouchableOpacity
                 onPress={() => profileHandler(userInfo)}>
-                <Text className="text-black font-[500] text-[16px]">
+                <Text style={styles.userName}>
                   {userInfo?.name}
                 </Text>
-                {userInfo?.role === 'Admin' && (
-                  <Image
-                    source={{
-                      uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828640.png',
-                    }}
-                    width={15}
-                    height={15}
-                    className="ml-1"
-                  />
-                )}
               </TouchableOpacity>
-              <Text className="text-black font-[500] text-[13px]">
-                 {item.title}
-              </Text>
-            </View>
-          </View>
-          <View className="flex-row items-center">
-            <Text className="text-[#000000b6]">{formattedDuration}</Text>
-            <TouchableOpacity
-              onPress={() => item.user._id === user._id && setOpenModal(true)}>
-              <Text className="text-[#000] pl-4 font-[700] mb-[8px]">...</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.postDate}>Posted on {getCurrentDate()}</Text>
         </View>
-        <View className="ml-[50px] my-3">
+      </View>
+
+      <Text style={styles.title}>{item.title}</Text>
+      {Event && (
+      <View style={styles.eventDetailsContainer}>
+        <View style={styles.eventDateContainer}>
+          <Image source={{uri:"https://cdn-icons-png.flaticon.com/128/591/591576.png"}} style={styles.icon} />
+          <Text style={styles.eventDate}>{extractedDate} <Image source={{uri:"https://cdn-icons-png.flaticon.com/128/2784/2784459.png"}} style={styles.icon} /> {timedate}</Text>
+        </View>
+        <View style={styles.eventVenueContainer}>
+          <Image source={{uri:"https://cdn-icons-png.flaticon.com/128/11529/11529542.png"}} style={styles.icon} />
+          <Text style={styles.eventVenue}>{item.eventVenue}</Text>
+        </View>
+      </View>
+      )}
+
+      
           {item.image && (
+            <View className="ml-[20px] my-3">
             <Image
               source={{uri: item.image.url}}
               style={{aspectRatio: 1, borderRadius: 10, zIndex: 1111}}
               resizeMode="contain"
             />
+            </View>
           )}
-        </View>
-        {item.image ? (
-          <View className="absolute top-12 left-5 h-[90%] w-[1px] bg-[#00000017]" />
-        ) : (
-          <View className="absolute top-12 left-5 h-[60%] w-[1px] bg-[#00000017]" />
-        )}
-        <View className="flex-row items-center left-[50px] top-[5px]">
+        
+      <Text style={styles.caption}>caption dncsnrndn ndjdjdd djdkdkdkdkdkkd djdkdkdkdkd djdjddkdkdkdkkdkd</Text>
+        <View className="flex-row items-center left-[10px] top-[5px]">
           <TouchableOpacity onPress={() => reactsHandler(item)}>
             {item.likes.length > 0 ? (
               <>
@@ -203,7 +218,7 @@ const options = {
               />
             )}
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate('CreateReplies', {
                 item: item,
@@ -217,16 +232,6 @@ const options = {
               }}
               width={22}
               height={22}
-              className="ml-5"
-            />
-          </TouchableOpacity>
-          {/* <TouchableOpacity>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/3905/3905866.png',
-              }}
-              width={25}
-              height={25}
               className="ml-5"
             />
           </TouchableOpacity> */}
@@ -244,8 +249,8 @@ const options = {
           </TouchableOpacity>
         </View>
         {!isReply && (
-          <View className="pl-[50px] pt-4 flex-row">
-            <TouchableOpacity
+          <View className="pl-[10px] pt-4 flex-row">
+            {/* <TouchableOpacity
               onPress={() =>
                 navigation.navigate('PostDetails', {
                   data: item,
@@ -255,7 +260,7 @@ const options = {
                 {item?.replies?.length !== 0 &&
                   `${item?.replies?.length} replies ·`}{' '}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() =>
                 item.likes.length !== 0 &&
@@ -311,9 +316,96 @@ const options = {
             </Modal>
           </View>
         )}
-      </View>
+    
+    
+    </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  cardContainer: {
+    borderWidth: 1,
+    borderColor: '#1450a3',
+    borderRadius: 12,
+    padding: 16,
+    margin: 16,
+    backgroundColor: '#fff',
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  userProfilePhoto: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    marginRight: 16,
+  },
+  userInfoContainer: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  postDate: {
+    fontSize: 12,
+    color: '#777',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+  },
+  eventDetailsContainer: {
+    flexDirection: 'column',
+    marginBottom: 1,
+  },
+  eventDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 16,
+    height: 16,
+    marginRight: 4,
+  },
+  eventDate: {
+    fontSize: 14,
+    color: '#333',
+  },
+  eventVenueContainer: {
+    paddingTop:8,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  eventVenue: {
+    fontSize: 14,
+    color: '#333',
+  },
+  deleteIcon: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#555',
+  },
+  postImage: {
+    height: 240,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  caption: {
+    fontSize: 14,
+    color: '#555',
+  },
+});
 
 export default PostCard;

@@ -11,7 +11,8 @@ import {useDispatch} from 'react-redux';
 import {loadUser} from '../redux/actions/userAction';
 import { border } from 'native-base/lib/typescript/theme/styled-system';
 import { useSelector} from 'react-redux';
-
+import DefaultAvatar from '../src/assets/user-avatar.png';
+import { View } from 'native-base';
 type Props = {};
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +26,7 @@ const Tabs = (props: Props) => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
+        
       }}>
       <Tab.Screen
         name="Home2"

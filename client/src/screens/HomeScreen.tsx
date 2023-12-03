@@ -8,6 +8,7 @@ import Loader from '../common/Loader';
 import Lottie from 'lottie-react-native';
 import { getAllUsers } from '../../redux/actions/userAction';
 import { Platform } from 'react-native';
+import HeaderCard from '../components/HeaderCard';
 const loader = require('../assets/animation_lkbqh8co.json');
 
 type Props = {
@@ -90,7 +91,11 @@ const HomeScreen = (props: Props) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <SafeAreaView>
+        <SafeAreaView style={{
+          backgroundColor: '#337ccf',
+          flex:1,
+         }}>
+          <HeaderCard />
           <Lottie
             ref={lottieViewRef}
             style={{
@@ -100,6 +105,7 @@ const HomeScreen = (props: Props) => {
               top: 15,
               left: 0,
               right: 0,
+              
             }}
             loop={false}
             source={loader}
@@ -126,7 +132,11 @@ const HomeScreen = (props: Props) => {
             }
           />
           ) : (
+            
             <FlatList
+            style={{
+              backgroundColor: '#337ccf',
+            }}
             data={posts}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (

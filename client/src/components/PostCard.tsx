@@ -218,9 +218,9 @@ const options = {
               />
             )}
           </TouchableOpacity>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
-              navigation.navigate('CreateReplies', {
+              navigation.navigate('CreateReplies', {    //Sanath add registration page here
                 item: item,
                 navigation: navigation,
                 postId: postId,
@@ -228,13 +228,13 @@ const options = {
             }}>
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/5948/5948565.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/6997/6997143.png',
               }}
-              width={22}
-              height={22}
+              width={30}
+              height={30}
               className="ml-5"
             />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <TouchableOpacity onPress={async () =>{
             await share();
           }}>
@@ -250,17 +250,6 @@ const options = {
         </View>
         {!isReply && (
           <View className="pl-[10px] pt-4 flex-row">
-            {/* <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('PostDetails', {
-                  data: item,
-                })
-              }>
-              <Text className="text-[16px[ text-[#0000009b]">
-                {item?.replies?.length !== 0 &&
-                  `${item?.replies?.length} replies ·`}{' '}
-              </Text>
-            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() =>
                 item.likes.length !== 0 &&

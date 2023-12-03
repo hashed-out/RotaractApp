@@ -30,7 +30,7 @@ const NotificationScreen = ({navigation}: Props) => {
   const [active, setActive] = useState(0);
   const refreshingHeight = 100;
 
-  const labels = ['All', 'Replies'];
+  const labels = ['All', 'Events'];
 
   const handleTabPress = (index: number) => {
     setActive(index);
@@ -81,14 +81,7 @@ const NotificationScreen = ({navigation}: Props) => {
               {/* All Replies */}
               {active === 1 && (
                 <View className="w-full h-[80px] flex items-center justify-center">
-                  <Text className='text-[16px] text-black mt-5'>No Replies Yet!</Text>
-                </View>
-              )}
-
-              {/* All Replies */}
-              {active === 2 && (
-                <View className="w-full h-[80px] flex items-center justify-center">
-                  <Text className='text-[16px] text-black mt-5'>You have no mentions yet!</Text>
+                  <Text className='text-[16px] text-black mt-5'>No Notification Yet!</Text>
                 </View>
               )}
 

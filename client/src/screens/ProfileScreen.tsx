@@ -126,28 +126,21 @@ const ProfileScreen = ({navigation}: Props) => {
           </View>
           <View
             className="border-b border-b-[#00000032] px-4 py-3"
-            style={{width: '100%'}}>
-            <View className="w-[80%] m-auto flex-row justify-between">
+            style={{width: '100%', alignContent:'center'}}>
+            <View className="w-[100%] m-auto flex-row justify-center">
               <TouchableOpacity onPress={() => setActive(0)}>
                 <Text
                   className="text-[18px] pl-3 text-[#000]"
                   style={{opacity: active === 0 ? 1 : 0.6}}>
-                  Posts
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setActive(1)}>
-                <Text
-                  className="text-[18px] pl-3 text-[#000]"
-                  style={{opacity: active === 1 ? 1 : 0.6}}>
-                  Replies
+                  Your Events
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
           {active === 0 ? (
-            <View className="w-[50%] absolute h-[1px] bg-black left-[-10px] bottom-0" />
+            <View className="w-[100%] absolute h-[1px] bg-black left-[-10px] bottom-0" />
           ) : (
-            <View className="w-[50%] absolute h-[1px] bg-black right-[-10px] bottom-0" />
+            <View className="w-[100%] absolute h-[1px] bg-black right-[-10px] bottom-0" />
           )}
         </View>
         {active === 0 && (
@@ -159,35 +152,13 @@ const ProfileScreen = ({navigation}: Props) => {
           </>
         )}
 
-        {active === 1 && (
-          <>
-            {repliesData &&
-              repliesData.map((item: any) => (
-                <PostCard
-                  navigation={navigation}
-                  key={item._id}
-                  item={item}
-                  replies={true}
-                />
-              ))}
-          </>
-        )}
+
 
         {active === 0 && (
           <>
             {data.length === 0 && (
               <Text className="text-black text-[14px] mt-8 text-center">
                 You have no posts yet!
-              </Text>
-            )}
-          </>
-        )}
-
-        {active === 1 && (
-          <>
-            {repliesData.length === 0 && (
-              <Text className="text-black text-[14px] mt-8 text-center">
-                You have no replies yet!
               </Text>
             )}
           </>

@@ -22,10 +22,9 @@ import {URI} from '../../redux/URI';
 
 type Props = {
   navigation: any;
-  route: any;
 };
 
-const SearchScreen = ({navigation, route}: Props) => {
+const RegionalLeadersScreen = ({navigation}: Props) => {
   const [data, setData] = useState([
     {
       name: '',
@@ -35,7 +34,7 @@ const SearchScreen = ({navigation, route}: Props) => {
     },
   ]);
 
-  const {fromRemoveUser, fromAddRegLead} = route?.params;
+  // const {fromRemoveUser, fromAddRegLead} = route?.params;
   // console.log(fromRemoveUser, fromAddRegLead, 'checking stat');
   const {users, user, isLoading, token} = useSelector(
     (state: any) => state.user,
@@ -129,7 +128,6 @@ const SearchScreen = ({navigation, route}: Props) => {
                   }
                 };
 
-                
                 const handleAddUserAsRegionalLeader = async (id: any) => {
                   try {
                     await axios.post(`${URI}/addRegionalLeader/${id}`, {
@@ -139,10 +137,12 @@ const SearchScreen = ({navigation, route}: Props) => {
                     });
                     dispatch;
                   } catch (error) {
-                    console.error('Error adding user as regional leader:', error);
+                    console.error(
+                      'Error adding user as regional leader:',
+                      error,
+                    );
                   }
                 };
-
 
                 return (
                   <TouchableOpacity
@@ -189,43 +189,17 @@ const SearchScreen = ({navigation, route}: Props) => {
                           </Text>
                         </View>
                         <View style={{paddingRight: 10, paddingTop: 18}}>
-                          {fromRemoveUser ? (
-                            <TouchableOpacity
-                              className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                              onPress={() => handleDeleteUser(item?.userId)}>
-                              <Text className="text-black">Remove</Text>
-                            </TouchableOpacity>
-                          ) : (
-                            <>
-                              {fromAddRegLead ? (
-                                <TouchableOpacity
-                                  style={{padding: 10}}
-                                  className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
-                                  onPress={() => handleAddUserAsRegionalLeader(item?.userId)}>
-                                  <Text className="text-black">
-                                    {/* {item.followers.find(
-                                      (i: any) => i.userId === user._id,
-                                    )
-                                      ? 'Following'
-                                      : 'Follow'} */}
-                                    Add as Regional Leader
-                                  </Text>
-                                </TouchableOpacity>
-                              ) : (
-                                <TouchableOpacity
-                                  className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                                  onPress={() => handleFollowUnfollow(item)}>
-                                  <Text className="text-black">
-                                    {item.followers.find(
-                                      (i: any) => i.userId === user._id,
-                                    )
-                                      ? 'Following'
-                                      : 'Follow'}
-                                  </Text>
-                                </TouchableOpacity>
-                              )}
-                            </>
-                          )}
+                          <TouchableOpacity
+                            className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
+                            onPress={() => handleFollowUnfollow(item)}>
+                            <Text className="text-black">
+                              {item.followers.find(
+                                (i: any) => i.userId === user._id,
+                              )
+                                ? 'Following'
+                                : 'Follow'}
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>
@@ -240,4 +214,4 @@ const SearchScreen = ({navigation, route}: Props) => {
   );
 };
 
-export default SearchScreen;
+export default RegionalLeadersScreen;

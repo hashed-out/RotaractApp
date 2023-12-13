@@ -13,6 +13,7 @@ import { border } from 'native-base/lib/typescript/theme/styled-system';
 import { useSelector} from 'react-redux';
 import DefaultAvatar from '../src/assets/user-avatar.png';
 import { View } from 'native-base';
+import HomePage from '../src/screens/HomePage';
 type Props = {};
 
 const Tab = createBottomTabNavigator();
@@ -30,7 +31,7 @@ const Tabs = (props: Props) => {
       }}>
       <Tab.Screen
         name="Home2"
-        component={HomeScreen}
+        component={HomePage}
         options={({route}) => ({
           tabBarIcon: ({focused}) => (
             <Image

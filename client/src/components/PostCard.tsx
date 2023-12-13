@@ -141,7 +141,7 @@ const options = {
     <View>
        
     <View style={styles.cardContainer}>
-    <TouchableOpacity style={styles.deleteButton} onPress={() => item.user._id === user._id && setOpenModal(true)}>
+    <TouchableOpacity style={styles.deleteButton} onPress={() => (item.user._id === user._id || user?.role==='Admin') && setOpenModal(true)}>
 
         <Text style={styles.deleteIcon}>...</Text>
       </TouchableOpacity>

@@ -13,19 +13,16 @@ import {
   followUserAction,
   getAllUsers,
   unfollowUserAction,
-} from '../../redux/actions/userAction';
-import Loader from '../common/Loader';
-import DefaultAvatar from '../assets/user-avatar.png';
-import HeaderCard from '../components/HeaderCard';
-import axios from 'axios';
-import {URI} from '../../redux/URI';
+} from '../../../redux/actions/userAction';
+import Loader from '../../common/Loader';
+import DefaultAvatar from '../../assets/user-avatar.png';
+import HeaderCard from '../../components/HeaderCard';
 
 type Props = {
   navigation: any;
-  route: any;
 };
 
-const SearchScreen = ({navigation, route}: Props) => {
+const RemoveUserScreen = ({navigation}: Props) => {
   const [data, setData] = useState([
     {
       name: '',
@@ -34,12 +31,7 @@ const SearchScreen = ({navigation, route}: Props) => {
       followers: [],
     },
   ]);
-
-  const {fromRemoveUser, fromAddRegLead} = route?.params;
-  // console.log(fromRemoveUser, fromAddRegLead, 'checking stat');
-  const {users, user, isLoading, token} = useSelector(
-    (state: any) => state.user,
-  );
+  const {users, user, isLoading} = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -70,12 +62,10 @@ const SearchScreen = ({navigation, route}: Props) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-          <HeaderCard />
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+          <HeaderCard/>
           <View className="p-3">
-            <Text className="text-[30px] text-[#000] font-[600]">
-              Bengaluru Rotarians
-            </Text>
+            <Text className="text-[30px] text-[#000] font-[600]">Bengaluru Rotarians</Text>
             <View className="relative">
               <Image
                 source={{
@@ -95,7 +85,7 @@ const SearchScreen = ({navigation, route}: Props) => {
             <FlatList
               data={data}
               showsVerticalScrollIndicator={false}
-              renderItem={({item}: any) => {
+              renderItem={({item}) => {
                 const handleFollowUnfollow = async (e: any) => {
                   try {
                     if (e.followers.find((i: any) => i.userId === user._id)) {
@@ -115,35 +105,6 @@ const SearchScreen = ({navigation, route}: Props) => {
                     console.log(error, 'error');
                   }
                 };
-
-                const handleDeleteUser = async (id: any) => {
-                  try {
-                    await axios.delete(`${URI}/deleteUser/${id}`, {
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                      },
-                    });
-                    dispatch;
-                  } catch (error) {
-                    console.error('Error deleting user:', error);
-                  }
-                };
-
-                
-                const handleAddUserAsRegionalLeader = async (id: any) => {
-                  try {
-                    await axios.post(`${URI}/addRegionalLeader/${id}`, {
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                      },
-                    });
-                    dispatch;
-                  } catch (error) {
-                    console.error('Error adding user as regional leader:', error);
-                  }
-                };
-
-
                 return (
                   <TouchableOpacity
                     onPress={() =>
@@ -153,15 +114,11 @@ const SearchScreen = ({navigation, route}: Props) => {
                     }>
                     <View className="flex-row my-3">
                       <Image
-                        source={
-                          item.avatar?.url
-                            ? {uri: item.avatar?.url}
-                            : DefaultAvatar
-                        }
+                        source={item.avatar?.url ? { uri: item.avatar?.url } : DefaultAvatar}
                         width={30}
                         height={30}
                         borderRadius={100}
-                        style={{height: 40, width: 40}}
+                        style={{height:40,width:40}}
                       />
                       <View className="w-[90%] flex-row justify-between border-b border-[#00000020] pb-2">
                         <View>
@@ -188,44 +145,18 @@ const SearchScreen = ({navigation, route}: Props) => {
                             {item.followers.length} followers
                           </Text>
                         </View>
-                        <View style={{paddingRight: 10, paddingTop: 18}}>
-                          {fromRemoveUser ? (
-                            <TouchableOpacity
-                              className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                              onPress={() => handleDeleteUser(item?.userId)}>
-                              <Text className="text-black">Remove</Text>
-                            </TouchableOpacity>
-                          ) : (
-                            <>
-                              {fromAddRegLead ? (
-                                <TouchableOpacity
-                                  style={{padding: 10}}
-                                  className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
-                                  onPress={() => handleAddUserAsRegionalLeader(item?.userId)}>
-                                  <Text className="text-black">
-                                    {/* {item.followers.find(
-                                      (i: any) => i.userId === user._id,
-                                    )
-                                      ? 'Following'
-                                      : 'Follow'} */}
-                                    Add as Regional Leader
-                                  </Text>
-                                </TouchableOpacity>
-                              ) : (
-                                <TouchableOpacity
-                                  className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                                  onPress={() => handleFollowUnfollow(item)}>
-                                  <Text className="text-black">
-                                    {item.followers.find(
-                                      (i: any) => i.userId === user._id,
-                                    )
-                                      ? 'Following'
-                                      : 'Follow'}
-                                  </Text>
-                                </TouchableOpacity>
-                              )}
-                            </>
-                          )}
+                        <View style={{ paddingRight:10, paddingTop:18 }}>
+                          <TouchableOpacity
+                            className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
+                            onPress={() => handleFollowUnfollow(item)}>
+                            <Text className="text-black">
+                              {item.followers.find(
+                                (i: any) => i.userId === user._id,
+                              )
+                                ? 'Following'
+                                : 'Follow'}
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>
@@ -240,4 +171,4 @@ const SearchScreen = ({navigation, route}: Props) => {
   );
 };
 
-export default SearchScreen;
+export default RemoveUserScreen;

@@ -144,11 +144,11 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
         .json({ success: false, message: "User does not exist" });
     }
 
-   if(user.avatar?.public_id){
-    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
-   }
+    if (user.avatar?.public_id) {
+      await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+    }
     await User.deleteOne({
-      _id: req.params.id
+      _id: req.params.id,
     });
     res.status(200).json({
       success: true,
@@ -165,7 +165,9 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 // Add user as regional leader
 exports.addRegionalLeader = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("--------------Assining User as regional leader------------------");
+    console.log(
+      "--------------Assining User as regional leader------------------"
+    );
     const user = await User.findById(req.params.id);
     if (!user) {
       return res
@@ -176,9 +178,9 @@ exports.addRegionalLeader = catchAsyncErrors(async (req, res, next) => {
       { _id: req.params.id },
       {
         $set: {
-          isRegionalLeader: true
+          isRegionalLeader: true,
         },
-    }
+      }
     );
     res.status(200).json({
       success: true,
@@ -194,13 +196,23 @@ exports.addRegionalLeader = catchAsyncErrors(async (req, res, next) => {
 
 // Get all regional leaders
 exports.getAllRegionalLeaders = catchAsyncErrors(async (req, res, next) => {
-  console.log("----------------Fetching Regional Leaders-------------------------");
+  try {
+    console.log(
+      "----------------Fetching Regional Leaders-------------------------"
+    );
 
-  const regionalLeaders = await User.find({ isRegionalLeader: true });
-  res.status(201).json({
-    success: true,
-    regionalLeaders,
-  });
+    const regionalLeaders = await User.find({ isRegionalLeader: true });
+    res.status(201).json({
+      success: true,
+      regionalLeaders,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 // Delete regional leader
@@ -217,9 +229,9 @@ exports.deleteRegionalLeader = catchAsyncErrors(async (req, res, next) => {
       { _id: req.params.id },
       {
         $set: {
-          isRegionalLeader: false
+          isRegionalLeader: false,
         },
-    }
+      }
     );
     res.status(200).json({
       success: true,
@@ -236,7 +248,9 @@ exports.deleteRegionalLeader = catchAsyncErrors(async (req, res, next) => {
 // Adding user as district governer
 exports.addDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("--------------Assining User as district governer------------------");
+    console.log(
+      "--------------Assining User as district governer------------------"
+    );
     const user = await User.findById(req.params.id);
     if (!user) {
       return res
@@ -247,9 +261,9 @@ exports.addDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
       { _id: req.params.id },
       {
         $set: {
-          isDistrictGoverner: true
+          isDistrictGoverner: true,
         },
-    }
+      }
     );
     res.status(200).json({
       success: true,
@@ -265,13 +279,23 @@ exports.addDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
 
 // Get all district governer
 exports.getAllDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
-  console.log("----------------Fetching district governer-------------------------");
+  try {
+    console.log(
+      "----------------Fetching district governer-------------------------"
+    );
 
-  const districtGoverner = await User.find({ isDistrictGoverner: true });
-  res.status(201).json({
-    success: true,
-    districtGoverner,
-  });
+    const districtGoverner = await User.find({ isDistrictGoverner: true });
+    res.status(201).json({
+      success: true,
+      districtGoverner,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 // Delete district governer
@@ -288,9 +312,9 @@ exports.deleteDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
       { _id: req.params.id },
       {
         $set: {
-          isDistrictGoverner: false
+          isDistrictGoverner: false,
         },
-    }
+      }
     );
     res.status(200).json({
       success: true,
@@ -307,7 +331,9 @@ exports.deleteDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
 // Adding user as Indian leader
 exports.addIndianLeader = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("--------------Assining User as Indian leader------------------");
+    console.log(
+      "--------------Assining User as Indian leader------------------"
+    );
     const user = await User.findById(req.params.id);
     if (!user) {
       return res
@@ -318,9 +344,9 @@ exports.addIndianLeader = catchAsyncErrors(async (req, res, next) => {
       { _id: req.params.id },
       {
         $set: {
-          isIndiaLeader: true
+          isIndiaLeader: true,
         },
-    }
+      }
     );
     res.status(200).json({
       success: true,
@@ -336,13 +362,23 @@ exports.addIndianLeader = catchAsyncErrors(async (req, res, next) => {
 
 // Get all Indian leaders
 exports.getAllIndianLeader = catchAsyncErrors(async (req, res, next) => {
-  console.log("----------------Fetching Indian leaders-------------------------");
+  try {
+    console.log(
+      "----------------Fetching Indian leaders-------------------------"
+    );
 
-  const indianLeader = await User.find({ isIndiaLeader: true });
-  res.status(201).json({
-    success: true,
-    indianLeader,
-  });
+    const indianLeader = await User.find({ isIndiaLeader: true });
+    res.status(201).json({
+      success: true,
+      indianLeader,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 // Delete Indian leaders
@@ -359,9 +395,9 @@ exports.deleteIndianLeader = catchAsyncErrors(async (req, res, next) => {
       { _id: req.params.id },
       {
         $set: {
-          isIndiaLeader: false
+          isIndiaLeader: false,
         },
-    }
+      }
     );
     res.status(200).json({
       success: true,
@@ -389,9 +425,9 @@ exports.addAdmin = catchAsyncErrors(async (req, res, next) => {
       { _id: req.params.id },
       {
         $set: {
-          role: 'admin'
+          role: "admin",
         },
-    }
+      }
     );
     res.status(200).json({
       success: true,

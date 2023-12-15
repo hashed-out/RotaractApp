@@ -22,52 +22,80 @@ import {URI} from '../../redux/URI';
 
 type Props = {
   navigation: any;
-  route: any;
 };
 
-const SearchScreen = ({navigation}: Props) => {
-  const [data, setData] = useState([
-    {
-      name: '',
-      userName: '',
-      avatar: {url: ''},
-      followers: [],
-    },
-  ]);
+const RegionalLeadersScreen = ({navigation}: Props) => {
+  const [data, setData] = useState([]);
+  const [list, setList] = useState([]);
   const [reload, setReload] = useState(false);
+  const [loader, setLoader] = useState(false);
 
-  // console.log(fromRemoveUser, fromAddRegLead, 'checking stat');
   const {users, user, isLoading, token} = useSelector(
     (state: any) => state.user,
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getAllUsers()(dispatch);
-  }, [dispatch, reload]);
-
-  useEffect(() => {
-    if (users) {
-      setData(users);
+    setLoader(true);
+    try {
+      axios
+        .get(`${URI}/getAllRegionalLeaders`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res: any) => {
+          setData(res?.data?.regionalLeaders)
+          setList(res?.data?.regionalLeaders)
+          setLoader(false);
+        });
+      dispatch;
+    } catch (error) {
+      setLoader(false);
+      console.error('Error getting reg leaders:', error);
     }
-  }, [users]);
+  }, [reload]);
 
   const handleSearchChange = (e: any) => {
     if (e.length !== 0) {
       const filteredUsers =
-        users &&
-        users.filter((i: any) =>
+        data &&
+        data.filter((i: any) =>
           i.name.toLowerCase().includes(e.toLowerCase()),
         );
       setData(filteredUsers);
     } else {
-      setData(users);
+      setData(list);
+    }
+  };
+
+
+  const filterProfileById = (id: any) => {
+    setData((prev: any): any => {
+      return prev?.filter((p: any) => p?._id !== id);
+    });
+  };
+
+  const handleDeleteUser = async (id: any) => {
+    // console.log('id', id);
+    try {
+      await axios
+        .delete(`${URI}/deleteRegionalLeader/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(() => {
+          filterProfileById(id);
+        });
+    } catch (error) {
+      console.error('Error deleting user:', error);
     }
   };
 
   return (
     <>
-      {isLoading ? (
+      {loader ? (
         <Loader />
       ) : (
         <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -116,7 +144,6 @@ const SearchScreen = ({navigation}: Props) => {
                   }
                 };
 
-
                 return (
                   <TouchableOpacity
                     onPress={() =>
@@ -162,17 +189,11 @@ const SearchScreen = ({navigation}: Props) => {
                           </Text>
                         </View>
                         <View style={{paddingRight: 10, paddingTop: 18}}>
-                          <TouchableOpacity
-                            className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                            onPress={() => handleFollowUnfollow(item)}>
-                            <Text className="text-black">
-                              {item.followers.find(
-                                (i: any) => i.userId === user._id,
-                              )
-                                ? 'Following'
-                                : 'Follow'}
-                            </Text>
-                          </TouchableOpacity>
+                        <TouchableOpacity
+                                className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
+                                onPress={() => handleDeleteUser(item?._id)}>
+                                <Text className="text-black">Remove</Text>
+                              </TouchableOpacity>
                         </View>
                       </View>
                     </View>
@@ -187,4 +208,4 @@ const SearchScreen = ({navigation}: Props) => {
   );
 };
 
-export default SearchScreen;
+export default RegionalLeadersScreen;

@@ -204,6 +204,8 @@ export const getAllUsers = () => async (dispatch: Dispatch<any>) => {
   }
 };
 
+
+
 interface FollowUnfollowParams {
   userId: string;
   followUserId: string;

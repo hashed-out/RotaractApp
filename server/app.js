@@ -18,9 +18,16 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 // Route imports
 const user = require("./routes/user");
 const post = require("./routes/Post");
+const designation = require("./routes/designation");
+const club = require("./routes/club");
+const eventRegister = require("./routes/eventRegistration");
 
 app.use("/api/v1", user);
 app.use("/api/v1", post);
+app.use("/api/v1", designation);
+app.use("/api/v1", club);
+app.use("/api/v1", eventRegister);
+
 
 // it's for errorHandeling
 app.use(ErrorHandler);

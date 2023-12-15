@@ -101,13 +101,13 @@ function HomePage() {
               source={require('../assets/impWeb.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('IndiaLeaders')}>
             <Image
               style={[styles.btn]}
               source={require('../assets/indiaLead.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('DistGov')}>
             <Image
               style={[styles.btn]}
               source={require('../assets/DistGov.png')}
@@ -138,7 +138,7 @@ function HomePage() {
             />
           </TouchableOpacity> */}
         </View>
-        {true ? (
+        {user.role === 'admin' ? (
           <View
             style={{
               alignSelf: 'center',

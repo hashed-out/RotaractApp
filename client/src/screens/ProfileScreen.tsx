@@ -69,7 +69,7 @@ const ProfileScreen = ({navigation}: Props) => {
                 borderRadius={100}
                 style={{height:80,width:80}}
               />
-              {user.role === 'Admin' && (
+              {user.role === 'admin' && (
                 <Image
                   source={{
                     uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828640.png',

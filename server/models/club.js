@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const clubSchema = new mongoose.Schema(
   {
     clubName: {
-      type: Object,
+      type: String,
     },
-    uniqueId: {
+    clubId: {
       type: String,
     },
   },

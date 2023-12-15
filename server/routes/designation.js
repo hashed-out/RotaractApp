@@ -3,11 +3,11 @@ const { createDesignation, getAllDesignation, deleteDesignation } = require("../
 const { isAuthenticatedUser } = require("../middleware/auth");
 const router = express.Router();
 
-router.route("/createDesignation").post(createDesignation);
+router.route("/createDesignation").post(isAuthenticatedUser,createDesignation);
 
-router.route("/getAllDesignation").get(getAllDesignation);
+router.route("/getAllDesignation").get(isAuthenticatedUser,getAllDesignation);
 
-router.route("/deleteDesignation/:id").delete(deleteDesignation);
+router.route("/deleteDesignation/:id").delete(isAuthenticatedUser,deleteDesignation);
 
 
 module.exports = router;

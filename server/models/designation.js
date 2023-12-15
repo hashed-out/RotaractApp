@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const designationSchema = new mongoose.Schema(
   {
     designationName: {
-      type: Object,
+      type: String,
     },
   },
   { timestamps: true }

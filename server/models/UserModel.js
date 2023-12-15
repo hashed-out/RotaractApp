@@ -4,14 +4,25 @@ const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
+    rotarianId: {
+      type: String,
+      required: false,
+    },
     name: {
       type: String,
       required: [true, "Please enter your Name"],
     },
-    userName: {
+    contactNumber: {
+      type: String,
+      required: false,
+    },
+    clubName: {
       type: String,
     },
-    bio: {
+    clubId: {
+      type: String,
+    },
+    designation: {
       type: String,
     },
     email: {
@@ -48,7 +59,7 @@ const userSchema = new mongoose.Schema(
     ],
     role: {
       type: String,
-      default: 'user',
+      default: "user",
     },
     isRegionalLeader: {
       type: Boolean,

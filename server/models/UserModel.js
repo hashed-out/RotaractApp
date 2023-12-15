@@ -2,17 +2,27 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
 const userSchema = new mongoose.Schema(
   {
+    rotarianId: {
+      type: String,
+      required: false,
+    },
     name: {
       type: String,
       required: [true, "Please enter your Name"],
     },
-    userName: {
+    contactNumber: {
+      type: String,
+      required: false,
+    },
+    clubName: {
       type: String,
     },
-    bio: {
+    clubId: {
+      type: String,
+    },
+    designation: {
       type: String,
     },
     email: {
@@ -26,11 +36,11 @@ const userSchema = new mongoose.Schema(
     avatar: {
       public_id: {
         type: String,
-        required:false
+        required: false,
       },
       url: {
         type: String,
-        required: false
+        required: false,
       },
     },
     followers: [
@@ -47,13 +57,29 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    recoveryCode:{
-      type:String,
-      default:'',
-      required:false}
+    role: {
+      type: String,
+      default: "user",
     },
+    isRegionalLeader: {
+      type: Boolean,
+      default: false,
+    },
+    isDistrictGoverner: {
+      type: Boolean,
+      default: false,
+    },
+    isIndiaLeader: {
+      type: Boolean,
+      default: false,
+    },
+    recoveryCode: {
+      type: String,
+      default: "",
+      required: false,
+    },
+  },
   { timestamps: true }
-
 );
 
 // Hash password
@@ -71,7 +97,7 @@ userSchema.methods.getJwtToken = function () {
   });
 };
 
-// compare password 
+// compare password
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

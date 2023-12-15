@@ -16,16 +16,29 @@ const postSchema = new mongoose.Schema(
     user: {
       type: Object,
     },
-    isEvent : {
+    isEvent: {
       type: Boolean,
-      default:false
+      default: false,
     },
-    eventDate:{
-      type:String,
+    eventDate: {
+      type: String,
     },
-    eventVenue:{
-      type: String
+    eventVenue: {
+      type: String,
     },
+    registeredUser: [
+      {
+        userId: {
+          type: String,
+        },
+        paymentPublicId: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
+    ],
     likes: [
       {
         name: {
@@ -118,7 +131,6 @@ const postSchema = new mongoose.Schema(
         ],
       },
     ],
-   
   },
   { timestamps: true }
 );

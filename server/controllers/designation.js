@@ -7,7 +7,9 @@ exports.createDesignation = catchAsyncErrors(async (req, res, next) => {
   try {
     console.log("--------------Create Designation ------------------");
     const { designationName } = req.body;
-    let designation = await Designation.findOne({ designationName });
+    let designation = await Designation.findOne({
+      designationName: new RegExp(`^${designationName}$`, "i"),
+    });
     if (designation) {
       return res
         .status(400)

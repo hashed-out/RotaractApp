@@ -9,7 +9,7 @@ const sendRecoveryCode = require("../utils/SendRecoveryCode.js");
 // Register user
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("--------------Create User ------------------")
+    console.log("--------------Create User ------------------");
     const { name, email, password, avatar } = req.body;
     let user = await User.findOne({ email });
     if (user) {
@@ -42,7 +42,7 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
 
     sendToken(user, 201, res);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -52,7 +52,7 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
 
 // Login User
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
-  console.log("----------------Logging in User-------------------------")
+  console.log("----------------Logging in User-------------------------");
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -93,25 +93,23 @@ exports.logoutUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.sendRecoveryCode = catchAsyncErrors(async (req, res, next) => {
-  console.log("----------------Send Recovery Code-------------------------")
-  const { email} = req.body;
+  console.log("----------------Send Recovery Code-------------------------");
+  const { email } = req.body;
   console.log(email);
   if (!email) {
     return next(new ErrorHandler("Please enter the email", 400));
   }
   const user = await User.findOne({ email });
   if (!user) {
-    return next(
-      new ErrorHandler("User is not found with this email", 401)
-    );
+    return next(new ErrorHandler("User is not found with this email", 401));
   }
-  console.log("User found")
-  await sendRecoveryCode(email)
+  console.log("User found");
+  await sendRecoveryCode(email);
 });
 
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-  console.log("----------------Update Password-------------------------")
-  const { email} = req.body;
+  console.log("----------------Update Password-------------------------");
+  const { email } = req.body;
 
   if (!email) {
     return next(new ErrorHandler("Please enter the email", 400));
@@ -120,21 +118,291 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return next(
-      new ErrorHandler("User is not found with this email", 401)
-    );
+    return next(new ErrorHandler("User is not found with this email", 401));
   }
-  console.log("User founf")
-  SendRecoveryCode(email)
+  console.log("User founf");
+  SendRecoveryCode(email);
 });
 //  Get user Details
 exports.userDetails = catchAsyncErrors(async (req, res, next) => {
-  console.log("--------Get My Profile------------")
+  console.log("--------Get My Profile------------");
   const user = await User.findById(req.user.id);
   res.status(200).json({
     success: true,
     user,
   });
+});
+
+// Delete User
+exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Delete User ------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+
+   if(user.avatar?.public_id){
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+   }
+    await User.deleteOne({
+      _id: req.params.id
+    });
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Add user as regional leader
+exports.addRegionalLeader = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Assining User as regional leader------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isRegionalLeader: true
+        },
+    }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Get all regional leaders
+exports.getAllRegionalLeaders = catchAsyncErrors(async (req, res, next) => {
+  console.log("----------------Fetching Regional Leaders-------------------------");
+
+  const regionalLeaders = await User.find({ isRegionalLeader: true });
+  res.status(201).json({
+    success: true,
+    regionalLeaders,
+  });
+});
+
+// Delete regional leader
+exports.deleteRegionalLeader = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Delete regional leader------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isRegionalLeader: false
+        },
+    }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Adding user as district governer
+exports.addDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Assining User as district governer------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isDistrictGoverner: true
+        },
+    }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Get all district governer
+exports.getAllDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
+  console.log("----------------Fetching district governer-------------------------");
+
+  const districtGoverner = await User.find({ isDistrictGoverner: true });
+  res.status(201).json({
+    success: true,
+    districtGoverner,
+  });
+});
+
+// Delete district governer
+exports.deleteDistrictGoverner = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Delete district governer------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isDistrictGoverner: false
+        },
+    }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Adding user as Indian leader
+exports.addIndianLeader = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Assining User as Indian leader------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isIndiaLeader: true
+        },
+    }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Get all Indian leaders
+exports.getAllIndianLeader = catchAsyncErrors(async (req, res, next) => {
+  console.log("----------------Fetching Indian leaders-------------------------");
+
+  const indianLeader = await User.find({ isIndiaLeader: true });
+  res.status(201).json({
+    success: true,
+    indianLeader,
+  });
+});
+
+// Delete Indian leaders
+exports.deleteIndianLeader = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Delete Indian leader------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isIndiaLeader: false
+        },
+    }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Add user as admin
+exports.addAdmin = catchAsyncErrors(async (req, res, next) => {
+  try {
+    console.log("--------------Adding admin------------------");
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User does not exist" });
+    }
+    await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          role: 'admin'
+        },
+    }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 // get all users
@@ -153,7 +421,7 @@ exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
 // Follow and unfollow user
 exports.followUnfollowUser = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("-------------Follow Unfollow----------------")
+    console.log("-------------Follow Unfollow----------------");
     const loggedInUser = req.user;
     const { followUserId } = req.body;
 
@@ -207,7 +475,7 @@ exports.followUnfollowUser = catchAsyncErrors(async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -215,7 +483,7 @@ exports.followUnfollowUser = catchAsyncErrors(async (req, res, next) => {
 // get user notification
 exports.getNotification = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("-------------GetNotification----------------")
+    console.log("-------------GetNotification----------------");
     const notifications = await Notification.find({ userId: req.user.id }).sort(
       { createdAt: -1 }
     );
@@ -225,7 +493,7 @@ exports.getNotification = catchAsyncErrors(async (req, res, next) => {
       notifications,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -233,12 +501,12 @@ exports.getNotification = catchAsyncErrors(async (req, res, next) => {
 // get signle user
 exports.getUser = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("-------------Get User----------------")
+    console.log("-------------Get User----------------");
     const user = await User.findById(req.params.id);
 
     res.status(201).json({ success: true, user });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -246,19 +514,19 @@ exports.getUser = catchAsyncErrors(async (req, res, next) => {
 // update user avatar
 exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("-------------Update User Avatar----------------")
+    console.log("-------------Update User Avatar----------------");
     let existsUser = await User.findById(req.user.id);
     let myCloud;
     if (req.body.avatar !== "") {
       const imageId = existsUser.avatar.public_id;
-      if(imageId !=null){
+      if (imageId != null) {
         await cloudinary.v2.uploader.destroy(imageId);
 
         myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
           folder: "avatars",
           width: 150,
         });
-      }else{
+      } else {
         myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
           folder: "avatars",
           width: 150,
@@ -268,7 +536,6 @@ exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
       };
-
     }
     await existsUser.save();
 
@@ -277,7 +544,7 @@ exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
       user: existsUser,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return next(new ErrorHandler(error.message, 401));
   }
 });
@@ -285,7 +552,7 @@ exports.updateUserAvatar = catchAsyncErrors(async (req, res, next) => {
 // update user info
 exports.updateUserInfo = catchAsyncErrors(async (req, res, next) => {
   try {
-    console.log("-------------Update UserInfo----------------")
+    console.log("-------------Update UserInfo----------------");
     const user = await User.findById(req.user.id);
 
     user.name = req.body.name;
@@ -299,7 +566,7 @@ exports.updateUserInfo = catchAsyncErrors(async (req, res, next) => {
       user,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return next(new ErrorHandler(error.message, 401));
   }
 });

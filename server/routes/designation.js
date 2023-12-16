@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.route("/createDesignation").post(isAuthenticatedUser,createDesignation);
 
-router.route("/getAllDesignation").get(isAuthenticatedUser,getAllDesignation);
+router.route("/getAllDesignation").get(getAllDesignation);
 
 router.route("/deleteDesignation/:id").delete(isAuthenticatedUser,deleteDesignation);
 

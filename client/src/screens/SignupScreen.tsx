@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,20 +13,26 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadUser, registerUser } from '../../redux/actions/userAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadUser, registerUser} from '../../redux/actions/userAction';
+import {Dropdown} from 'react-native-element-dropdown';
+import axios from 'axios';
+import { URI } from '../../redux/URI';
 
 type Props = {
   navigation: any;
 };
 
-const SignupScreen = ({ navigation }: Props) => {
+const SignupScreen = ({navigation}: Props) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [rotId, setRotId] = useState('');
+  const [clubId, setClubId] = useState('');
   const [avatar, setAvatar] = useState('');
   const dispatch = useDispatch();
-  const { error, isAuthenticated } = useSelector((state: any) => state.user);
+  const {error, isAuthenticated} = useSelector((state: any) => state.user);
+
 
   useEffect(() => {
     if (error) {
@@ -41,6 +47,22 @@ const SignupScreen = ({ navigation }: Props) => {
     }
   }, [error, isAuthenticated]);
 
+
+  useEffect(()=>{
+    try {
+      axios
+        .get(`${URI}/getAllClubs`)
+        .then((res: any) => {
+        console.log(res?.data)
+          // setData(res?.data?.users);
+          // setList(res?.data?.users);
+        });
+      dispatch;
+    } catch (error) {
+      console.error('Error getting club id:', error);
+    }
+  },[])
+
   const uploadImage = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -54,12 +76,15 @@ const SignupScreen = ({ navigation }: Props) => {
       }
     });
   };
-  console.log(avatar)
+  console.log(avatar);
 
   const submitHandler = () => {
     if (name === '' || email === '') {
       if (Platform.OS === 'android') {
-        ToastAndroid.show('Please fill all fields and upload an avatar', ToastAndroid.LONG);
+        ToastAndroid.show(
+          'Please fill all fields and upload an avatar',
+          ToastAndroid.LONG,
+        );
       } else {
         Alert.alert('Please fill all fields and upload an avatar');
       }
@@ -68,39 +93,73 @@ const SignupScreen = ({ navigation }: Props) => {
     }
   };
 
+
+
   return (
     <LinearGradient colors={['#fff', '#0074e4']} style={styles.container}>
-      <Animatable.View animation="fadeInDown" duration={1500} style={styles.logoContainer}>
+      <Animatable.View
+        animation="fadeInDown"
+        duration={1500}
+        style={styles.logoContainer}>
         <Image style={styles.logo} source={require('../assets/rl.png')} />
       </Animatable.View>
-      <Animatable.View animation="fadeInUp" duration={1500} style={styles.formContainer}>
+      <Animatable.View
+        animation="fadeInUp"
+        duration={1500}
+        style={styles.formContainer}>
         <Text style={styles.welcomeText}>Sign Up</Text>
         <TextInput
           placeholder="Enter your name"
           value={name}
-          onChangeText={(text) => setName(text)}
+          onChangeText={text => setName(text)}
           placeholderTextColor="#000"
           style={styles.input}
         />
         <TextInput
           placeholder="Enter your email"
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={text => setEmail(text)}
           placeholderTextColor="#000"
           style={styles.input}
         />
         <TextInput
           placeholder="Enter your password"
           value={password}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={text => setPassword(text)}
           secureTextEntry
           placeholderTextColor="#000"
           style={styles.input}
         />
+         <TextInput
+          placeholder="Enter your Rotary ID"
+          value={rotId}
+          onChangeText={text => setRotId(text)}
+          secureTextEntry
+          placeholderTextColor="#000"
+          style={styles.input}
+        />
+        {/* <Dropdown
+         selectedTextStyle={styles.selectedTextStyle}
+         iconStyle={styles.iconStyle}
+         placeholderStyle={styles.placeholderStyle}
+        style={styles.dropdown}
+          data={data}
+          value={clubId}
+          onChange={item => {
+            setClubId(item.value);
+          }}
+          placeholder="Select Club ID"
+          labelField={'label'}
+          valueField={'value'}
+        /> */}
         <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
           <View style={styles.uploadButtonContainer}>
             <Image
-              source={{ uri: avatar ? avatar : 'https://cdn-icons-png.flaticon.com/128/568/568717.png' }}
+              source={{
+                uri: avatar
+                  ? avatar
+                  : 'https://cdn-icons-png.flaticon.com/128/568/568717.png',
+              }}
               style={styles.uploadImage}
             />
             <Text style={styles.uploadText}>Upload Image</Text>
@@ -109,7 +168,9 @@ const SignupScreen = ({ navigation }: Props) => {
         <TouchableOpacity style={styles.signupButton} onPress={submitHandler}>
           <Text style={styles.signupButtonText}>Sign Up</Text>
         </TouchableOpacity>
-        <Text style={{ paddingTop: 3, color: 'black' }} onPress={() => navigation.navigate('Login')}>
+        <Text
+          style={{paddingTop: 3, color: 'black'}}
+          onPress={() => navigation.navigate('Login')}>
           Already have an account? <Text>Sign in</Text>
         </Text>
       </Animatable.View>
@@ -118,6 +179,18 @@ const SignupScreen = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  selectedTextStyle:{
+    color: '#000',
+    fontSize:14
+    },
+  dropdown: {
+    width:'100%',
+    margin: 8,
+    height: 40,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
+    color: '#000',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -152,6 +225,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#000',
     color: '#000',
+  },
+  placeholderStyle: {
+    color: '#000',
+  },
+  iconStyle: {
+    tintColor: '#000',
   },
   uploadButton: {
     marginTop: 20,

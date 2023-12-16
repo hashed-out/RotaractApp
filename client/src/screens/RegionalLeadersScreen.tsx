@@ -190,10 +190,16 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                         </View>
                         <View style={{paddingRight: 10, paddingTop: 18}}>
                         <TouchableOpacity
-                                className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                                onPress={() => handleDeleteUser(item?._id)}>
-                                <Text className="text-black">Remove</Text>
-                              </TouchableOpacity>
+                            className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
+                            onPress={() => handleFollowUnfollow(item)}>
+                            <Text className="text-black">
+                              {item.followers.find(
+                                (i: any) => i.userId === user._id,
+                              )
+                                ? 'Following'
+                                : 'Follow'}
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>

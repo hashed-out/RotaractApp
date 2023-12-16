@@ -2,6 +2,7 @@ const Post = require("../models/PostModel");
 const User = require("../models/UserModel");
 const ErrorHandler = require("../utils/ErrorHandler.js");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const cloudinary = require("cloudinary");
 
 // Register for event
 exports.registerForEvent = catchAsyncErrors(async (req, res, next) => {

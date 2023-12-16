@@ -133,7 +133,7 @@ const options = {
 
   const getCurrentDate = () => {
     const currentDate = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options:any = { year: 'numeric', month: 'long', day: 'numeric' };
     return currentDate.toLocaleDateString(undefined, options);
   };
 
@@ -141,7 +141,7 @@ const options = {
     <View>
        
     <View style={styles.cardContainer}>
-    <TouchableOpacity style={styles.deleteButton} onPress={() => (item.user._id === user._id || user?.role==='Admin') && setOpenModal(true)}>
+    <TouchableOpacity style={styles.deleteButton} onPress={() => (item.user._id === user._id || user?.role==='admin') && setOpenModal(true)}>
 
         <Text style={styles.deleteIcon}>...</Text>
       </TouchableOpacity>
@@ -220,7 +220,7 @@ const options = {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('CreateReplies', {    //Sanath add registration page here
+              navigation.navigate('EventReg', {    //Sanath add registration page here
                 item: item,
                 navigation: navigation,
                 postId: postId,

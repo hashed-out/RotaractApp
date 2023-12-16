@@ -5,6 +5,7 @@ const User = require("../models/UserModel.js");
 
 exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   const authHeader = req.headers.authorization;
+  console.log(authHeader,"auhtheader")
   if(!authHeader || authHeader === 'Bearer undefined' || !authHeader.startsWith("Bearer ")){
     return next(new ErrorHandler("Please login to continue",401));
   }

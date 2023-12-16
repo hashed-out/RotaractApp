@@ -4,6 +4,7 @@ import React from 'react';
 import {
   Image,
   ImageBackground,
+  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -83,7 +84,13 @@ function HomePage() {
           </TouchableOpacity>
         </View>
         <View style={[styles.btnContainer]}>
-          <TouchableOpacity onPress={() => navigation.navigate('Search',{fromRemoveUser:false,fromAddRegLead:false})}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Search', {
+                fromRemoveUser: false,
+                fromAddRegLead: false,
+              })
+            }>
             <Image
               style={[styles.btn]}
               source={require('../assets/findRot.png')}
@@ -95,7 +102,8 @@ function HomePage() {
               source={require('../assets/searchproj.png')}
             />
           </TouchableOpacity> */}
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => Linking.openURL('https://rotaryreachout.com/')}>
             <Image
               style={[styles.btn]}
               source={require('../assets/impWeb.png')}
@@ -113,7 +121,8 @@ function HomePage() {
               source={require('../assets/DistGov.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('RegionalLeader')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('RegionalLeader')}>
             <Image
               style={[styles.btn]}
               source={require('../assets/regLead.png')}

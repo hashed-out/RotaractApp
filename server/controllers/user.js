@@ -186,6 +186,9 @@ exports.addRegionalLeader = catchAsyncErrors(async (req, res, next) => {
       success: true,
     });
   } catch (error) {
+    console.log(
+      "--------------error User as regional leader------------------"
+    );
     console.log(error);
     res.status(500).json({
       success: false,

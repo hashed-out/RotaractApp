@@ -102,10 +102,9 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
   };
 
   const handleAddUserAsRegionalLeader = async (item: any) => {
-    // console.log(item?._id,item?.isRegionalLeader)
     try {
       await axios
-        .put(`${URI}/addRegionalLeader/${item?._id}`, {
+        .put(`${URI}/addRegionalLeader/${item?._id}`,{},{
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -125,7 +124,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
     // console.log(item?._id,item?.isRegionalLeader)
     try {
       await axios
-        .put(`${URI}/addIndianLeader/${item?._id}`, {
+        .put(`${URI}/addIndianLeader/${item?._id}`,{}, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -146,7 +145,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
     // console.log(item?._id,item?.isRegionalLeader)
     try {
       await axios
-        .put(`${URI}/getAllDistrictGoverner/${item?._id}`, {
+        .put(`${URI}/addDistrictGoverner/${item?._id}`,{}, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -166,7 +165,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
     // console.log(item?._id,item?.isRegionalLeader)
     try {
       await axios
-        .put(`${URI}/addAdmin/${item?._id}`, {
+        .put(`${URI}/addAdmin/${item?._id}`,{}, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

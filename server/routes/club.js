@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.route("/createClub").post(isAuthenticatedUser,createClub);
 
-router.route("/getAllClubs").get(isAuthenticatedUser,getAllClubs);
+router.route("/getAllClubs").get(getAllClubs);
 
 router.route("/deleteClub/:id").delete(isAuthenticatedUser,deleteClub);
 

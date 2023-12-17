@@ -22,8 +22,9 @@ function EventRegScreen({route}: any) {
     (state: any) => state.user,
   );
 
-  const {item, postId} = route?.params;
 
+  const {item, postId} = route?.params;
+  console.log(item?._id,"id")
 
 
   const [payment, setPayment] = useState('');

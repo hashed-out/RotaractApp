@@ -22,13 +22,15 @@ import {URI} from '../../redux/URI';
 
 type Props = {
   navigation: any;
+  route: any;
 };
 
-const RegionalLeadersScreen = ({navigation}: Props) => {
+const RegisterUserForEvents = ({navigation,route}: Props) => {
   const [data, setData] = useState([]);
   const [list, setList] = useState([]);
   const [reload, setReload] = useState(false);
   const [loader, setLoader] = useState(false);
+  const {eventId} = route?.params;
 
   const {users, user, isLoading, token} = useSelector(
     (state: any) => state.user,
@@ -39,36 +41,32 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
     setLoader(true);
     try {
       axios
-        .get(`${URI}/getAllRegionalLeaders`, {
+        .get(`${URI}/getAllRegistered/${eventId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((res: any) => {
-          setData(res?.data?.regionalLeaders)
-          setList(res?.data?.regionalLeaders)
+          console.log(res?.data?.registeredUsersWithInfo);
           setLoader(false);
+          setData(res?.data?.registeredUsersWithInfo);
+          setList(res?.data?.registeredUsersWithInfo);
         });
       dispatch;
     } catch (error) {
       setLoader(false);
       console.error('Error getting reg leaders:', error);
     }
-  }, [reload]);
+  }, [eventId]);
 
-  const handleSearchChange = (e: any) => {
-    if (e.length !== 0) {
-      const filteredUsers =
-        data &&
-        data.filter((i: any) =>
-          i.name.toLowerCase().includes(e.toLowerCase()),
-        );
-      setData(filteredUsers);
-    } else {
-      setData(list);
-    }
+  const updateOneProfile = (item: any) => {
+    setData((prev: any) => {
+      return prev.map((user: any) => {
+        if (user?._id === item?._id) return item;
+        return user;
+      });
+    });
   };
-
 
   const filterProfileById = (id: any) => {
     setData((prev: any): any => {
@@ -76,20 +74,14 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
     });
   };
 
-  const handleDeleteUser = async (id: any) => {
-    // console.log('id', id);
-    try {
-      await axios
-        .delete(`${URI}/deleteRegionalLeader/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(() => {
-          filterProfileById(id);
-        });
-    } catch (error) {
-      console.error('Error deleting user:', error);
+  const handleSearchChange = (e: any) => {
+    if (e.length !== 0) {
+      const filteredUsers =
+        data &&
+        data.filter((i: any) => i.name.toLowerCase().includes(e.toLowerCase()));
+      setData(filteredUsers);
+    } else {
+      setData(list);
     }
   };
 
@@ -144,20 +136,18 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                   }
                 };
 
-                // console.log(item,"item")
-
                 return (
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate('UserProfile', {
-                        item: item,
+                        item: item.userInfo,
                       })
                     }>
                     <View className="flex-row my-3">
                       <Image
                         source={
-                          item.avatar?.url
-                            ? {uri: item.avatar?.url}
+                          item?.userInfo?.avatar?.url
+                            ? {uri: item?.userInfo?.avatar?.url}
                             : DefaultAvatar
                         }
                         width={30}
@@ -169,7 +159,7 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                         <View>
                           <View className="flex-row items-center relative">
                             <Text className="pl-3 text-[18px] text-black">
-                              {item.name}
+                              {item.userInfo?.name}
                             </Text>
                             {item?.role === 'Admin' && (
                               <Image
@@ -184,24 +174,78 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                           </View>
 
                           <Text className="pl-3 text-[18px] text-black">
-                            {item.userName}
+                            {item.userInfo?.userName}
                           </Text>
                           <Text className="pl-3 mt-1 text-[16px] text-[#444]">
-                            {item.followers.length} followers
+                            {item.userInfo?.followers.length} followers
                           </Text>
                         </View>
                         <View style={{paddingRight: 10, paddingTop: 18}}>
-                        <TouchableOpacity
-                            className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                            onPress={() => handleFollowUnfollow(item)}>
-                            <Text className="text-black">
-                              {item.followers.find(
-                                (i: any) => i.userId === user._id,
-                              )
-                                ? 'Following'
-                                : 'Follow'}
-                            </Text>
-                          </TouchableOpacity>
+                          <View style={{paddingRight: 10, paddingTop: 18}}>
+                            {/* {fromRemoveUser ? (
+                              <TouchableOpacity
+                                className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
+                                onPress={() => handleDeleteUser(item?._id)}>
+                                <Text className="text-black">Remove</Text>
+                              </TouchableOpacity>
+                            ) : null}
+                            {fromAddRegLead ? (
+                              <TouchableOpacity
+                                style={{padding: 10}}
+                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
+                                onPress={() =>
+                                  handleAddUserAsRegionalLeader(item)
+                                }>
+                                <Text className="text-black">
+                                  {item?.isRegionalLeader
+                                    ? 'Regional Leader'
+                                    : 'Add as Regional Leader'}
+                                </Text>
+                              </TouchableOpacity>
+                            ) : null}
+                            {fromAddDistGov ? (
+                              <TouchableOpacity
+                                style={{padding: 10}}
+                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
+                                onPress={() =>
+                                  handleAddUserAsDistrictGovernor(item)
+                                }>
+                                <Text className="text-black">
+                                  {item?.isDistrictGoverner
+                                    ? 'District Governer'
+                                    : 'Add as District Governer'}
+                                </Text>
+                              </TouchableOpacity>
+                            ) : null}
+                            {fromAddIndLead ? (
+                              <TouchableOpacity
+                                style={{padding: 10}}
+                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
+                                onPress={() =>
+                                  handleAddUserAsIndianLeader(item)
+                                }>
+                                <Text className="text-black">
+                                  {item?.isIndiaLeader
+                                    ? 'Indian Leader'
+                                    : 'Add as Indian Leader'}
+                                </Text>
+                              </TouchableOpacity>
+                            ) : null}
+                            {fromAddAdmin? (
+                              <TouchableOpacity
+                                style={{padding: 10}}
+                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
+                                onPress={() =>
+                                  handleAddUserAsAdmin(item)
+                                }>
+                                <Text className="text-black">
+                                  {item?.role==='admin'
+                                    ? 'Admin'
+                                    : 'Add as Admin'}
+                                </Text>
+                              </TouchableOpacity>
+                            ) : null} */}
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -216,4 +260,4 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
   );
 };
 
-export default RegionalLeadersScreen;
+export default RegisterUserForEvents;

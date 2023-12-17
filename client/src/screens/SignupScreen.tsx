@@ -28,11 +28,11 @@ const SignupScreen = ({navigation}: Props) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [rotId, setRotId] = useState('');
-  const [clubId, setClubId] = useState('');
+  const [clubName, setClubName] = useState('');
+  const [data, setData] = useState([]);
   const [avatar, setAvatar] = useState('');
   const dispatch = useDispatch();
   const {error, isAuthenticated} = useSelector((state: any) => state.user);
-
 
   useEffect(() => {
     if (error) {
@@ -53,7 +53,7 @@ const SignupScreen = ({navigation}: Props) => {
       axios
         .get(`${URI}/getAllClubs`)
         .then((res: any) => {
-        console.log(res?.data)
+        setData(res?.data?.club)
           // setData(res?.data?.users);
           // setList(res?.data?.users);
         });
@@ -70,7 +70,7 @@ const SignupScreen = ({navigation}: Props) => {
       cropping: true,
       compressImageQuality: 0.8,
       includeBase64: true,
-    }).then((image: ImageOrVideo | null) => {
+    }).then((image: ImageOrVideo | null |any) => {
       if (image) {
         setAvatar('data:image/jpeg;base64,' + image.data);
       }
@@ -89,7 +89,7 @@ const SignupScreen = ({navigation}: Props) => {
         Alert.alert('Please fill all fields and upload an avatar');
       }
     } else {
-      registerUser(name, email, password, avatar)(dispatch);
+      registerUser(name, email, password, avatar,)(dispatch);
     }
   };
 
@@ -131,27 +131,27 @@ const SignupScreen = ({navigation}: Props) => {
           style={styles.input}
         />
          <TextInput
-          placeholder="Enter your Rotary ID"
+          placeholder="Enter your Rotaract ID"
           value={rotId}
           onChangeText={text => setRotId(text)}
           secureTextEntry
           placeholderTextColor="#000"
           style={styles.input}
         />
-        {/* <Dropdown
+        <Dropdown
          selectedTextStyle={styles.selectedTextStyle}
          iconStyle={styles.iconStyle}
          placeholderStyle={styles.placeholderStyle}
         style={styles.dropdown}
           data={data}
-          value={clubId}
-          onChange={item => {
-            setClubId(item.value);
+          value={clubName}
+          onChange={(item:any) => {
+            setClubName(item.clubName);
           }}
-          placeholder="Select Club ID"
-          labelField={'label'}
-          valueField={'value'}
-        /> */}
+          placeholder="Select Club Name"
+          labelField={'clubName'}
+          valueField={'clubName'}
+        />
         <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
           <View style={styles.uploadButtonContainer}>
             <Image

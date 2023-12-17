@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { NativeBaseProvider, Box, HStack,  Center, } from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import DefaultAvatar from '../assets/user-avatar.png';
@@ -29,12 +30,12 @@ function HomePage() {
               <View
                 className="flex-row justify-between"
                 style={{alignItems: 'center'}}>
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                   <Image
                     source={require('../assets/hamburger.png')}
                     style={{height: 20, width: 21}}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <Image
                   source={require('../assets/HomePageLogo.png')}
                   style={{height: 53, width: 142, marginLeft: '3.5%'}}
@@ -66,7 +67,7 @@ function HomePage() {
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={[styles.userName]}>Welcome, {user?.userName}</Text>
+            <Text style={[styles.userName]}>Welcome, {user?.name}</Text>
             <TouchableOpacity style={{alignItems: 'center', marginTop: '2.5%'}}>
               <Image
                 source={require('../assets/ClubName.png')}
@@ -74,14 +75,14 @@ function HomePage() {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.navigate('Home')}
             style={{alignSelf: 'center', marginTop: '2.5%'}}>
             <Image
               style={[styles.card]}
               source={require('../assets/Card.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View style={[styles.btnContainer]}>
           <TouchableOpacity
@@ -217,6 +218,24 @@ const styles = StyleSheet.create({
     fontSize: 36,
     color: 'white',
     alignSelf: 'center',
+  },
+  ecard: {
+    flex: 1,
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5, // For Android shadow
+  },
+  cardText: {
+    marginTop: 8,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

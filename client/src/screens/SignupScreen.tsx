@@ -158,11 +158,11 @@ const SignupScreen = ({navigation}: Props) => {
               source={{
                 uri: avatar
                   ? avatar
-                  : 'https://cdn-icons-png.flaticon.com/128/568/568717.png',
+                  : 'https://cdn-icons-png.flaticon.com/128/9970/9970571.png',
               }}
               style={styles.uploadImage}
             />
-            <Text style={styles.uploadText}>Upload Image</Text>
+            <Text style={styles.uploadText}>Upload Profile Picture</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.signupButton} onPress={submitHandler}>
@@ -197,20 +197,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoContainer: {
+    height: 250,
+    width: 300,
     flex: 1,
     justifyContent: 'center',
-    paddingRight: 60,
+  },
+  logo: {
+    width: 300,
+    height: 250,
+    resizeMode: 'contain',
   },
   formContainer: {
     flex: 1,
     alignItems: 'center',
     width: '80%',
     padding: 20,
-  },
-  logo: {
-    width: 470,
-    height: 100,
-    paddingLeft: 20,
   },
   welcomeText: {
     fontSize: 24,

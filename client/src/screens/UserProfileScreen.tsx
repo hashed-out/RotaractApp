@@ -27,7 +27,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const {posts} = useSelector((state: any) => state.post);
   const [postData, setPostsData] = useState([]);
   const [repliesData, setRepliesData] = useState([]);
-  const d = route.params.item;
+  const d = route.params?.item;
   const [data, setData] = useState(d);
   const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
       const myUserPosts = posts.filter((post: any) => post.user._id === d._id);
       setPostsData(myUserPosts);
     }
-  }, [users, route.params.item, posts, d]);
+  }, [users, route.params?.item, posts, d]);
 
   const FollowUnfollowHandler = async () => {
     try {

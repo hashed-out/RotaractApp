@@ -141,10 +141,12 @@ const options = {
     <View>
        
     <View style={styles.cardContainer}>
+    {(item.user._id === user._id || user?.role==='admin')  ? (
     <TouchableOpacity style={styles.deleteButton} onPress={() => (item.user._id === user._id || user?.role==='admin') && setOpenModal(true)}>
 
         <Text style={styles.deleteIcon}>...</Text>
       </TouchableOpacity>
+    ) :null}
       <View style={styles.headerContainer}>
       <TouchableOpacity onPress={() => profileHandler(item.user)}>
         <Image source={userInfo?.avatar?.url ? {uri: userInfo?.avatar?.url}: DefaultAvatar} style={styles.userProfilePhoto} />
@@ -235,12 +237,15 @@ const options = {
               className="ml-5"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={async () =>{
-            await share();
-          }}>
+          <TouchableOpacity onPress={() => {
+              navigation.navigate('EventReg', {    //Sanath add registration page here
+                item: item,
+                navigation: navigation,
+                postId: postId,
+              });}}>
             <Image
               source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/10863/10863770.png',
+                uri: 'https://cdn-icons-png.flaticon.com/128/3269/3269065.png',
               }}
               width={25}
               height={25}

@@ -76,22 +76,6 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
     });
   };
 
-  const handleDeleteUser = async (id: any) => {
-    // console.log('id', id);
-    try {
-      await axios
-        .delete(`${URI}/deleteRegionalLeader/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(() => {
-          filterProfileById(id);
-        });
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  };
 
   return (
     <>

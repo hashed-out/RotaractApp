@@ -86,6 +86,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
 
   const handleDeleteUser = async (id: any) => {
     // console.log('id', id);
+    filterProfileById(id);
     try {
       await axios
         .delete(`${URI}/deleteUser/${id}`, {
@@ -94,7 +95,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
           },
         })
         .then(() => {
-          filterProfileById(id);
+          // filterProfileById(id);
         });
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -102,6 +103,10 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
   };
 
   const handleAddUserAsRegionalLeader = async (item: any) => {
+    updateOneProfile({
+      ...item,
+      isRegionalLeader: item?.isRegionalLeader ? false : true,
+    });
     try {
       await axios
         .put(`${URI}/addRegionalLeader/${item?._id}`,{},{
@@ -110,10 +115,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
           },
         })
         .then(() => {
-          updateOneProfile({
-            ...item,
-            isRegionalLeader: item?.isRegionalLeader ? false : true,
-          });
+       
         });
     } catch (error) {
       console.error('Error adding user as regional leader:', error);
@@ -122,6 +124,10 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
 
   const handleAddUserAsIndianLeader = async (item: any) => {
     // console.log(item?._id,item?.isRegionalLeader)
+    updateOneProfile({
+      ...item,
+      isIndiaLeader: item?.isIndiaLeader ? false : true,
+    });
     try {
       await axios
         .put(`${URI}/addIndianLeader/${item?._id}`,{}, {
@@ -130,10 +136,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
           },
         })
         .then(() => {
-          updateOneProfile({
-            ...item,
-            isIndiaLeader: item?.isIndiaLeader ? false : true,
-          });
+      
         });
     } catch (error) {
       console.error('Error adding user as Indian leader:', error);
@@ -143,6 +146,10 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
 
   const handleAddUserAsDistrictGovernor = async (item: any) => {
     // console.log(item?._id,item?.isRegionalLeader)
+    updateOneProfile({
+      ...item,
+      isDistrictGoverner: item?.isDistrictGoverner ? false : true,
+    });
     try {
       await axios
         .put(`${URI}/addDistrictGoverner/${item?._id}`,{}, {
@@ -151,10 +158,10 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
           },
         })
         .then(() => {
-          updateOneProfile({
-            ...item,
-            isDistrictGoverner: item?.isDistrictGoverner ? false : true,
-          });
+          // updateOneProfile({
+          //   ...item,
+          //   isDistrictGoverner: item?.isDistrictGoverner ? false : true,
+          // });
         });
     } catch (error) {
       console.error('Error adding user as District Governor:', error);
@@ -163,6 +170,10 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
 
   const handleAddUserAsAdmin = async (item: any) => {
     // console.log(item?._id,item?.isRegionalLeader)
+    updateOneProfile({
+      ...item,
+      role: item?.role==='admin' ? 'user' : 'admin',
+    });
     try {
       await axios
         .put(`${URI}/addAdmin/${item?._id}`,{}, {
@@ -171,10 +182,10 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
           },
         })
         .then(() => {
-          updateOneProfile({
-            ...item,
-            role: item?.role==='admin' ? 'user' : 'admin',
-          });
+          // updateOneProfile({
+          //   ...item,
+          //   role: item?.role==='admin' ? 'user' : 'admin',
+          // });
         });
     } catch (error) {
       console.error('Error adding user as Admin:', error);

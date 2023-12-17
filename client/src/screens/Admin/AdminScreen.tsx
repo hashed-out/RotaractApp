@@ -18,6 +18,8 @@ function AdminScreen() {
     {name: 'Add User as District Governer', link: 'district'},
     {name: 'Add User as Indian leader', link: 'indian'},
     {name: 'Add User as Admin', link: 'admin'},
+    {name: 'Manage Clubs', link: 'clubs'},
+    {name: 'Manage Designation', link: 'designation'},
   ];
 
   return (
@@ -68,14 +70,8 @@ function AdminScreen() {
                       fromAddAdmin: false,
                     });
                   }
-                  else if (item?.link === 'admin') {
-                    navigation.navigate('AllUser', {
-                      fromRemoveUser: false,
-                      fromAddRegLead: false,
-                      fromAddDistGov: false,
-                      fromAddIndLead: false,
-                      fromAddAdmin: true,
-                    });
+                  else if (item?.link === 'clubs') {
+                    navigation.navigate('ManageClubs');
                   }
                 }}>
                 <Text style={styles.adminButtonText}>{item?.name}</Text>

@@ -20,6 +20,7 @@ import DistrictGovScreen from '../src/screens/DistrictGovScreen';
 import IndiaLeadersScreen from '../src/screens/IndiaLeadersScreen';
 import EventRegScreen from '../src/screens/EventRegScreen';
 import RegisterUserForEvents from '../src/screens/RegisterUserForEvents';
+import ManageClubs from '../src/screens/ManageClubs';
 
 type Props = {};
 
@@ -47,6 +48,9 @@ const Main = (props: Props) => {
       <Stack.Screen name="FollowerCard" component={FollowerCard} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="EventReg" component={EventRegScreen} />
+      <Stack.Screen name="ManageClubs" component={ManageClubs} />
+      {/* <Stack.Screen name="ManageDes" component={mana} /> */}
+
       {/* <Stack.Screen name="check" component={RegisterUserForEvents} /> */}
     </Stack.Navigator>
   );

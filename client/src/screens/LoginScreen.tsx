@@ -87,18 +87,17 @@ const LoginScreen = ({ navigation }: Props) => {
         <TouchableOpacity style={styles.loginButton} onPress={submitHandler}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
-        <Text
-          style={{ paddingTop: 3, color: 'black'}}
-          onPress={() => navigation.navigate('Signup')}
-        >
-          Don't have any account? <Text>Sign up</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <Text style={{ paddingTop: 10, color: 'black', textAlign: 'center' }}>
+          Don't have an account? <Text style={{ fontWeight: 'bold', color: 'blue' }}>Sign up</Text>
         </Text>
-        <Text
-          style={{ paddingTop: 3, color: 'black' }}
-          onPress={() => navigation.navigate('RecoverPassword')}
-        >
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('RecoverPassword')}>
+        <Text style={{ paddingTop: 4, color: 'black', textAlign: 'center', textDecorationLine: 'underline' }}>
           Forgot Password
         </Text>
+      </TouchableOpacity>
       </Animatable.View>
     </LinearGradient>
   );
@@ -111,23 +110,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoContainer: {
-    height:50,
-    width:300,
+    height: 250,
+    width: 300,
     flex: 1,
     justifyContent: 'center',
-    
   },
+  logo: {
+    width: 300,
+    height: 250,
+    resizeMode: 'contain',
+  },
+  
+  
   formContainer: {
     flex: 1,
     alignItems: 'center',
     width: '80%',
     padding: 20,
   },
-  logo: {
-    width: 270,
-    height: 40,
-    paddingLeft:20,
-  },
+ 
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',

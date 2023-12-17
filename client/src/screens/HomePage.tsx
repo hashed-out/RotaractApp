@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { NativeBaseProvider, Box, VStack,  Center, } from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import DefaultAvatar from '../assets/user-avatar.png';
@@ -29,15 +30,15 @@ function HomePage() {
               <View
                 className="flex-row justify-between"
                 style={{alignItems: 'center'}}>
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                   <Image
                     source={require('../assets/hamburger.png')}
                     style={{height: 20, width: 21}}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <Image
-                  source={require('../assets/HomePageLogo.png')}
-                  style={{height: 53, width: 142, marginLeft: '3.5%'}}
+                  source={require('../assets/rlw.png')}
+                  style={{height: 53, width: 150, marginLeft: '3.5%',resizeMode: 'contain',}}
                 />
               </View>
               <View
@@ -66,7 +67,7 @@ function HomePage() {
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={[styles.userName]}>Welcome, {user?.userName}</Text>
+            <Text style={[styles.userName]}>Welcome, {user?.name}</Text>
             <TouchableOpacity style={{alignItems: 'center', marginTop: '2.5%'}}>
               <Image
                 source={require('../assets/ClubName.png')}
@@ -74,14 +75,49 @@ function HomePage() {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            style={{alignSelf: 'center', marginTop: '2.5%'}}>
-            <Image
-              style={[styles.card]}
-              source={require('../assets/Card.png')}
+
+          <View
+            style={{
+              alignSelf: 'center',
+              width: '100%',
+              paddingHorizontal: '10%',
+            }}>
+            <TouchableOpacity
+              style={styles.eventcards}
+              onPress={() => {
+                navigation.navigate('Home');
+              }}>
+               <Image
+              source={{
+                uri:'https://cdn-icons-png.flaticon.com/128/3269/3269065.png',
+              }}
+              style={styles.eicons}
             />
-          </TouchableOpacity>
+              <Text style={styles.adminButtonText}>Events & Posts</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              alignSelf: 'center',
+              width: '100%',
+              paddingHorizontal: '10%',
+            }}>
+            <TouchableOpacity
+              style={styles.eventcards}
+              onPress={() => {
+                navigation.navigate('Post');
+              }}>
+               <Image
+              source={{
+                uri:'https://cdn-icons-png.flaticon.com/128/8235/8235856.png',
+              }}
+              style={styles.eicons}
+            />
+              <Text style={styles.adminButtonText}>Create Event/Post</Text>
+            </TouchableOpacity>
+          </View>
+
+
         </View>
         <View style={[styles.btnContainer]}>
           <TouchableOpacity
@@ -159,7 +195,13 @@ function HomePage() {
               onPress={() => {
                 navigation.navigate('Admin');
               }}>
-              <Text style={styles.adminButtonText}>Admin</Text>
+               <Image
+              source={{
+                uri:'https://cdn-icons-png.flaticon.com/128/9970/9970571.png',
+              }}
+              style={styles.icons}
+            />
+              <Text style={styles.adminButtonText}>Admin Actions</Text>
             </TouchableOpacity>
           </View>
         ) : null}
@@ -175,7 +217,23 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 20,
     width: '100%',
+    flexDirection: 'row',
+    justifyContent:'center',
+    alignItems:'center',
+    alignSelf:'center',
   },
+  eventcards: {
+    backgroundColor: '#8FBFE8',
+    padding: 20,
+    borderRadius: 5,
+    marginTop: 20,
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent:'center',
+    alignItems:'center',
+    alignSelf:'center',
+  },
+
   adminButtonText: {
     color: 'black',
     fontSize: 18,
@@ -197,8 +255,19 @@ const styles = StyleSheet.create({
     width: 326,
     height: 215,
   },
+  icons: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginRight: 10,
+  },
+  eicons: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
   mainContainer: {
-    backgroundColor: 'whire',
+    backgroundColor: '#fca30f',
     flex: 1,
     // justifyContent: 'space-between',
     paddingBottom: '10%',
@@ -217,6 +286,24 @@ const styles = StyleSheet.create({
     fontSize: 36,
     color: 'white',
     alignSelf: 'center',
+  },
+  ecard: {
+    flex: 1,
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5, // For Android shadow
+  },
+  cardText: {
+    marginTop: 8,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

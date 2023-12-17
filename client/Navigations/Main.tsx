@@ -39,6 +39,7 @@ const Main = (props: Props) => {
       <Stack.Screen name="Notifications" component={NotificationScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Post" component={PostScreen}/>
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Admin" component={AdminScreen} />
       <Stack.Screen name="AllUser" component={GetAllUsersScreen} />

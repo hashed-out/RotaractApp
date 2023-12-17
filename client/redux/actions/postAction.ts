@@ -99,7 +99,7 @@ export const addLikes =
                 {
                   userName: user.name,
                   userId: user._id,
-                  userAvatar: user.avatar.url,
+                  userAvatar: user.avatar?.url,
                   postId,
                 },
               ],

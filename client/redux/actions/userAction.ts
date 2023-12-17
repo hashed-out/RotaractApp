@@ -5,10 +5,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // register user
 export const registerUser =
-  (name: string, email: string, password: string, avatar: string) =>
+  (
+    name: string,
+    contactNumber: string,
+    email: string,
+    clubName: string,
+    clubId: string,
+    designation: string,
+    password: string,
+    avatar: string,
+  ) =>
   async (dispatch: Dispatch<any>) => {
     try {
-      console.log("--------------Register------------------")
+      console.log('--------------Register------------------');
       dispatch({
         type: 'userRegisterRequest',
       });
@@ -16,7 +25,16 @@ export const registerUser =
       const config = {headers: {'Content-Type': 'application/json'}};
       const {data} = await axios.post(
         `${URI}/registration`,
-        {name, email, password, avatar},
+        {
+          name,
+          contactNumber,
+          email,
+          clubName,
+          clubId,
+          designation,
+          password,
+          avatar,
+        },
         config,
       );
       dispatch({
@@ -25,7 +43,7 @@ export const registerUser =
       });
       await AsyncStorage.setItem('token', data.token);
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       dispatch({
         type: 'userRegisterFailed',
         payload: error.response.data.message,
@@ -36,46 +54,43 @@ export const registerUser =
 // load user
 export const loadUser = () => async (dispatch: Dispatch<any>) => {
   const token = await AsyncStorage.getItem('token');
-  console.log(token)
-  
-    try {
-      console.log("--------------Loading User Now------------------")
-      dispatch({
-        type: 'userLoadRequest',
-      });
-      const {data} = await axios.get(`${URI}/me`, {
-        headers: {Authorization: `Bearer ${token}`},
-      });
-      console.log(data)
-      dispatch({
-        type: 'userLoadSuccess',
-        payload: {
-          user: data.user,
-          token,
-        },
-      });
-    } catch (error: any) {
-      console.log(error)
-      dispatch({
-        type: 'userLoadFailed',
-        payload: error.response.data.message,
-      });
-    }
+  console.log(token);
 
- 
+  try {
+    console.log('--------------Loading User Now------------------');
+    dispatch({
+      type: 'userLoadRequest',
+    });
+    const {data} = await axios.get(`${URI}/me`, {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    console.log(data);
+    dispatch({
+      type: 'userLoadSuccess',
+      payload: {
+        user: data.user,
+        token,
+      },
+    });
+  } catch (error: any) {
+    console.log(error);
     dispatch({
       type: 'userLoadFailed',
-      payload: "Login Failed",
+      payload: error.response.data.message,
     });
-  
- 
+  }
+
+  dispatch({
+    type: 'userLoadFailed',
+    payload: 'Login Failed',
+  });
 };
 
 // login user
 export const loginUser =
   (email: string, password: string) => async (dispatch: Dispatch<any>) => {
     try {
-      console.log("--------------Login------------------")
+      console.log('--------------Login------------------');
       dispatch({
         type: 'userLoginRequest',
       });
@@ -92,10 +107,10 @@ export const loginUser =
       });
       if (data.token) {
         await AsyncStorage.setItem('token', data.token);
-        console.log(data.token)
+        console.log(data.token);
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       dispatch({
         type: 'userLoginFailed',
         payload: error.response.data.message,
@@ -106,7 +121,7 @@ export const loginUser =
 // log out user
 export const logoutUser = () => async (dispatch: Dispatch<any>) => {
   try {
-    console.log("--------------Logout------------------")
+    console.log('--------------Logout------------------');
     dispatch({
       type: 'userLogoutRequest',
     });
@@ -118,7 +133,7 @@ export const logoutUser = () => async (dispatch: Dispatch<any>) => {
       payload: {},
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dispatch({
       type: 'userLogoutFailed',
     });
@@ -128,7 +143,7 @@ export const logoutUser = () => async (dispatch: Dispatch<any>) => {
 export const sendRecoverPasswordEmail =
   (email: string) => async (dispatch: Dispatch<any>) => {
     try {
-      console.log("--------------Password Recovery------------------")
+      console.log('--------------Password Recovery------------------');
       dispatch({
         type: 'sendRecoveryCode',
       });
@@ -140,20 +155,19 @@ export const sendRecoverPasswordEmail =
         config,
       );
       return true;
-      
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       dispatch({
         type: 'email send failed',
         payload: error.response.data.message,
       });
-      return false
+      return false;
     }
   };
 export const validateRecoveryCode =
-  (email: string, code:string) => async (dispatch: Dispatch<any>) => {
+  (email: string, code: string) => async (dispatch: Dispatch<any>) => {
     try {
-      console.log("--------------Validate OTP------------------")
+      console.log('--------------Validate OTP------------------');
       dispatch({
         type: 'validateRecoveryCode',
       });
@@ -161,26 +175,24 @@ export const validateRecoveryCode =
       const config = {headers: {'Content-Type': 'application/json'}};
       const {data} = await axios.post(
         `${URI}/validateRecoveryCode`,
-        {email,code},
+        {email, code},
         config,
       );
       return true;
-      
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       dispatch({
         type: 'email send failed',
         payload: error.response.data.message,
       });
-      return false
+      return false;
     }
   };
-
 
 // get all users
 export const getAllUsers = () => async (dispatch: Dispatch<any>) => {
   try {
-    console.log("-------------Get All Users----------------")
+    console.log('-------------Get All Users----------------');
 
     dispatch({
       type: 'getUsersRequest',
@@ -204,8 +216,6 @@ export const getAllUsers = () => async (dispatch: Dispatch<any>) => {
   }
 };
 
-
-
 interface FollowUnfollowParams {
   userId: string;
   followUserId: string;
@@ -217,7 +227,7 @@ export const followUserAction =
   ({userId, users, followUserId}: FollowUnfollowParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
-      console.log("-------------Follow User----------------")
+      console.log('-------------Follow User----------------');
       const token = await AsyncStorage.getItem('token');
       const updatedUsers = users.map((userObj: any) =>
         userObj._id === followUserId
@@ -244,7 +254,7 @@ export const followUserAction =
         },
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
       console.log('Error following user:', error);
     }
   };
@@ -254,7 +264,7 @@ export const unfollowUserAction =
   ({userId, users, followUserId}: FollowUnfollowParams) =>
   async (dispatch: Dispatch<any>) => {
     try {
-      console.log("-------------Unfollow User----------------")
+      console.log('-------------Unfollow User----------------');
       const token = await AsyncStorage.getItem('token');
       const updatedUsers = users.map((userObj: any) =>
         userObj._id === followUserId
@@ -283,7 +293,7 @@ export const unfollowUserAction =
         },
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
       console.log('Error following user:', error);
     }
   };

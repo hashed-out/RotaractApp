@@ -21,6 +21,9 @@ import IndiaLeadersScreen from '../src/screens/IndiaLeadersScreen';
 import EventRegScreen from '../src/screens/EventRegScreen';
 import RegisterUserForEvents from '../src/screens/RegisterUserForEvents';
 import ManageClubs from '../src/screens/ManageClubs';
+import ManageDesignation from '../src/screens/ManageDesignation';
+import CreateClubs from '../src/screens/CreateClubs';
+import CreateDesignation from '../src/screens/CreateDesignation';
 
 type Props = {};
 
@@ -49,6 +52,9 @@ const Main = (props: Props) => {
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="EventReg" component={EventRegScreen} />
       <Stack.Screen name="ManageClubs" component={ManageClubs} />
+      <Stack.Screen name="ManageDesgn" component={ManageDesignation} />
+      <Stack.Screen name="createClubs" component={CreateClubs} />
+      <Stack.Screen name="createDesignation" component={CreateDesignation} />
       {/* <Stack.Screen name="ManageDes" component={mana} /> */}
 
       {/* <Stack.Screen name="check" component={RegisterUserForEvents} /> */}

@@ -17,7 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadUser, registerUser} from '../../redux/actions/userAction';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
-import { URI } from '../../redux/URI';
+import {URI} from '../../redux/URI';
 
 type Props = {
   navigation: any;
@@ -26,13 +26,21 @@ type Props = {
 const SignupScreen = ({navigation}: Props) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
   const [password, setPassword] = useState('');
   const [rotId, setRotId] = useState('');
   const [clubName, setClubName] = useState('');
-  const [data, setData] = useState([]);
+  const [designation, setDesignation] = useState('');
+  const [clubId, setClubId] = useState('');
+  const [clubs, setClubs] = useState([]);
+  const [desgns, setDesgns] = useState([]);
   const [avatar, setAvatar] = useState('');
   const dispatch = useDispatch();
   const {error, isAuthenticated} = useSelector((state: any) => state.user);
+
+  // clubName,
+  // clubId,
+  // designation,
 
   useEffect(() => {
     if (error) {
@@ -47,21 +55,26 @@ const SignupScreen = ({navigation}: Props) => {
     }
   }, [error, isAuthenticated]);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     try {
-      axios
-        .get(`${URI}/getAllClubs`)
-        .then((res: any) => {
-        setData(res?.data?.club)
-          // setData(res?.data?.users);
-          // setList(res?.data?.users);
-        });
+      axios.get(`${URI}/getAllClubs`).then((res: any) => {
+        console.log(res?.data?.club, 'details');
+        setClubs(res?.data?.club);
+      });
       dispatch;
     } catch (error) {
-      console.error('Error getting club id:', error);
+      console.error('Error getting clubs:', error);
     }
-  },[])
+    try {
+      axios.get(`${URI}/getAllDesignation`).then((res: any) => {
+        console.log(res?.data?.designation, 'details');
+        setDesgns(res?.data?.designation);
+      });
+      dispatch;
+    } catch (error) {
+      console.error('Error getting desgn:', error);
+    }
+  }, []);
 
   const uploadImage = () => {
     ImagePicker.openPicker({
@@ -70,7 +83,7 @@ const SignupScreen = ({navigation}: Props) => {
       cropping: true,
       compressImageQuality: 0.8,
       includeBase64: true,
-    }).then((image: ImageOrVideo | null |any) => {
+    }).then((image: ImageOrVideo | null | any) => {
       if (image) {
         setAvatar('data:image/jpeg;base64,' + image.data);
       }
@@ -89,11 +102,19 @@ const SignupScreen = ({navigation}: Props) => {
         Alert.alert('Please fill all fields and upload an avatar');
       }
     } else {
-      registerUser(name, email, password, avatar,)(dispatch);
+      // registerUser(name, email, password, avatar,)(dispatch);
+      registerUser(
+        name,
+        contactNumber,
+        email,
+        clubName,
+        clubId,
+        designation,
+        password,
+        avatar,
+      )(dispatch);
     }
   };
-
-
 
   return (
     <LinearGradient colors={['#fff', '#0074e4']} style={styles.container}>
@@ -130,7 +151,7 @@ const SignupScreen = ({navigation}: Props) => {
           placeholderTextColor="#000"
           style={styles.input}
         />
-         <TextInput
+        <TextInput
           placeholder="Enter your Rotaract ID"
           value={rotId}
           onChangeText={text => setRotId(text)}
@@ -138,19 +159,43 @@ const SignupScreen = ({navigation}: Props) => {
           placeholderTextColor="#000"
           style={styles.input}
         />
+         <TextInput
+         keyboardType='numeric'
+          placeholder="Enter your Contact Number"
+          value={contactNumber}
+          onChangeText={text => setContactNumber(text)}
+          secureTextEntry
+          placeholderTextColor="#000"
+          style={styles.input}
+        />
         <Dropdown
-         selectedTextStyle={styles.selectedTextStyle}
-         iconStyle={styles.iconStyle}
-         placeholderStyle={styles.placeholderStyle}
-        style={styles.dropdown}
-          data={data}
+          selectedTextStyle={styles.selectedTextStyle}
+          iconStyle={styles.iconStyle}
+          placeholderStyle={styles.placeholderStyle}
+          style={styles.dropdown}
+          data={clubs}
           value={clubName}
-          onChange={(item:any) => {
+          onChange={(item: any) => {
             setClubName(item.clubName);
+            setClubId(item?._id);
           }}
           placeholder="Select Club Name"
           labelField={'clubName'}
           valueField={'clubName'}
+        />
+        <Dropdown
+          selectedTextStyle={styles.selectedTextStyle}
+          iconStyle={styles.iconStyle}
+          placeholderStyle={styles.placeholderStyle}
+          style={styles.dropdown}
+          data={desgns}
+          value={designation}
+          onChange={(item: any) => {
+            setClubName(item.designationName);
+          }}
+          placeholder="Select Designation"
+          labelField={'designationName'}
+          valueField={'designationName'}
         />
         <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
           <View style={styles.uploadButtonContainer}>
@@ -179,12 +224,12 @@ const SignupScreen = ({navigation}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  selectedTextStyle:{
+  selectedTextStyle: {
     color: '#000',
-    fontSize:14
-    },
+    fontSize: 14,
+  },
   dropdown: {
-    width:'100%',
+    width: '100%',
     margin: 8,
     height: 40,
     borderBottomWidth: 1,

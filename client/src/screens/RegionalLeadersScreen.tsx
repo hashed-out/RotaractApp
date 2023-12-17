@@ -128,7 +128,7 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                   }
                 };
 
-                // console.log(item,"item")
+                console.log(item,"item")
 
                 return (
                   <TouchableOpacity
@@ -166,9 +166,11 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                               />
                             )}
                           </View>
-
-                          <Text className="pl-3 text-[18px] text-black">
-                            {item.userName}
+                          <Text className="pl-3 text-[16px] text-black">
+                           Designation: {item?.designation}
+                          </Text>
+                          <Text className="pl-3 text-[16px] text-black">
+                            Club: {item?.clubName}
                           </Text>
                           <Text className="pl-3 mt-1 text-[16px] text-[#444]">
                             {item.followers.length} followers

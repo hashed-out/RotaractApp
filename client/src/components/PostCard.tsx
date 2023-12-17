@@ -237,8 +237,9 @@ const options = {
               className="ml-5"
             />
           </TouchableOpacity>
+          {(item.user._id === user._id || user?.role==='admin')  ? (
           <TouchableOpacity onPress={() => {
-              navigation.navigate('EventReg', {    //Sanath add registration page here
+              navigation.navigate('EventReg', {  
                 item: item,
                 navigation: navigation,
                 postId: postId,
@@ -252,6 +253,7 @@ const options = {
               className="ml-5"
             />
           </TouchableOpacity>
+          ):null}
         </View>
         {!isReply && (
           <View className="pl-[10px] pt-4 flex-row">

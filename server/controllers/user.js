@@ -10,7 +10,17 @@ const sendRecoveryCode = require("../utils/SendRecoveryCode.js");
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
   try {
     console.log("--------------Create User ------------------");
-    const { name, email, password, avatar } = req.body;
+    const {
+      rotarianId,
+      name,
+      contactNumber,
+      email,
+      clubName,
+      clubId,
+      designation,
+      password,
+      avatar,
+    } = req.body;
     let user = await User.findOne({ email });
     if (user) {
       return res
@@ -26,15 +36,16 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
       });
     }
 
-    const userNameWithoutSpace = name.replace(/\s/g, "");
-
-    const uniqueNumber = Math.floor(Math.random() * 1000);
 
     user = await User.create({
+      rotarianId,
+      contactNumber,
       name,
+      clubName,
+      clubId,
+      designation,
       email,
       password,
-      userName: userNameWithoutSpace + uniqueNumber,
       avatar: avatar
         ? { public_id: myCloud.public_id, url: myCloud.secure_url }
         : null,

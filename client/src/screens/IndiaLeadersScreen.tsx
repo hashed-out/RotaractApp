@@ -188,7 +188,7 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                             {item.followers.length} followers
                           </Text>
                         </View>
-                        <View style={{paddingRight: 10, paddingTop: 18}}>
+                        {/* <View style={{paddingRight: 10, paddingTop: 18}}>
                           <TouchableOpacity
                             className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
                             onPress={() => handleFollowUnfollow(item)}>
@@ -200,7 +200,7 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                                 : 'Follow'}
                             </Text>
                           </TouchableOpacity>
-                        </View>
+                        </View> */}
                       </View>
                     </View>
                   </TouchableOpacity>

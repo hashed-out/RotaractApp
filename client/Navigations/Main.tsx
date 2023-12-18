@@ -57,8 +57,7 @@ const Main = (props: Props) => {
       <Stack.Screen name="createClubs" component={CreateClubs} />
       <Stack.Screen name="createDesignation" component={CreateDesignation} />
       {/* <Stack.Screen name="ManageDes" component={mana} /> */}
-
-      {/* <Stack.Screen name="check" component={RegisterUserForEvents} /> */}
+      <Stack.Screen name="RegUser" component={RegisterUserForEvents} />
     </Stack.Navigator>
   );
 };

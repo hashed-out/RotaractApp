@@ -30,7 +30,9 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
   const [list, setList] = useState([]);
   const [reload, setReload] = useState(false);
   const [loader, setLoader] = useState(false);
-  const {eventId} = route?.params;
+
+  const {item, postId} = route?.params;
+  console.log(item?._id, 'id');
 
   const {users, user, isLoading, token} = useSelector(
     (state: any) => state.user,
@@ -41,7 +43,7 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
     setLoader(true);
     try {
       axios
-        .get(`${URI}/getAllRegistered/${eventId}`, {
+        .get(`${URI}/getAllRegistered/${item?._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -57,7 +59,7 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
       setLoader(false);
       console.error('Error getting reg leaders:', error);
     }
-  }, [eventId]);
+  }, [item]);
 
   const updateOneProfile = (item: any) => {
     setData((prev: any) => {

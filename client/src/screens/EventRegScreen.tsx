@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -11,21 +11,18 @@ import {
   View,
 } from 'react-native';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import { useSelector } from 'react-redux';
-import { URI } from '../../redux/URI';
-
+import {useSelector} from 'react-redux';
+import {URI} from '../../redux/URI';
 
 function EventRegScreen({route}: any) {
   const navigation = useNavigation<any>();
-  
+
   const {users, user, isLoading, token} = useSelector(
     (state: any) => state.user,
   );
 
-
   const {item, postId} = route?.params;
-  console.log(item?._id,"id")
-
+  console.log(item?._id, 'id');
 
   const [payment, setPayment] = useState('');
 
@@ -43,29 +40,32 @@ function EventRegScreen({route}: any) {
     });
   };
 
-
-  const handleSubmit = async()=>{
-    let eventId =item?._id
-    let userId =user?._id
+  const handleSubmit = async () => {
+    let eventId = item?._id;
+    let userId = user?._id;
     // console.log(postid,userId,payment,"ids")
     try {
       await axios
-        .post(`${URI}/registerForEvent`,{eventId,userId,payment},{
-          headers: {
-            Authorization: `Bearer ${token}`,
+        .post(
+          `${URI}/registerForEvent`,
+          {eventId, userId, payment},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        })
+        )
         .then(() => {
           // filterProfileById(id);
-          navigation.goBack()
-          console.log("registered")
+          navigation.goBack();
+          console.log('registered');
         });
     } catch (error) {
       console.error('Error registering event:', error);
     }
-  }
+  };
 
-//   console.log(item,postId,"data")
+  //   console.log(item,postId,"data")
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={[styles.mainContainer]}>
@@ -89,29 +89,58 @@ function EventRegScreen({route}: any) {
           </Text>
         </View>
         <View style={[styles.container]}>
-        {/* <TextInput
+          {/* <TextInput
           placeholder="Enter your name"
           value={name}
           onChangeText={text => setName(text)}
           placeholderTextColor="#000"
           style={styles.input}
         /> */}
-         <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
-          <View style={styles.uploadButtonContainer}>
-            <Image
-              source={{
-                uri: payment
-                  ? payment
-                  : 'https://cdn-icons-png.flaticon.com/128/568/568717.png',
-              }}
-              style={styles.uploadImage}
-            />
-            <Text style={styles.uploadText}>Add payment Screenshot</Text>
+          <Text style={styles.title}>
+            Event:{' '}
+             {item?.title}
+          </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              borderWidth: 2,
+              borderColor: 'black',
+              padding: 20,
+            }}>
+            <Text style={[styles.title, {borderBottomWidth: 1}]}>
+              Payment Details
+            </Text>
+            <View style={{alignItems:'flex-start'}}>
+            <Text className="pl-3 text-[18px] text-black">
+              <Text style={styles.title}>Bank Name:</Text> Canara Bank
+            </Text>
+            <Text className="pl-3 text-[18px] text-black">
+              <Text style={styles.title}>Account Number:</Text> 123431342134
+            </Text>
+            <Text className="pl-3 text-[18px] text-black">
+              <Text style={styles.title}>IFSC code:</Text> CNRB003235
+            </Text>
+            </View>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity disabled={!payment} style={!payment?styles.signupButtonDisabled:styles.signupButton} onPress={handleSubmit}>
-          <Text style={styles.signupButtonText}>Register</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
+            <View style={styles.uploadButtonContainer}>
+              <Image
+                source={{
+                  uri: payment
+                    ? payment
+                    : 'https://cdn-icons-png.flaticon.com/128/568/568717.png',
+                }}
+                style={styles.uploadImage}
+              />
+              <Text style={styles.uploadText}>Add payment Screenshot</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            disabled={!payment}
+            style={!payment ? styles.signupButtonDisabled : styles.signupButton}
+            onPress={handleSubmit}>
+            <Text style={styles.signupButtonText}>Register</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -119,6 +148,12 @@ function EventRegScreen({route}: any) {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+  },
   signupButton: {
     backgroundColor: '#0074e4',
     padding: 10,
@@ -127,7 +162,7 @@ const styles = StyleSheet.create({
     width: 100,
   },
   signupButtonDisabled: {
-    backgroundColor:'grey',
+    backgroundColor: 'grey',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
@@ -199,7 +234,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '3.5%',
   },
   container: {
-    alignItems:'center'
+    alignItems: 'center',
   },
   userName: {
     fontSize: 36,

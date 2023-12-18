@@ -27,6 +27,7 @@ type Props = {
   isReply?: boolean | null;
   postId?: string | null;
   replies?: boolean | null;
+  isEvent?: boolean | null;
 };
 
 const PostCard = ({
@@ -252,7 +253,8 @@ const PostCard = ({
               />
             )}
           </TouchableOpacity>
-          <TouchableOpacity
+          {Event &&  (
+           <TouchableOpacity
             onPress={() => {
               navigation.navigate('EventReg', {
                 item: item,
@@ -269,6 +271,7 @@ const PostCard = ({
               className="ml-5"
             />
           </TouchableOpacity>
+<<<<<<< HEAD
           {item.user._id === user._id || user?.role === 'admin' ? (
             <TouchableOpacity
               onPress={() => {
@@ -287,6 +290,27 @@ const PostCard = ({
               />
             </TouchableOpacity>
           ) : null}
+=======
+          )}
+          {Event && ( item.user._id === user._id || user?.role==='admin')  ? (
+          <TouchableOpacity onPress={() => {
+              navigation.navigate('EventReg', {  
+                item: item,
+                navigation: navigation,
+                postId: postId,
+              });}}>
+            <Image
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/128/3269/3269065.png',
+              }}
+              width={25}
+              height={25}
+              className="ml-5"
+            />
+          </TouchableOpacity>
+          ):null}
+
+>>>>>>> pp
         </View>
         {!isReply && (
           <View className="pl-[10px] pt-4 flex-row">

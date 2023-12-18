@@ -23,6 +23,7 @@ export const registerUser =
       });
 
       const config = {headers: {'Content-Type': 'application/json'}};
+
       const {data} = await axios.post(
         `${URI}/registration`,
         {
@@ -53,18 +54,19 @@ export const registerUser =
 
 // load user
 export const loadUser = () => async (dispatch: Dispatch<any>) => {
-  const token = await AsyncStorage.getItem('token');
-  console.log(token);
-
   try {
-    console.log('--------------Loading User Now------------------');
     dispatch({
       type: 'userLoadRequest',
     });
+
+    const token = await AsyncStorage.getItem('token');
     const {data} = await axios.get(`${URI}/me`, {
       headers: {Authorization: `Bearer ${token}`},
     });
-    console.log(data);
+    console.log("------------------load user------------")
+    console.log("------------------Token------------")
+    console.log(token)
+
     dispatch({
       type: 'userLoadSuccess',
       payload: {
@@ -73,29 +75,24 @@ export const loadUser = () => async (dispatch: Dispatch<any>) => {
       },
     });
   } catch (error: any) {
-    console.log(error);
     dispatch({
       type: 'userLoadFailed',
       payload: error.response.data.message,
     });
   }
-
-  dispatch({
-    type: 'userLoadFailed',
-    payload: 'Login Failed',
-  });
 };
 
 // login user
 export const loginUser =
   (email: string, password: string) => async (dispatch: Dispatch<any>) => {
     try {
-      console.log('--------------Login------------------');
+console.log("--------------Login------------------")
       dispatch({
         type: 'userLoginRequest',
       });
 
       const config = {headers: {'Content-Type': 'application/json'}};
+
       const {data} = await axios.post(
         `${URI}/login`,
         {email, password},

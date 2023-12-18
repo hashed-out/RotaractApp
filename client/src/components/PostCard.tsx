@@ -27,6 +27,7 @@ type Props = {
   isReply?: boolean | null;
   postId?: string | null;
   replies?: boolean | null;
+  isEvent?: boolean | null;
 };
 
 const PostCard = ({item, isReply, navigation, postId, replies, isEvent,}: Props) => {
@@ -220,7 +221,8 @@ const options = {
               />
             )}
           </TouchableOpacity>
-          <TouchableOpacity
+          {Event &&  (
+           <TouchableOpacity
             onPress={() => {
               navigation.navigate('EventReg', {    //Sanath add registration page here
                 item: item,
@@ -237,7 +239,8 @@ const options = {
               className="ml-5"
             />
           </TouchableOpacity>
-          {(item.user._id === user._id || user?.role==='admin')  ? (
+          )}
+          {Event && ( item.user._id === user._id || user?.role==='admin')  ? (
           <TouchableOpacity onPress={() => {
               navigation.navigate('EventReg', {  
                 item: item,
@@ -254,6 +257,7 @@ const options = {
             />
           </TouchableOpacity>
           ):null}
+
         </View>
         {!isReply && (
           <View className="pl-[10px] pt-4 flex-row">

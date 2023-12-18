@@ -56,11 +56,23 @@ const ProfileScreen = ({navigation}: Props) => {
             style={{width: width, padding: 10}}>
             <View>
               <Text className="text-[#000] text-[30px]">{user?.name}</Text>
+              <TouchableOpacity
+              // onPress={() =>
+              //   navigation.navigate('FollowerCard', {
+              //     followers: user?.followers,
+              //     following: user?.following,
+              //   })
+              // }
+              >
+              <Text className="text-[16px] text-[#444]">
+                {user?.followers.length} followers
+              </Text>
+            </TouchableOpacity>
               <Text className="text-[#0000009d] text-[20px]">
-                {user?.userName}
+                Contact: {user?.contactNumber}
               </Text>
             </View>
-
+            
             <View className="relative">
               <Image
                 source={user.avatar?.url ? { uri: user.avatar?.url } : DefaultAvatar}
@@ -85,17 +97,16 @@ const ProfileScreen = ({navigation}: Props) => {
             {user?.bio}
           </Text>
           <View className="p-3">
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('FollowerCard', {
-                  followers: user?.followers,
-                  following: user?.following,
-                })
-              }>
-              <Text className="text-[16px] text-[#444]">
-                {user?.followers.length} followers
+            <View>
+              <Text className="text-[#0000009d] text-[20px]">
+                Contact: {user?.contactNumber}
               </Text>
-            </TouchableOpacity>
+            </View>
+            <View>
+              <Text className="text-[#0000009d] text-[20px]">
+                Contact: {user?.contactNumber}
+              </Text>
+            </View>
           </View>
           <View className="px-8 py-3 flex-row w-full items-center">
             <TouchableOpacity

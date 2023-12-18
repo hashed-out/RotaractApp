@@ -138,10 +138,9 @@ const NotificationScreen = ({navigation}: Props) => {
                                   (user: any) => user._id === item.creator._id,
                                 )?.avatar.url,} : DefaultAvatar
                               }
-      
-                              width={40}
-                              height={40}
-                              borderRadius={100}
+                              style={{ width:40,
+                                height:40,
+                                borderRadius:20,}}
                             />
                             {item.type === 'Like' && (
                               <View className="absolute bottom-5 border-[2px] border-[#fff] right-[-5px] h-[25px] w-[25px] bg-[#eb4545] rounded-full items-center justify-center flex-row">

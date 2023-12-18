@@ -112,13 +112,13 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                       </Text>
                     )}
                     <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('FollowerCard', {
-                          item: data,
-                          followers: data?.followers,
-                          following: data?.following,
-                        })
-                      }>
+                      // onPress={() =>
+                      //   navigation.navigate('FollowerCard', {
+                      //     item: data,
+                      //     followers: data?.followers,
+                      //     following: data?.following,
+                      //   })}
+                      >
                       <Text className="py-2 text-[18px] text-[#000000c7]">
                         {data.followers.length} followers
                       </Text>
@@ -156,30 +156,18 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                       : 'Follow'}
                   </Text>
                 </TouchableOpacity>
-                <View className="w-full border-b border-b-[#00000032] pt-5 pb-2 relattive">
-                  <View className="w-[80%] m-auto flex-row justify-between">
+                <View className="w-full border-b border-b-[#00000032] pt-5 pb-2 relative">
+                <View className="w-[100%] m-auto flex-row justify-center">
                     <TouchableOpacity onPress={() => setActive(0)}>
                       <Text
                         className="text-[18px] pl-3 text-black"
                         style={{opacity: active === 0 ? 1 : 0.6}}>
                         {' '}
-                        Threads
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setActive(1)}>
-                      <Text
-                        className="text-[18px] pl-3 text-black"
-                        style={{opacity: active === 1 ? 1 : 0.6}}>
-                        {' '}
-                        Replies
+                        Posts
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  {active === 0 ? (
-                    <View className="w-[50%] absolute h-[1px] bg-black left-[-10px] bottom-0" />
-                  ) : (
-                    <View className="w-[50%] absolute h-[1px] bg-black right-[-10px] bottom-0" />
-                  )}
+                    <View className="w-[100%] absolute h-[1px] bg-black left-[-10px] bottom-0" />
                 </View>
                 {active === 0 && (
                   <>

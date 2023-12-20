@@ -242,10 +242,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoContainer: {
-    height: 250,
-    width: 300,
     flex: 1,
     justifyContent: 'center',
+    marginTop: -20,
+    marginBottom: 20, // Add margin bottom to create some space between logo and form
   },
   logo: {
     width: 300,
@@ -253,10 +253,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   formContainer: {
-    flex: 1,
     alignItems: 'center',
     width: '80%',
     padding: 20,
+    alignSelf: 'center',
   },
   welcomeText: {
     fontSize: 24,

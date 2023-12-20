@@ -14,6 +14,9 @@ import axios from 'axios';
 import {URI} from '../../redux/URI';
 import {loadUser} from '../../redux/actions/userAction';
 import DefaultAvatar from '../assets/user-avatar.png';
+import { useFocusEffect } from '@react-navigation/native';
+
+
 
 type Props = {
   navigation: any;
@@ -28,7 +31,31 @@ const EditProfile = ({navigation}: Props) => {
     userName: user?.userName,
     bio: user?.bio,
   });
-
+  const reloadUserData = async () => {
+    try {
+      const res = await axios.get(`${URI}/user-profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const updatedUser = res.data.user;
+      setAvatar(updatedUser.avatar.url);
+      setUserData({
+        name: updatedUser.name,
+        userName: updatedUser.userName,
+        bio: updatedUser.bio,
+      });
+    } catch (error) {
+      console.error('Error reloading user data:');
+    }
+  };
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reload user data including avatar when the screen comes into focus
+      reloadUserData();
+    }, [token]) // Dependency on token ensures that it reloads only when the token changes
+  );
   const handleSubmitHandler = async () => {
     if (userData.name.length !== 0 && userData.userName.length !== 0) {
         await axios.put(`${URI}/update-profile`,{
@@ -40,10 +67,10 @@ const EditProfile = ({navigation}: Props) => {
                 Authorization: `Bearer ${token}`,
               },
         }).then((res:any) => {
-          navigation.navigate('UserProfile', {
-            item: res.data.user,
-          });
-            // loadUser()(dispatch);
+          // navigation.navigate('UserProfile', {
+          //   item: res.data.user,
+          // });
+            loadUser()(dispatch);
         })
     }
   };
@@ -57,7 +84,6 @@ const EditProfile = ({navigation}: Props) => {
       includeBase64: true,
     }).then((image: ImageOrVideo | null) => {
       if (image) {
-        // setImage('data:image/jpeg;base64,' + image.data);
         axios
           .put(
             `${URI}/update-avatar`,
@@ -68,10 +94,13 @@ const EditProfile = ({navigation}: Props) => {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-            },
+            }
           )
           .then((res: any) => {
-            loadUser()(dispatch);
+            setAvatar(res.data.user.avatar.url);
+          })
+          .catch((error) => {
+            console.error('Error updating avatar:', error);
           });
       }
     });

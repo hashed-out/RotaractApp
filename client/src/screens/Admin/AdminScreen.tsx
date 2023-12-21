@@ -13,15 +13,15 @@ function AdminScreen() {
   const navigation = useNavigation<any>();
 
   const Btns = [
-    {name: 'Remove User', link: 'RemoveUser'},
+    {name: 'Create Clubs', link: 'createClubs'},
+    {name: 'Manage Clubs', link: 'clubs'},
+    {name: 'Create Designation', link: 'createDesignation'},
+    {name: 'Manage Designation', link: 'designation'},
     {name: 'Add User as Regional Leader', link: 'regional'},
     {name: 'Add User as District Governer', link: 'district'},
     {name: 'Add User as Indian leader', link: 'indian'},
     {name: 'Add User as Admin', link: 'admin'},
-    {name: 'Manage Clubs', link: 'clubs'},
-    {name: 'Manage Designation', link: 'designation'},
-    {name: 'Create Clubs', link: 'createClubs'},
-    {name: 'Create Designation', link: 'createDesignation'},
+    {name: 'Remove User', link: 'RemoveUser'},
   ];
 
   return (

@@ -159,8 +159,8 @@ const SignupScreen = ({navigation}: Props) => {
           placeholderTextColor="#000"
           style={styles.input}
         />
-         <TextInput
-         keyboardType='numeric'
+        <TextInput
+          keyboardType="numeric"
           placeholder="Enter your Contact Number"
           value={contactNumber}
           onChangeText={text => setContactNumber(text)}
@@ -191,7 +191,7 @@ const SignupScreen = ({navigation}: Props) => {
           data={desgns}
           value={designation}
           onChange={(item: any) => {
-            setClubName(item.designationName);
+            setDesignation(item.designationName);
           }}
           placeholder="Select Designation"
           labelField={'designationName'}

@@ -155,7 +155,6 @@ const SignupScreen = ({navigation}: Props) => {
           placeholder="Enter your Rotaract ID"
           value={rotId}
           onChangeText={text => setRotId(text)}
-          secureTextEntry
           placeholderTextColor="#000"
           style={styles.input}
         />
@@ -164,7 +163,6 @@ const SignupScreen = ({navigation}: Props) => {
           placeholder="Enter your Contact Number"
           value={contactNumber}
           onChangeText={text => setContactNumber(text)}
-          secureTextEntry
           placeholderTextColor="#000"
           style={styles.input}
         />

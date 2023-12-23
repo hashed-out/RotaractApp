@@ -40,6 +40,9 @@ const SearchScreen = ({navigation}: Props) => {
   const {users, user, isLoading, token} = useSelector(
     (state: any) => state.user,
   );
+
+  
+  
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -130,6 +130,15 @@ function AdminScreen() {
                   } else if (item?.link === 'createDesignation') {
                     navigation.navigate('createDesignation');
                   }
+                  else if (item?.link === 'admin') {
+                    navigation.navigate('AllUser', {
+                      fromRemoveUser: false,
+                      fromAddRegLead: false,
+                      fromAddDistGov: false,
+                      fromAddIndLead: false,
+                      fromAddAdmin: true,
+                    });
+                  }
                 }}>
                 <Text style={styles.adminButtonText}>{item?.name}</Text>
               </TouchableOpacity>

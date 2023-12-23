@@ -40,7 +40,7 @@ export const registerUser =
       );
       dispatch({
         type: 'userRegisterSuccess',
-        payload: data.user,
+        payload: data,
       });
       await AsyncStorage.setItem('token', data.token);
     } catch (error: any) {
@@ -98,9 +98,10 @@ console.log("--------------Login------------------")
         {email, password},
         config,
       );
+      // console.log(data?.user,"afterlogin")
       dispatch({
         type: 'userLoginSuccess',
-        payload: data.user,
+        payload: data,
       });
       if (data.token) {
         await AsyncStorage.setItem('token', data.token);

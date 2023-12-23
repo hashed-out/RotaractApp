@@ -45,6 +45,8 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
   );
   const dispatch = useDispatch();
 
+  console.log(token,"here")
+
   useEffect(() => {
     setLoader(true);
     try {

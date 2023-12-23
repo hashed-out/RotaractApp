@@ -6,7 +6,7 @@ const intialState = {
   isLoading: false,
   user: {},
   users: [],
-  token:"",
+  token: '',
   error: null,
 };
 
@@ -44,7 +44,8 @@ export const userReducer = createReducer(intialState, {
   userRegisterSuccess: (state, action) => {
     state.loading = false;
     state.isAuthenticated = true;
-    state.user = action.payload;
+    state.user = action.payload.user;
+    state.token = action.payload.token;
   },
   userRegisterFailed: (state, action) => {
     state.loading = false;
@@ -72,7 +73,8 @@ export const userReducer = createReducer(intialState, {
   userLoginSuccess: (state, action) => {
     state.isAuthenticated = true;
     state.loading = false;
-    state.user = action.payload;
+    state.user = action.payload.user;
+    state.token = action.payload.token;
   },
   userLoginFailed: (state, action) => {
     state.isAuthenticated = false;
@@ -94,11 +96,11 @@ export const userReducer = createReducer(intialState, {
   getUsersRequest: state => {
     state.isLoading = true;
   },
-  getUsersSuccess: (state,action) => {
+  getUsersSuccess: (state, action) => {
     state.isLoading = false;
     state.users = action.payload;
   },
-  getUsersFailed: (state,action) => {
+  getUsersFailed: (state, action) => {
     state.isLoading = false;
     state.users = action.payload;
   },
@@ -106,5 +108,4 @@ export const userReducer = createReducer(intialState, {
     state.error = null;
     state.isAuthenticated = false;
   },
-  
 });

@@ -139,9 +139,14 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                           source={{
                             uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828640.png',
                           }}
-                          width={18}
-                          height={18}
-                          className="ml-2 absolute bottom-0 left-0"
+                          width={20}
+                  height={20}
+                  style={{
+                    position: 'absolute',
+                    bottom: 17,  // Adjust this value to move the icon up or down
+                    left: 0,
+                    marginLeft: -1,  // Adjust this value for horizontal positioning
+                  }}
                         />
                       )}
                     </View>

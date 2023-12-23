@@ -57,7 +57,7 @@ const EditProfile = ({navigation}: Props) => {
     }, [token]) // Dependency on token ensures that it reloads only when the token changes
   );
   const handleSubmitHandler = async () => {
-    if (userData.name.length !== 0 && userData.userName.length !== 0) {
+    if (userData.name.length !== 0 ) {
         await axios.put(`${URI}/update-profile`,{
             name: userData.name,
             userName: userData.userName,
@@ -124,7 +124,7 @@ const EditProfile = ({navigation}: Props) => {
           </Text>
         </View>
         <TouchableOpacity onPress={handleSubmitHandler}>
-          <Text className="text-[20px] text-black">Done</Text>
+          <Text className="text-[20px] text-black">Submit</Text>
         </TouchableOpacity>
       </View>
       <View className="h-[90%] items-center justify-center">

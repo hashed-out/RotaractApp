@@ -156,12 +156,12 @@ const NotificationScreen = ({navigation}: Props) => {
                             )}
 
                             {item.type === 'Follow' && (
-                              <View className="absolute bottom-5 border-[2px] border-[#fff] right-[-5px] h-[25px] w-[25px] bg-[#5a49d6] rounded-full items-center justify-center flex-row">
+                              <View className="absolute bottom-5   right-[-5px] h-[25px] w-[25px] bg-[#5a49d6] rounded-full items-center justify-center flex-row">
                                 <Image
                                   source={{
-                                    uri: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+                                    uri: 'https://cdn-icons-png.flaticon.com/128/4264/4264898.png',
                                   }}
-                                  tintColor={'#fff'}
+                                  
                                   width={12}
                                   height={12}
                                 />

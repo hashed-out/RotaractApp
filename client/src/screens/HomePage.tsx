@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { NativeBaseProvider, Box, VStack,  Center, } from 'native-base';
+import {NativeBaseProvider, Box, VStack, Center} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import DefaultAvatar from '../assets/user-avatar.png';
@@ -18,6 +18,9 @@ import DefaultAvatar from '../assets/user-avatar.png';
 function HomePage() {
   const navigation = useNavigation<any>();
   const {user} = useSelector((state: any) => state.user);
+
+
+  console.log(user,"user")
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -38,7 +41,12 @@ function HomePage() {
                 </TouchableOpacity> */}
                 <Image
                   source={require('../assets/rlw.png')}
-                  style={{height: 53, width: 150, marginLeft: '3.5%',resizeMode: 'contain',}}
+                  style={{
+                    height: 53,
+                    width: 150,
+                    marginLeft: '3.5%',
+                    resizeMode: 'contain',
+                  }}
                 />
               </View>
               <View
@@ -69,10 +77,13 @@ function HomePage() {
             </View>
             <Text style={[styles.userName]}>Welcome, {user?.name}</Text>
             <TouchableOpacity style={{alignItems: 'center', marginTop: '2.5%'}}>
-              <Image
-                source={require('../assets/ClubName.png')}
-                style={{height: 60, width: 220, marginLeft: '3.5%'}}
-              />
+              <View style={[styles.clubCard]}>
+                <Image
+                  source={require('../assets/ClubName.png')}
+                  style={{height: 37, width: 36}}
+                />
+                <Text style={{color:'white',fontSize:20,marginLeft: '5%',width:'50%'}}>{user?.clubName}</Text>
+              </View>
             </TouchableOpacity>
           </View>
 
@@ -87,12 +98,12 @@ function HomePage() {
               onPress={() => {
                 navigation.navigate('Home');
               }}>
-               <Image
-              source={{
-                uri:'https://cdn-icons-png.flaticon.com/128/3269/3269065.png',
-              }}
-              style={styles.eicons}
-            />
+              <Image
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/128/3269/3269065.png',
+                }}
+                style={styles.eicons}
+              />
               <Text style={styles.adminButtonText}>Events & Posts</Text>
             </TouchableOpacity>
           </View>
@@ -107,17 +118,15 @@ function HomePage() {
               onPress={() => {
                 navigation.navigate('Post');
               }}>
-               <Image
-              source={{
-                uri:'https://cdn-icons-png.flaticon.com/128/8235/8235856.png',
-              }}
-              style={styles.eicons}
-            />
+              <Image
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/128/8235/8235856.png',
+                }}
+                style={styles.eicons}
+              />
               <Text style={styles.adminButtonText}>Create Event/Post</Text>
             </TouchableOpacity>
           </View>
-
-
         </View>
         <View style={[styles.btnContainer]}>
           <TouchableOpacity
@@ -195,12 +204,12 @@ function HomePage() {
               onPress={() => {
                 navigation.navigate('Admin');
               }}>
-               <Image
-              source={{
-                uri:'https://cdn-icons-png.flaticon.com/128/9970/9970571.png',
-              }}
-              style={styles.icons}
-            />
+              <Image
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/128/9970/9970571.png',
+                }}
+                style={styles.icons}
+              />
               <Text style={styles.adminButtonText}>Admin Actions</Text>
             </TouchableOpacity>
           </View>
@@ -218,9 +227,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '100%',
     flexDirection: 'row',
-    justifyContent:'center',
-    alignItems:'center',
-    alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   eventcards: {
     backgroundColor: '#8FBFE8',
@@ -229,9 +238,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '80%',
     flexDirection: 'row',
-    justifyContent:'center',
-    alignItems:'center',
-    alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
 
   adminButtonText: {
@@ -282,6 +291,16 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
   },
+  clubCard: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#3A6CBD',
+    borderRadius: 8,
+    paddingVertical: '2.5%',
+    paddingHorizontal: '5%',
+    alignItems:'center'
+  },
   userName: {
     fontSize: 36,
     color: 'white',
@@ -295,7 +314,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 5, // For Android shadow

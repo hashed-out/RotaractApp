@@ -20,7 +20,7 @@ function HomePage() {
   const {user} = useSelector((state: any) => state.user);
 
 
-  console.log(user,"user")
+  // console.log(user,"user")
 
   return (
     <SafeAreaView style={{flex: 1}}>

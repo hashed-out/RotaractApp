@@ -80,9 +80,9 @@ function HomePage() {
               <View style={[styles.clubCard]}>
                 <Image
                   source={require('../assets/ClubName.png')}
-                  style={{height: 37, width: 36}}
+                  style={{height: 37, width: 36,marginRight:'2.5%'}}
                 />
-                <Text style={{color:'white',fontSize:20,marginLeft: '5%',width:'50%'}}>{user?.clubName}</Text>
+                <Text style={{color:'white',fontSize:20,width:'50%'}}>{user?.clubName}</Text>
               </View>
             </TouchableOpacity>
           </View>

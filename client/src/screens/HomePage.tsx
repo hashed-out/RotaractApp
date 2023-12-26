@@ -138,10 +138,10 @@ function HomePage() {
               })
             }>
             <View style={[styles.btnCont]}>
-              {/* <Image
+              <Image
                 style={{width: 29, height: 29}}
-                source={require('../assets/indiaLead.png')}
-              /> */}
+                source={require('../assets/impWeb.png')}
+              />
               <Text style={{color: 'black', textAlign: 'center'}}>
                 Find a Rotarian
               </Text>
@@ -167,10 +167,10 @@ function HomePage() {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('IndiaLeaders')}>
             <View style={[styles.btnCont]}>
-              {/* <Image
+              <Image
                 style={{width: 29, height: 29}}
-                source={require('../assets/indiaLead.png')}
-              /> */}
+                source={require('../assets/impWeb.png')}
+              />
               <Text style={{color: 'black', textAlign: 'center'}}>
                 India Leaders
               </Text>
@@ -178,10 +178,10 @@ function HomePage() {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('DistGov')}>
             <View style={[styles.btnCont]}>
-              {/* <Image
+              <Image
                 style={{width: 29, height: 29}}
-                source={require('../assets/indiaLead.png')}
-              /> */}
+                source={require('../assets/impWeb.png')}
+              />
               <Text style={{color: 'black', textAlign: 'center'}}>
                 District Governers
               </Text>
@@ -190,10 +190,10 @@ function HomePage() {
           <TouchableOpacity
             onPress={() => navigation.navigate('RegionalLeader')}>
             <View style={[styles.btnCont]}>
-              {/* <Image
+              <Image
                 style={{width: 29, height: 29}}
-                source={require('../assets/indiaLead.png')}
-              /> */}
+                source={require('../assets/impWeb.png')}
+              />
               <Text style={{color: 'black', textAlign: 'center'}}>
                 Regional Leaders
               </Text>

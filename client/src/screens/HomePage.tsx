@@ -19,7 +19,6 @@ function HomePage() {
   const navigation = useNavigation<any>();
   const {user} = useSelector((state: any) => state.user);
 
-
   // console.log(user,"user")
 
   return (
@@ -80,9 +79,11 @@ function HomePage() {
               <View style={[styles.clubCard]}>
                 <Image
                   source={require('../assets/ClubName.png')}
-                  style={{height: 37, width: 36,marginRight:'2.5%'}}
+                  style={{height: 37, width: 36, marginRight: '2.5%'}}
                 />
-                <Text style={{color:'white',fontSize:20,width:'50%'}}>{user?.clubName}</Text>
+                <Text style={{color: 'white', fontSize: 20, width: '50%'}}>
+                  {user?.clubName}
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -136,10 +137,15 @@ function HomePage() {
                 fromAddRegLead: false,
               })
             }>
-            <Image
-              style={[styles.btn]}
-              source={require('../assets/findRot.png')}
-            />
+            <View style={[styles.btnCont]}>
+              {/* <Image
+                style={{width: 29, height: 29}}
+                source={require('../assets/indiaLead.png')}
+              /> */}
+              <Text style={{color: 'black', textAlign: 'center'}}>
+                Find a Rotarian
+              </Text>
+            </View>
           </TouchableOpacity>
           {/* <TouchableOpacity>
             <Image
@@ -149,29 +155,49 @@ function HomePage() {
           </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => Linking.openURL('https://rotaryreachout.com/')}>
-            <Image
-              style={[styles.btn]}
-              source={require('../assets/impWeb.png')}
-            />
+            <View style={[styles.btnCont]}>
+              <Image
+                style={{width: 29, height: 29}}
+                source={require('../assets/impWeb.png')}
+              />
+              <Text style={{color: 'black', textAlign: 'center'}}>
+                Important Websites
+              </Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('IndiaLeaders')}>
-            <Image
-              style={[styles.btn]}
-              source={require('../assets/indiaLead.png')}
-            />
+            <View style={[styles.btnCont]}>
+              {/* <Image
+                style={{width: 29, height: 29}}
+                source={require('../assets/indiaLead.png')}
+              /> */}
+              <Text style={{color: 'black', textAlign: 'center'}}>
+                India Leaders
+              </Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('DistGov')}>
-            <Image
-              style={[styles.btn]}
-              source={require('../assets/DistGov.png')}
-            />
+            <View style={[styles.btnCont]}>
+              {/* <Image
+                style={{width: 29, height: 29}}
+                source={require('../assets/indiaLead.png')}
+              /> */}
+              <Text style={{color: 'black', textAlign: 'center'}}>
+                District Governers
+              </Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('RegionalLeader')}>
-            <Image
-              style={[styles.btn]}
-              source={require('../assets/regLead.png')}
-            />
+            <View style={[styles.btnCont]}>
+              {/* <Image
+                style={{width: 29, height: 29}}
+                source={require('../assets/indiaLead.png')}
+              /> */}
+              <Text style={{color: 'black', textAlign: 'center'}}>
+                Regional Leaders
+              </Text>
+            </View>
           </TouchableOpacity>
           {/* <TouchableOpacity>
             <Image
@@ -220,6 +246,15 @@ function HomePage() {
 }
 
 const styles = StyleSheet.create({
+  btnCont: {
+    backgroundColor: '#8FBFE8',
+    borderRadius: 5,
+    height: 74,
+    width: 90,
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   adminButton: {
     backgroundColor: '#8FBFE8',
     padding: 20,
@@ -299,7 +334,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: '2.5%',
     paddingHorizontal: '5%',
-    alignItems:'center'
+    alignItems: 'center',
   },
   userName: {
     fontSize: 36,

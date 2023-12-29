@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {NativeBaseProvider, Box, VStack, Center} from 'native-base';
+// import {NativeBaseProvider, Box, VStack, Center} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import DefaultAvatar from '../assets/user-avatar.png';
@@ -107,6 +107,7 @@ function HomePage() {
               <Text style={styles.adminButtonText}>Events & Posts</Text>
             </TouchableOpacity>
           </View>
+          {user.role === 'admin' ? (
           <View
             style={{
               alignSelf: 'center',
@@ -127,6 +128,7 @@ function HomePage() {
               <Text style={styles.adminButtonText}>Create Event/Post</Text>
             </TouchableOpacity>
           </View>
+          ):null}
         </View>
         <View style={[styles.btnContainer]}>
           <TouchableOpacity

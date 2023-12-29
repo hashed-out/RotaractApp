@@ -102,7 +102,7 @@ const ProfileScreen = ({navigation}: Props) => {
 
           <View style={styles.detailContainer}>
           <Image source={require('../assets/rotcir.png')} style={styles.icon} />
-  <Text style={styles.detailText}>{user?.designation} of rotarat of {user?.clubName}</Text>
+  <Text style={styles.detailText}>{user?.designation} at {user?.clubName}</Text>
           </View>
           <View style={styles.card}>
       <View style={styles.detailContainer}>
@@ -135,7 +135,7 @@ const ProfileScreen = ({navigation}: Props) => {
               <Text style={styles.buttonText}>Log Out</Text>
             </TouchableOpacity>
           </View>
-
+        {user.role === 'admin' ? (
           <View style={styles.tabContainer}>
             <TouchableOpacity onPress={() => setActive(0)}>
               <Text
@@ -149,9 +149,10 @@ const ProfileScreen = ({navigation}: Props) => {
               </Text>
             </TouchableOpacity>
           </View>
+          ):null}
         </Animated.View>
 
-        {active === 0 && (
+        {user.role === 'admin' && active === 0 && (
           <>
             {data &&
               data.map((item) => (
@@ -168,6 +169,7 @@ const ProfileScreen = ({navigation}: Props) => {
             )}
           </>
         )}
+
       </SafeAreaView>
     </ScrollView>
   );

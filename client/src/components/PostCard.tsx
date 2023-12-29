@@ -218,9 +218,9 @@ const PostCard = ({
           </View>
         )}
 
-        <Text style={styles.caption}>
+        {/* <Text style={styles.caption}>
           caption dncsnrndn ndjdjdd djdkdkdkdkdkkd djdkdkdkdkd djdjddkdkdkdkkdkd
-        </Text>
+        </Text> */}
         <View className="flex-row items-center left-[10px] top-[5px]">
           <TouchableOpacity onPress={() => reactsHandler(item)}>
             {item.likes.length > 0 ? (

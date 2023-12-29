@@ -24,70 +24,68 @@ function HomePage() {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={[styles.mainContainer]}>
-        <View>
-          <View style={[styles.container]}>
+        <View style={[styles.container]}>
+          <View
+            className="flex-row justify-between"
+            style={[styles.headerContainer]}>
             <View
               className="flex-row justify-between"
-              style={[styles.headerContainer]}>
-              <View
-                className="flex-row justify-between"
-                style={{alignItems: 'center'}}>
-                {/* <TouchableOpacity>
+              style={{alignItems: 'center'}}>
+              {/* <TouchableOpacity>
                   <Image
                     source={require('../assets/hamburger.png')}
                     style={{height: 20, width: 21}}
                   />
                 </TouchableOpacity> */}
+              <Image
+                source={require('../assets/rlw.png')}
+                style={{
+                  height: 53,
+                  width: 150,
+                  marginLeft: '3.5%',
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
+            <View
+              className="flex-row justify-between"
+              style={{alignItems: 'center'}}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Notifications')}>
                 <Image
-                  source={require('../assets/rlw.png')}
-                  style={{
-                    height: 53,
-                    width: 150,
-                    marginLeft: '3.5%',
-                    resizeMode: 'contain',
-                  }}
+                  source={require('../assets/bell.png')}
+                  style={{height: 25, width: 25}}
                 />
-              </View>
-              <View
-                className="flex-row justify-between"
-                style={{alignItems: 'center'}}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Notifications')}>
-                  <Image
-                    source={require('../assets/bell.png')}
-                    style={{height: 25, width: 25}}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Profile')}>
-                  {/* <Image
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                {/* <Image
                     source={require('../assets/user-avatar.png')}
                     style={{height: 40, width: 40, marginLeft: '2.5%'}}
                   /> */}
-                  <Image
-                    source={
-                      user.avatar?.url ? {uri: user.avatar?.url} : DefaultAvatar
-                    }
-                    borderRadius={15}
-                    style={{height: 30, width: 30, marginLeft: '2.5%'}}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <Text style={[styles.userName]}>Welcome, {user?.name}</Text>
-            <TouchableOpacity style={{alignItems: 'center', marginTop: '2.5%'}}>
-              <View style={[styles.clubCard]}>
                 <Image
-                  source={require('../assets/ClubName.png')}
-                  style={{height: 37, width: 36, marginRight: '2.5%'}}
+                  source={
+                    user.avatar?.url ? {uri: user.avatar?.url} : DefaultAvatar
+                  }
+                  borderRadius={15}
+                  style={{height: 30, width: 30, marginLeft: '2.5%'}}
                 />
-                <Text style={{color: 'white', fontSize: 20, width: '50%'}}>
-                  {user?.clubName}
-                </Text>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
-
+          <Text style={[styles.userName]}>Welcome, {user?.name}</Text>
+          <TouchableOpacity style={{alignItems: 'center', marginTop: '2.5%'}}>
+            <View style={[styles.clubCard]}>
+              <Image
+                source={require('../assets/ClubName.png')}
+                style={{height: 37, width: 36, marginRight: '2.5%'}}
+              />
+              <Text style={{color: 'white', fontSize: 20}}>
+                {user?.clubName}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{marginTop:'10%'}}>
           <View
             style={{
               alignSelf: 'center',
@@ -129,7 +127,11 @@ function HomePage() {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={[styles.btnContainer]}>
+        <View
+          style={[
+            styles.btnContainer,
+            {marginTop: user?.role === 'admin' ? '5%' : '20%'},
+          ]}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Search', {
@@ -218,7 +220,7 @@ function HomePage() {
             />
           </TouchableOpacity> */}
         </View>
-        {user.role === 'admin' ? (
+        {user?.role === 'admin' ? (
           <View
             style={{
               alignSelf: 'center',
@@ -293,7 +295,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: '5%',
   },
   card: {
     width: 326,
@@ -313,7 +314,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: '#fca30f',
     flex: 1,
-    // justifyContent: 'space-between',
     paddingBottom: '10%',
   },
   headerContainer: {

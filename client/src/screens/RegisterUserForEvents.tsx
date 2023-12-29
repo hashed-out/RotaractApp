@@ -61,26 +61,13 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
     }
   }, [item]);
 
-  const updateOneProfile = (item: any) => {
-    setData((prev: any) => {
-      return prev.map((user: any) => {
-        if (user?._id === item?._id) return item;
-        return user;
-      });
-    });
-  };
 
-  const filterProfileById = (id: any) => {
-    setData((prev: any): any => {
-      return prev?.filter((p: any) => p?._id !== id);
-    });
-  };
 
   const handleSearchChange = (e: any) => {
     if (e.length !== 0) {
       const filteredUsers =
         data &&
-        data.filter((i: any) => i.name.toLowerCase().includes(e.toLowerCase()));
+        data.filter((i: any) => i.userInfo?.name.toLowerCase().includes(e.toLowerCase()));
       setData(filteredUsers);
     } else {
       setData(list);
@@ -96,7 +83,7 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
           <HeaderCard />
           <View className="p-3">
             <Text className="text-[30px] text-[#000] font-[600]">
-              Bengaluru Rotarians
+              Registered Users
             </Text>
             <View className="relative">
               <Image
@@ -109,7 +96,7 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
               />
               <TextInput
                 onChangeText={e => handleSearchChange(e)}
-                placeholder="Search Rotarians...."
+                placeholder="Search Users...."
                 placeholderTextColor={'#000'}
                 className="w-full h-[38px] bg-[#0000000e] rounded-[8px] pl-8 text-[#000] mt-[10px]"
               />
@@ -118,25 +105,7 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
               data={data}
               showsVerticalScrollIndicator={false}
               renderItem={({item}: any) => {
-                const handleFollowUnfollow = async (e: any) => {
-                  try {
-                    if (e.followers.find((i: any) => i.userId === user._id)) {
-                      await unfollowUserAction({
-                        userId: user._id,
-                        users,
-                        followUserId: e._id,
-                      })(dispatch);
-                    } else {
-                      await followUserAction({
-                        userId: user._id,
-                        users,
-                        followUserId: e._id,
-                      })(dispatch);
-                    }
-                  } catch (error) {
-                    console.log(error, 'error');
-                  }
-                };
+           
 
                 return (
                   <TouchableOpacity
@@ -174,10 +143,6 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
                               />
                             )}
                           </View>
-
-                          <Text className="pl-3 text-[18px] text-black">
-                            {item.userInfo?.userName}
-                          </Text>
                           <Text className="pl-3 mt-1 text-[16px] text-[#444]">
                             {item.userInfo?.followers.length} followers
                           </Text>

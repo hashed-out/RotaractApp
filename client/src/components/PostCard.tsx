@@ -274,7 +274,7 @@ const PostCard = ({
           )}
           {Event && ( item.user._id === user._id || user?.role==='admin')  ? (
           <TouchableOpacity onPress={() => {
-              navigation.navigate('EventReg', {  
+              navigation.navigate('RegUser', {  
                 item: item,
                 navigation: navigation,
                 postId: postId,

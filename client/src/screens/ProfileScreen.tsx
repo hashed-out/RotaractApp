@@ -66,20 +66,8 @@ const ProfileScreen = ({navigation}: Props) => {
       <SafeAreaView style={styles.container}>
         <HeaderCard />
         <Animated.View style={[styles.profileContainer, { opacity: fadeIn }]}>
-          <View style={styles.headerContainer}>
-            <View>
-              <Text style={styles.userName}>{user?.name}</Text>
-    
-                <Text style={styles.followers}>
-                  {user?.followers.length} followers
-                </Text>
-              
-              <Text style={styles.designation}>
-              <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/128/9750/9750948.png' }} style={styles.icon} /> {user?.designation}
-              </Text>
-            </View>
-
-            <View style={styles.avatarContainer}>
+          
+          <View style={styles.avatarContainer}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('EditProfile')}
               >
@@ -89,8 +77,6 @@ const ProfileScreen = ({navigation}: Props) => {
                       ? { uri: user.avatar?.url }
                       : DefaultAvatar
                   }
-                  height={80}
-                  width={80}
                   borderRadius={100}
                   style={styles.avatar}
                 />
@@ -105,23 +91,35 @@ const ProfileScreen = ({navigation}: Props) => {
                 />
               )}
             </View>
+            <View style={styles.headerContainer}>
+            <View>
+              <Text style={styles.userName}>{user?.name}</Text>
+                <Text style={styles.followers}>
+                  {user?.followers.length} Followers
+                </Text>
+            </View>
           </View>
 
           <View style={styles.detailContainer}>
-  <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/128/724/724664.png' }} style={styles.icon} />
-  <Text style={styles.detailText}>{user?.clubName}</Text>
-</View>
-
-            <View>
-              <Text style={styles.detailText}>
-              <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/128/724/724664.png' }} style={styles.icon} /> {user?.contactNumber}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.detailText}>
-              <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/128/7718/7718904.png' }} style={styles.icon} /> {user?.email}
-              </Text>
-            </View>
+          <Image source={require('../assets/rotcir.png')} style={styles.icon} />
+  <Text style={styles.detailText}>{user?.designation} at {user?.clubName}</Text>
+          </View>
+          <View style={styles.card}>
+      <View style={styles.detailContainer}>
+        <Image
+          source={{ uri: 'https://cdn-icons-png.flaticon.com/128/724/724664.png' }}
+          style={styles.icon}
+        />
+        <Text style={styles.detailText}>{user?.contactNumber}</Text>
+      </View>
+      <View style={styles.detailContainer}>
+        <Image
+          source={{ uri: 'https://cdn-icons-png.flaticon.com/128/7718/7718904.png' }}
+          style={styles.icon}
+        />
+        <Text style={styles.detailText}>{user?.email}</Text>
+      </View>
+    </View>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -137,7 +135,7 @@ const ProfileScreen = ({navigation}: Props) => {
               <Text style={styles.buttonText}>Log Out</Text>
             </TouchableOpacity>
           </View>
-
+        {user.role === 'admin' ? (
           <View style={styles.tabContainer}>
             <TouchableOpacity onPress={() => setActive(0)}>
               <Text
@@ -151,9 +149,10 @@ const ProfileScreen = ({navigation}: Props) => {
               </Text>
             </TouchableOpacity>
           </View>
+          ):null}
         </Animated.View>
 
-        {active === 0 && (
+        {user.role === 'admin' && active === 0 && (
           <>
             {data &&
               data.map((item) => (
@@ -170,6 +169,7 @@ const ProfileScreen = ({navigation}: Props) => {
             )}
           </>
         )}
+
       </SafeAreaView>
     </ScrollView>
   );
@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 10,
+    alignSelf:'center',
   },
   userName: {
     fontSize: 30,
@@ -205,32 +206,44 @@ const styles = StyleSheet.create({
   avatarContainer: {
     position: 'relative',
     marginTop: 10,
+    alignSelf:'center'
   },
   avatar: {
-    height: 80,
-    width: 80,
+    height: 120,
+    width: 120,
     borderRadius: 100,
   },
   adminIcon: {
     position: 'absolute',
     bottom: 15,
     left: 0,
-    marginLeft: -7,
-    height: 24,
-    width: 24,
+    marginLeft: -4,
+    height: 30,
+    width: 30,
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 20,
+    margin: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    elevation: 3,
   },
   detailContainer: {
-    flexDirection: 'row', // Horizontal layout
-    alignItems: 'center', // Center items vertically
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   icon: {
-    width: 20, // Set the width of the icon
-    height: 20, // Set the height of the icon
-    marginRight: 8, // Add some space between the icon and text
+    width: 24,
+    height: 24,
+    marginRight: 10,
   },
   detailText: {
-    fontSize: 20,
-    color: '#000000',
+    fontSize: 16,
+    color: '#333333',
   },
   buttonContainer: {
     flexDirection: 'row',

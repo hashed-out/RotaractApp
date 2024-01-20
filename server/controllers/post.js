@@ -45,6 +45,7 @@ exports.createPost = catchAsyncErrors(async (req, res, next) => {
       isEvent:req.body.isEvent,
       eventDate:req.body.eventDate,
       eventVenue:req.body.eventVenue,
+      eventFee:req.body.eventFee,
     });
 
     await post.save();

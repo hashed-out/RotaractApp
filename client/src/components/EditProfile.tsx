@@ -17,20 +17,20 @@ import DefaultAvatar from '../assets/user-avatar.png';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-
 type Props = {
   navigation: any;
 };
 
-const EditProfile = ({navigation}: Props) => {
-  const {user, token} = useSelector((state: any) => state.user);
+const EditProfile = ({ navigation }: Props) => {
+  const { user, token } = useSelector((state: any) => state.user);
   const [avatar, setAvatar] = useState(user?.avatar?.url);
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({
     name: user.name,
-    userName: user?.userName,
-    bio: user?.bio,
+    contactNumber: user.contactNumber,
+    email: user.email,
   });
+
   const reloadUserData = async () => {
     try {
       const res = await axios.get(`${URI}/user-profile`, {
@@ -40,38 +40,46 @@ const EditProfile = ({navigation}: Props) => {
       });
       const updatedUser = res.data.user;
       setAvatar(updatedUser.avatar.url);
-      setUserData({
-        name: updatedUser.name,
-        userName: updatedUser.userName,
-        bio: updatedUser.bio,
-      });
+      // setUserData({
+      //   name: updatedUser.name,
+      //   contactNumber: updatedUser.contactNumber,
+      //   email: updatedUser.email,
+      // });
     } catch (error) {
-      console.error('Error reloading user data:');
+      console.error('Error reloading user data:', error);
     }
   };
-  
+
   useFocusEffect(
     React.useCallback(() => {
       // Reload user data including avatar when the screen comes into focus
       reloadUserData();
     }, [token]) // Dependency on token ensures that it reloads only when the token changes
   );
+
   const handleSubmitHandler = async () => {
-    if (userData.name.length !== 0 ) {
-        await axios.put(`${URI}/update-profile`,{
+    if (userData.name.length !== 0) {
+      try {
+        const res = await axios.put(
+          `${URI}/update-profile`,
+          {
             name: userData.name,
-            userName: userData.userName,
-            bio: userData.bio,
-        },{
+            contactNumber: userData.contactNumber,
+            email: userData.email,
+          },
+          {
             headers: {
-                Authorization: `Bearer ${token}`,
-              },
-        }).then((res:any) => {
-          // navigation.navigate('UserProfile', {
-          //   item: res.data.user,
-          // });
-            loadUser()(dispatch);
-        })
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        // Update the local user data in the Redux store
+        dispatch(loadUser());
+        // Optionally, you can also navigate to the user profile screen
+        // navigation.navigate('UserProfile', { item: res.data.user });
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
     }
   };
 
@@ -80,7 +88,6 @@ const EditProfile = ({navigation}: Props) => {
       width: 300,
       height: 300,
       cropping: true,
-      compressImageQuality: 0.8,
       includeBase64: true,
     }).then((image: ImageOrVideo | null) => {
       if (image) {
@@ -140,13 +147,6 @@ const EditProfile = ({navigation}: Props) => {
                   placeholderTextColor={'#000'}
                   className="text-[16px] text-[#000000b0]"
                 />
-                <TextInput
-                  value={userData.userName}
-                  onChangeText={e => setUserData({...userData, userName: e})}
-                  placeholder="Enter your userName..."
-                  placeholderTextColor={'#000'}
-                  className="text-[16px] mb-2 text-[#000000b0]"
-                />
               </View>
               <TouchableOpacity onPress={ImageUpload}>
                 <Image
@@ -160,17 +160,23 @@ const EditProfile = ({navigation}: Props) => {
             </View>
           </View>
           <View className="w-full border-t border-[#00000015] pt-2">
-            <Text className="text-[18px] font-[600] text-black">Bio</Text>
-            <TextInput
-              value={userData.bio}
-              onChangeText={e => setUserData({...userData, bio: e})}
-              placeholder="Enter your bio..."
-              placeholderTextColor={'#000'}
-              className="text-[16px] text-[#000000b0]"
-              multiline={true}
-              numberOfLines={4}
-            />
-          </View>
+        <Text className="text-[18px] font-[600] text-black">Contact Number</Text>
+        <TextInput
+          value={userData.contactNumber}
+          onChangeText={(e) => setUserData({ ...userData, contactNumber: e })}
+          placeholder="Enter your mobile number..."
+          placeholderTextColor={'#000'}
+          className="text-[16px] mb-2 text-[#000000b0]"
+        />
+        <Text className="text-[18px] font-[600] text-black">Email-Id</Text>
+        <TextInput
+          value={userData.email}
+          onChangeText={(e) => setUserData({ ...userData, email: e })}
+          placeholder="Enter your email address..."
+          placeholderTextColor={'#000'}
+          className="text-[16px] text-[#000000b0]"
+        />
+      </View>
         </View>
       </View>
     </SafeAreaView>

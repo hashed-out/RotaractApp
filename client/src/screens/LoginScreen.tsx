@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
   return (
     <LinearGradient
-      colors={['#fff', '#0074e4']}
+      colors={['#8FBFE8', '#0074e4']}
       style={styles.container}
     >
       <Animatable.View
@@ -75,6 +75,7 @@ const LoginScreen = ({ navigation }: Props) => {
           value={email}
           placeholderTextColor="#000"
           onChangeText={(text) => setEmail(text)}
+          keyboardType='email-address'
         />
         <TextInput
           style={styles.input}
@@ -146,9 +147,14 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: '#0074e4',
     padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    width:100,
+    borderRadius: 20, // Increase border radius for a rounded look
+    marginTop: 10,
+    marginBottom: 10,
+    width: 150, // Adjust width for a more spacious button
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2, // Add a black border
+    borderColor: '#fff', // Set the border color to black
   },
   loginButtonText: {
     color: 'white',

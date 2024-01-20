@@ -26,6 +26,9 @@ const postSchema = new mongoose.Schema(
     eventVenue: {
       type: String,
     },
+    eventFee:{
+      type:Number,
+    },
     registeredUser: [
       {
         userId: {

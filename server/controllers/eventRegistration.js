@@ -34,6 +34,8 @@ exports.registerForEvent = catchAsyncErrors(async (req, res, next) => {
     }
     event.registeredUser.push({
       userId,
+      url:myCloud.secure_url,
+      paymentPublicId:myCloud.public_id,
     });
 
     await event.save();

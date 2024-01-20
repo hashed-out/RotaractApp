@@ -56,17 +56,20 @@ const PostCard = ({
   const datetime = item.eventDate;
   const date = new Date(datetime);
 
-  const extractedDate = date.toDateString();
+  const extractedDate = date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  });
   const hours = date.getHours();
   const minutes = date.getMinutes();
 
   let timedate;
   if (hours > 12) {
-    timedate = `${hours - 12}:${minutes} pm`;
+    timedate = `${hours - 12}:${minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 })} pm`;
   } else {
-    timedate = `${hours}:${minutes} am`;
+    timedate = `${hours}:${minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 })} am`;
   }
-
   const profileHandler = async (e: any) => {
     await axios
       .get(`${URI}/get-user/${e._id}`, {
@@ -142,7 +145,9 @@ const PostCard = ({
     const options: any = {year: 'numeric', month: 'long', day: 'numeric'};
     return currentDate.toLocaleDateString(undefined, options);
   };
-
+  const createdAtDate = new Date(item.createdAt);
+  const options2 = { month: 'long', day: 'numeric', year: 'numeric' };
+  const formattedCreatedAt = createdAtDate.toLocaleDateString('en-US', options2);
   return (
     <View>
       <View style={styles.cardContainer}>
@@ -153,7 +158,7 @@ const PostCard = ({
               (item.user._id === user._id || user?.role === 'admin') &&
               setOpenModal(true)
             }>
-            <Text style={styles.deleteIcon}>...</Text>
+            <Image source={{ uri:'https://cdn-icons-png.flaticon.com/128/3132/3132919.png' }} style={{height:35, width:35}}/>
           </TouchableOpacity>
         ) : null}
         <View style={styles.headerContainer}>
@@ -171,7 +176,7 @@ const PostCard = ({
             <TouchableOpacity onPress={() => profileHandler(userInfo)}>
               <Text style={styles.userName}>{userInfo?.name}</Text>
             </TouchableOpacity>
-            <Text style={styles.postDate}>Posted on {getCurrentDate()}</Text>
+            <Text style={styles.postDate}>Posted on {formattedCreatedAt}</Text>
           </View>
         </View>
 
@@ -181,30 +186,26 @@ const PostCard = ({
             <View style={styles.eventDateContainer}>
               <Image
                 source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/128/591/591576.png',
+                  uri: 'https://cdn-icons-png.flaticon.com/128/6353/6353132.png',
                 }}
                 style={styles.icon}
               />
               <Text style={styles.eventDate}>
-                {extractedDate}{' '}
-                <Image
-                  source={{
-                    uri: 'https://cdn-icons-png.flaticon.com/128/2784/2784459.png',
-                  }}
-                  style={styles.icon}
-                />{' '}
-                {timedate}
+              {timedate}  {extractedDate}
               </Text>
             </View>
             <View style={styles.eventVenueContainer}>
               <Image
                 source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/128/11529/11529542.png',
+                  uri: 'https://cdn-icons-png.flaticon.com/128/6003/6003704.png',
                 }}
                 style={styles.icon}
               />
               <Text style={styles.eventVenue}>{item.eventVenue}</Text>
             </View>
+            <View style={styles.eventVenueContainer}>
+        <Text style={ styles.textcom}><Image source={{ uri:'https://cdn-icons-png.flaticon.com/128/7204/7204809.png' }} style={styles.icon}/>{item.eventFee}</Text>
+      </View>
           </View>
         )}
 
@@ -253,25 +254,6 @@ const PostCard = ({
               />
             )}
           </TouchableOpacity>
-          {Event &&  (
-           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('EventReg', {
-                item: item,
-                navigation: navigation,
-                postId: postId,
-              });
-            }}>
-            <Image
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/128/6997/6997143.png',
-              }}
-              width={30}
-              height={30}
-              className="ml-5"
-            />
-          </TouchableOpacity>
-          )}
           {Event && ( item.user._id === user._id || user?.role==='admin')  ? (
           <TouchableOpacity onPress={() => {
               navigation.navigate('RegUser', {  
@@ -288,8 +270,22 @@ const PostCard = ({
               className="ml-5"
             />
           </TouchableOpacity>
+          
           ):null}
-
+                  {Event &&  (
+          <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('EventReg', {
+              item: item,
+              navigation: navigation,
+              postId: postId,
+            });
+          }}
+          style={styles.regbutton}
+          >
+          <Text style={{ fontSize: 18, fontWeight: '600', color: '#000' }}>Register</Text>
+        </TouchableOpacity>
+          )}
         </View>
         {!isReply && (
           <View className="pl-[10px] pt-4 flex-row">
@@ -321,46 +317,83 @@ const PostCard = ({
             ))}
           </>
         )}
-        {openModal && (
-          <View className="flex-[1] justify-center items-center mt-[22]">
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={openModal}
-              onRequestClose={() => {
-                setOpenModal(!openModal);
-              }}>
-              <TouchableWithoutFeedback onPress={() => setOpenModal(false)}>
-                <View className="flex-[1] justify-end bg-[#00000059]">
-                  <TouchableWithoutFeedback onPress={() => setOpenModal(true)}>
-                    <View className="w-full bg-[#fff] h-[120] rounded-[20px] p-[20px] items-center shadow-[#000] shadow-inner">
-                      <TouchableOpacity
-                        className="w-full bg-[#00000010] h-[50px] rounded-[10px] items-center flex-row pl-5"
-                        onPress={() => deletePostHandler(item._id)}>
-                        <Text className="text-[18px] font-[600] text-[#e24848]">
-                          Delete
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
-              </TouchableWithoutFeedback>
-            </Modal>
-          </View>
-        )}
+{openModal && (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 22 }}>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={openModal}
+      onRequestClose={() => {
+        setOpenModal(!openModal);
+      }}>
+      <TouchableWithoutFeedback onPress={() => setOpenModal(false)}>
+        <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000059' }}>
+          <TouchableWithoutFeedback onPress={() => setOpenModal(true)}>
+            <View style={{ width: '100%', backgroundColor: '#fff', flexDirection: 'row', height: 120, borderRadius: 20, padding: 20, alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84 }}>
+              <TouchableOpacity
+                style={{ flex: 1, backgroundColor: '#e24848', height: 50, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginRight: 10 }}
+                onPress={() => deletePostHandler(item._id)}>
+                <Text style={{ fontSize: 18, fontWeight: '600', color: '#fff' }}>
+                  Delete
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flex: 1, backgroundColor: 'green', height: 50, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
+                onPress={() => setOpenModal(false)}>
+                <Text style={{ fontSize: 18, fontWeight: '600', color: '#fff' }}>No</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
+  </View>
+)}
+
+
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  textcom:{
+    textAlignVertical:'center',
+    fontWeight:'bold',
+    color:'black',
+    fontSize:20,
+  },
+  regbutton:{ 
+    flex: 1, 
+    backgroundColor: '#fff',
+    height: 30,maxWidth:120,
+    borderRadius: 6, 
+    alignItems: 'center', justifyContent: 'center',
+    marginStart:100,
+    borderColor:'#000',
+    borderWidth:2,
+    shadowColor: '#333',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 3, },
+
   cardContainer: {
     borderWidth: 1,
-    borderColor: '#1450a3',
+    borderColor: '#000',
     borderRadius: 12,
     padding: 16,
     margin: 16,
     backgroundColor: '#fff',
+    overflow: 'hidden', // Ensure rounded corners are applied
+    elevation: 3, // Add shadow for a card-like effect (Android)
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 3.84,
   },
   deleteButton: {
     position: 'absolute',
@@ -371,6 +404,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+    marginEnd:20,
   },
   userProfilePhoto: {
     width: 48,
@@ -381,8 +415,14 @@ const styles = StyleSheet.create({
   userInfoContainer: {
     flex: 1,
   },
+  regfee: {
+    flexDirection: 'row',  // Set flexDirection to 'row'
+    alignItems: 'center',   // Center items vertically
+    paddingBottom: 10,
+    resizeMode:'contain',
+  },
   userName: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
   },
@@ -395,6 +435,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 12,
+    textAlign: 'justify',
   },
   eventDetailsContainer: {
     flexDirection: 'column',
@@ -405,22 +446,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 16,
-    height: 16,
+    width: 25,
+    height: 25,
     marginRight: 4,
   },
   eventDate: {
-    fontSize: 14,
-    color: '#333',
+    fontSize: 16,
+    color: '#000',
+    textTransform: 'uppercase',
   },
   eventVenueContainer: {
     paddingTop: 8,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   eventVenue: {
-    fontSize: 14,
-    color: '#333',
+    fontSize: 16,
+    color: '#000',
+    alignSelf:'flex-end',
   },
   deleteIcon: {
     fontSize: 20,

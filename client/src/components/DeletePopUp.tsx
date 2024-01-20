@@ -20,16 +20,12 @@ const DeletePopUp = ({
           <View style={Styles.modalView}>
             <View style={{display:'flex',alignItems:'center'}}>
               <Text style={{fontSize:20,fontWeight:'500',color:'black'}}>
-                Delete
-              </Text>
-              <Text
-                style={{marginTop:'1%',color:'black'}}>
-                Are you sure you want to delete?
+              Are you Sure?
               </Text>
             </View>
             <View style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
             <TouchableOpacity
-            style={[Styles.signupButton]}
+            style={[Styles.nsignupButton]}
             onPress={handleNo}>
             <Text style={[Styles.signupButtonText]}>No</Text>
           </TouchableOpacity>
@@ -53,7 +49,14 @@ const Styles = StyleSheet.create({
         textAlign: 'center',
       },
     signupButton: {
-        backgroundColor: '#0074e4',
+        backgroundColor: 'green',
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 20,
+        width: 100,
+      },
+      nsignupButton: {
+        backgroundColor: 'red',
         padding: 10,
         borderRadius: 5,
         marginTop: 20,

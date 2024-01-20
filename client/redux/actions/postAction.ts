@@ -2,6 +2,7 @@ import axios from 'axios';
 import {URI} from '../URI';
 import {Dispatch} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
 // create post
 export const createPostAction =
@@ -13,6 +14,7 @@ export const createPostAction =
     isEvent: boolean,
     eventVenue: string,
     eventDate: Date,
+    eventFee: Number,
   ) =>
   async (dispatch: Dispatch<any>) => {
     try {
@@ -25,7 +27,7 @@ export const createPostAction =
 
       const {data} = await axios.post(
         `${URI}/create-post`,
-        {title, image, user, replies,isEvent,eventVenue,eventDate},
+        {title, image, user, replies,isEvent,eventVenue,eventDate,eventFee},
         {
           headers: {
             Authorization: `Bearer ${token}`,

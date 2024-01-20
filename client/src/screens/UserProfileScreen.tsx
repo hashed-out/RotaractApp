@@ -4,32 +4,35 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  StyleSheet,
+  Modal,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  followUserAction,
-  unfollowUserAction,
-} from '../../redux/actions/userAction';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { followUserAction, unfollowUserAction } from '../../redux/actions/userAction';
 import PostCard from '../components/PostCard';
 import DefaultAvatar from '../assets/user-avatar.png';
+import HeaderCard from '../components/HeaderCard';
 
 type Props = {
   route: any;
   navigation: any;
 };
 
-const UserProfileScreen = ({navigation, route}: Props) => {
-  const {users, user, isLoading} = useSelector((state: any) => state.user);
+const UserProfileScreen = ({ navigation, route }: Props) => {
+  const { users, user, isLoading } = useSelector((state: any) => state.user);
   const [imagePreview, setImagePreview] = useState(false);
   const [active, setActive] = useState(0);
-  const {posts} = useSelector((state: any) => state.post);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalImage, setModalImage] = useState('');
+  const { posts } = useSelector((state: any) => state.post);
   const [postData, setPostsData] = useState([]);
   const [repliesData, setRepliesData] = useState([]);
   const d = route.params?.item;
   const [data, setData] = useState(d);
   const dispatch = useDispatch();
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     if (users) {
@@ -37,10 +40,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
       setData(userData);
     }
     if (posts) {
-      const myPosts = posts.filter((post: any) =>
-        post.replies.some((reply: any) => reply.user._id === d._id),
-      );
-
+      const myPosts = posts.filter((post: any) => post.replies.some((reply: any) => reply.user._id === d._id));
       setRepliesData(myPosts.filter((post: any) => post.replies.length > 0));
 
       const myUserPosts = posts.filter((post: any) => post.user._id === d._id);
@@ -67,115 +67,99 @@ const UserProfileScreen = ({navigation, route}: Props) => {
       console.log(error, 'error');
     }
   };
+
+
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(data.avatar?.url);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
   return (
     <>
+      <HeaderCard />
       {data && (
-        <SafeAreaView>
-          {imagePreview ? (
-            <TouchableOpacity
-              className="h-screen bg-white w-full items-center justify-center"
-              onPress={() => setImagePreview(!imagePreview)}>
-                
-              <Image
-                source={data.avatar?.url ? { uri: data.avatar?.url } : DefaultAvatar}
-                width={250}
-                height={250}
-                style={{height:250,width:250}}
-                borderRadius={500}
-              />
-            </TouchableOpacity>
-          ) : (
-            <View className="p-2">
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Image
-                  source={{
-                    uri: 'https://cdn-icons-png.flaticon.com/512/2223/2223615.png',
-                  }}
-                  height={25}
-                  width={25}
-                />
-              </TouchableOpacity>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <View className="w-full flex-row">
-                  <View className='w-[80%]'>
-                    <Text className="pt-3 text-[22px] text-black">
-                      {data.name}
+        <SafeAreaView style={styles.container}>
+          <View style={styles.contentContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.userInfoContainer}>
+                <View style={styles.userInfo}>
+                  <Text style={styles.userName}>{data.name}</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.userInfoText}>
+                      {data.followers.length} followers
                     </Text>
-                    {data.userName && (
-                      <Text className="py-2 text-[16px] text-[#0000009d]">
-                        {data.userName}
-                      </Text>
-                    )}
-                    {data.bio && (
-                      <Text className="py-2 text-[16px] text-[#000000c4]">
-                        {data.bio}
-                      </Text>
-                    )}
-                    <TouchableOpacity
-                      // onPress={() =>
-                      //   navigation.navigate('FollowerCard', {
-                      //     item: data,
-                      //     followers: data?.followers,
-                      //     following: data?.following,
-                      //   })}
-                      >
-                      <Text className="py-2 text-[18px] text-[#000000c7]">
-                        {data.followers.length} followers
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => setImagePreview(!imagePreview)}>
-                    <View className="relative">
-                      <Image
-                        source={data.avatar?.url ? { uri: data.avatar?.url } : DefaultAvatar}
-                        width={60}
-                        height={60}
-                        borderRadius={100}
-                        style={{height:80,width:80}}
-                      />
-                      {data.role === 'Admin' && (
-                        <Image
-                          source={{
-                            uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828640.png',
-                          }}
-                          width={20}
-                  height={20}
-                  style={{
-                    position: 'absolute',
-                    bottom: 17,  // Adjust this value to move the icon up or down
-                    left: 0,
-                    marginLeft: -1,  // Adjust this value for horizontal positioning
-                  }}
-                        />
-                      )}
-                    </View>
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity
-                  className="mt-2 rounded-[8px] w-full flex-row justify-center items-center h-[38px] bg-black"
+                  style={styles.avatarContainer}
+                  onPress={() => handleImageClick(data.avatar?.url)}>
+                  <View style={styles.relativeContainer}>
+                    <Image
+                      source={data.avatar?.url ? { uri: data.avatar?.url } : DefaultAvatar}
+                      style={styles.avatarImage}
+                    />
+                    {data.role === 'admin' && (
+                      <Image
+                        source={{ uri: 'https://cdn-icons-png.flaticon.com/128/10629/10629607.png' }}
+                        style={styles.adminIcon}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.detailContainer}>
+          <Image source={require('../assets/rotcir.png')} style={styles.icon} />
+          <Text style={styles.detailText}>{data?.designation}</Text>
+          </View>
+          <View style={styles.detailContainer}>
+          <Image source={require('../assets/rotcir.png')} style={styles.icon} />
+          <Text style={styles.detailText}>{user?.clubName}</Text>
+          </View>
+      <View style={styles.detailContainer}>
+        <Image
+          source={{ uri: 'https://cdn-icons-png.flaticon.com/128/724/724664.png' }}
+          style={styles.icon}
+        />
+        <Text style={styles.detailText}>+91 {data?.contactNumber}</Text>
+      </View>
+      <View style={styles.detailContainer}>
+        <Image
+          source={{ uri: 'https://cdn-icons-png.flaticon.com/128/7718/7718904.png' }}
+          style={styles.icon}
+        />
+        <Text style={styles.detailText}>{data?.email}</Text>
+      </View>
+
+                <TouchableOpacity
+                  style={styles.followButton}
                   onPress={FollowUnfollowHandler}>
-                  <Text className="text-white text-[18px]">
+                  <Text style={styles.followButtonText}>
                     {data.followers.find((i: any) => i.userId === user._id)
                       ? 'Following'
                       : 'Follow'}
                   </Text>
                 </TouchableOpacity>
-                <View className="w-full border-b border-b-[#00000032] pt-5 pb-2 relative">
-                <View className="w-[100%] m-auto flex-row justify-center">
+
+                {data.role === 'admin' && (
+                  <View style={styles.tabContainer}>
                     <TouchableOpacity onPress={() => setActive(0)}>
                       <Text
-                        className="text-[18px] pl-3 text-black"
-                        style={{opacity: active === 0 ? 1 : 0.6}}>
-                        {' '}
-                        Posts
+                        style={[
+                          styles.tabText,
+                          { opacity: active === 0 ? 1 : 0.6 },
+                        ]}>
+                        Events and Posts by {data?.name}
                       </Text>
                     </TouchableOpacity>
+                    <View style={styles.tabIndicator} />
                   </View>
-                    <View className="w-[100%] absolute h-[1px] bg-black left-[-10px] bottom-0" />
-                </View>
-                {active === 0 && (
-                  <>
+                )}
+
+                {data.role === 'admin' && active === 0 && (
+                  <View style={styles.postsContainer}>
                     {postData &&
                       postData.map((item: any) => (
                         <PostCard
@@ -185,11 +169,11 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                         />
                       ))}
                     {postData.length === 0 && (
-                      <Text className="text-black py-10 text-center text-[18px]">
+                      <Text style={styles.noPostText}>
                         No Post yet!
                       </Text>
                     )}
-                  </>
+                  </View>
                 )}
 
                 {active === 1 && (
@@ -204,19 +188,189 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                         />
                       ))}
                     {active !== 1 && postData.length === 0 && (
-                      <Text className="text-black py-10 text-center text-[18px]">
+                      <Text style={styles.noPostText}>
                         No Post yet!
                       </Text>
                     )}
                   </>
                 )}
-              </ScrollView>
+
+            </ScrollView>
+          </View>
+          <Modal
+            transparent
+            visible={selectedImage !== null}
+            onRequestClose={closeModal}>
+            <View style={styles.modalContainer}>
+              <TouchableOpacity style={styles.modalCloseButton} onPress={closeModal}>
+                <Text style={styles.modalCloseText}>Close</Text>
+              </TouchableOpacity>
+              <Image source={data.avatar?.url ? { uri: data.avatar?.url } : DefaultAvatar} style={styles.modalImage} />
             </View>
-          )}
+          </Modal>
         </SafeAreaView>
       )}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  detailContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    marginVertical: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E5E5E5',
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  container: {
+    flex: 1,
+  },
+
+  
+  contentContainer: {
+    padding: 16,
+  },
+  userInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  userInfo: {
+    width: '70%',
+  },
+  userName: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+  userInfoText: {
+    fontSize: 18,
+    color: '#000000c7',
+    paddingTop: 5,
+  },
+  avatarContainer: {
+    position: 'relative',
+    marginTop: 10,
+  },
+  relativeContainer: {
+    position: 'relative',
+  },
+  avatarImage: {
+    height: 85,
+    width: 85,
+    borderRadius: 100,
+  },
+  adminIcon: {
+    position: 'absolute',
+    bottom: 5,
+    left: -8,
+    height: 30,
+    width: 30,
+    zIndex: 1,
+  },
+  detailsContainer: {
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E5E5E5',
+    padding: 15,
+    marginVertical: 5,
+  },
+  detail: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  detailText: {
+    fontSize: 16,
+    color: '#333333',
+    fontWeight: 'bold',
+  },
+  followButton: {
+    marginTop: 20,
+    borderRadius: 8,
+    backgroundColor: 'black',
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  followButtonText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: '#00000032',
+    paddingBottom: 2,
+    marginTop: 20,
+  },
+  tabText: {
+    fontSize: 18,
+    paddingLeft: 3,
+    color: 'black',
+  },
+  tabIndicator: {
+    backgroundColor: 'black',
+    height: 1,
+    width: '50%',
+    alignSelf: 'center',
+  },
+  postsContainer: {
+    paddingBottom: 120,
+  },
+  noPostText: {
+    fontSize: 18,
+    color: 'black',
+    textAlign: 'center',
+    paddingTop: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  modalCloseButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 8,
+  },
+  modalCloseText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  modalImage: {
+    width: '90%',
+    height: '50%',
+    borderRadius:20,
+    borderColor:'#fff',
+    borderWidth:5,
+    resizeMode: 'contain',  // Add this line to ensure the image is fully visible
+  },
+});
 
 export default UserProfileScreen;

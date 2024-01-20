@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "react-native-paper": "^5.11.6",
     "watchman": "^1.0.0"
   }
 }

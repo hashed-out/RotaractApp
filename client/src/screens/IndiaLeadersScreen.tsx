@@ -6,6 +6,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -144,11 +145,13 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
 
                 return (
                   <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('UserProfile', {
-                        item: item,
-                      })
-                    }>
+                  onPress={() =>
+                    navigation.navigate('UserProfile', {
+                      item: item,
+                    })
+                  }
+                  style={styles.userCard}
+                >
                     <View className="flex-row my-3">
                       <Image
                         source={
@@ -161,10 +164,10 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                         borderRadius={100}
                         style={{height: 40, width: 40}}
                       />
-                      <View className="w-[90%] flex-row justify-between border-b border-[#00000020] pb-2">
+                      <View className="w-[90%] flex-row justify-between   pb-2">
                         <View>
                           <View className="flex-row items-center relative">
-                            <Text className="pl-3 text-[18px] text-black">
+                            <Text className="pl-3 text-[20px] text-black">
                               {item.name}
                             </Text>
                             {item?.role === 'Admin' && (
@@ -184,9 +187,9 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
                           <Text className="pl-3 text-[16px] text-black">
                             Club: {item?.clubName}
                           </Text>
-                          <Text className="pl-3 mt-1 text-[16px] text-[#444]">
+                          {/* <Text className="pl-3 mt-1 text-[16px] text-[#444]">
                             {item.followers.length} followers
-                          </Text>
+                          </Text> */}
                         </View>
                         {/* <View style={{paddingRight: 10, paddingTop: 18}}>
                           <TouchableOpacity
@@ -213,5 +216,23 @@ const RegionalLeadersScreen = ({navigation}: Props) => {
     </>
   );
 };
+const styles = StyleSheet.create({
+userCard: {
+  backgroundColor: '#fff',
+  borderRadius: 12,
+  marginVertical: 10,
+  overflow: 'hidden',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 2,
+    height: 2,
+  },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+  elevation: 5,
+  borderWidth:2,
+  padding:5,
+},
 
+});
 export default RegionalLeadersScreen;

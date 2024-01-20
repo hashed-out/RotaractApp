@@ -1,14 +1,29 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const HeaderCard: React.FC = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.cardContainer}>
-      <Image
-        source={require('../assets/rl.png')}
-        style={styles.logo}
-      />
-      <Text style={styles.appTitle}>ROTO CONNECT</Text>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backIconContainer}
+      >
+        <Image
+          source={{
+            uri: 'https://cdn-icons-png.flaticon.com/128/545/545680.png',
+          }}
+          style={styles.backIcon}
+        />
+      </TouchableOpacity>
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../assets/rlw.png')}
+          style={styles.logo}
+        />
+      </View>
     </View>
   );
 };
@@ -17,19 +32,35 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#fff', // Example background color, replace with your color
+    justifyContent: 'space-between', // Center the content horizontally with space between
+    padding: 8,
+    width: '100%',
+    backgroundColor: '#3A6CBD', // Light Blue background color
+    borderBottomLeftRadius: 20, // Unique shape design
+    borderBottomRightRadius: 20, // Unique shape design
+    borderWidth: 2, // Navy Blue border
+    borderColor: '#17458F', // Navy Blue border color
+  },
+  logoContainer: {
+    flex: 1,
+    alignItems: 'center', // Center the content vertically
   },
   logo: {
-    width: 150,
-    height: 40,
-    // Assuming the logo is a square, adjust as needed
-    marginRight: 12,
+    width: 200,
+    height: 50,
+    alignSelf: 'center', // Center the image within its container
+    resizeMode: 'contain', // Ensure the logo is fully visible within the specified dimensions
   },
-  appTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#191d88', // Example text color, replace with your color
+  backIconContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 16,
+    zIndex: 1,
+  },
+  backIcon: {
+    width: 30,
+    height: 30,
+    tintColor: '#fff', // Navy Blue color for the back icon
   },
 });
 

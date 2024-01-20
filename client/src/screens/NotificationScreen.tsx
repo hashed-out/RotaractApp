@@ -133,7 +133,7 @@ const NotificationScreen = ({navigation}: Props) => {
                             <Image
                               source={users.find(
                                 (user: any) => user._id === item.creator._id,
-                              )?.avatar.url ? {
+                              )?.avatar?.url ? {
                                 uri: users.find(
                                   (user: any) => user._id === item.creator._id,
                                 )?.avatar.url,} : DefaultAvatar

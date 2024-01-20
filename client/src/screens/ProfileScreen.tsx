@@ -36,11 +36,11 @@ const ProfileScreen = ({navigation}: Props) => {
   };
   useEffect(() => {
     if (posts && user) {
-      const myPosts = posts.filter((post) => post.user._id === user._id);
+      const myPosts = posts.filter((post: { user: { _id: any; }; }) => post.user._id === user._id);
       setData(myPosts);
+      console.log("lol" + myPosts);
     }
-  }, [posts, user]);
-
+  }, [posts, user,dispatch]);
   useEffect(() => {
     if (posts && user) {
       const myReplies = posts.filter((post: any) =>
@@ -62,15 +62,16 @@ const ProfileScreen = ({navigation}: Props) => {
   }, [fadeIn]);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={{ backgroundColor:'#fff' }}>
+    <HeaderCard />
+
+    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor:'#fff', }}>
       <SafeAreaView style={styles.container}>
-        <HeaderCard />
+        
         <Animated.View style={[styles.profileContainer, { opacity: fadeIn }]}>
-          
+        
           <View style={styles.avatarContainer}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('EditProfile')}
-              >
+              <TouchableOpacity>
                 <Image
                   source={
                     user.avatar?.url
@@ -91,6 +92,7 @@ const ProfileScreen = ({navigation}: Props) => {
                 />
               )}
             </View>
+            
             <View style={styles.headerContainer}>
             <View>
               <Text style={styles.userName}>{user?.name}</Text>
@@ -102,15 +104,18 @@ const ProfileScreen = ({navigation}: Props) => {
 
           <View style={styles.detailContainer}>
           <Image source={require('../assets/rotcir.png')} style={styles.icon} />
-  <Text style={styles.detailText}>{user?.designation} at {user?.clubName}</Text>
+          <Text style={styles.detailText}>{user?.designation}</Text>
           </View>
-          <View style={styles.card}>
+          <View style={styles.detailContainer}>
+          <Image source={require('../assets/rotcir.png')} style={styles.icon} />
+          <Text style={styles.detailText}>{user?.clubName}</Text>
+          </View>
       <View style={styles.detailContainer}>
         <Image
           source={{ uri: 'https://cdn-icons-png.flaticon.com/128/724/724664.png' }}
           style={styles.icon}
         />
-        <Text style={styles.detailText}>{user?.contactNumber}</Text>
+        <Text style={styles.detailText}>+91 {user?.contactNumber}</Text>
       </View>
       <View style={styles.detailContainer}>
         <Image
@@ -119,7 +124,6 @@ const ProfileScreen = ({navigation}: Props) => {
         />
         <Text style={styles.detailText}>{user?.email}</Text>
       </View>
-    </View>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -135,24 +139,7 @@ const ProfileScreen = ({navigation}: Props) => {
               <Text style={styles.buttonText}>Log Out</Text>
             </TouchableOpacity>
           </View>
-        {user.role === 'admin' ? (
-          <View style={styles.tabContainer}>
-            <TouchableOpacity onPress={() => setActive(0)}>
-              <Text
-                style={[
-                  styles.tabText,
-                  { opacity: active === 0 ? 1 : 0.6 },
-                
-                ]}
-              >
-                Your Events
-              </Text>
-            </TouchableOpacity>
-          </View>
-          ):null}
-        </Animated.View>
-
-        {user.role === 'admin' && active === 0 && (
+          {user.role === 'admin' && active === 0 && (
           <>
             {data &&
               data.map((item) => (
@@ -163,15 +150,15 @@ const ProfileScreen = ({navigation}: Props) => {
                 />
               ))}
             {data.length === 0 && (
-              <Text style={styles.noPostsText}>
-                You have no posts yet!
-              </Text>
+            null
             )}
           </>
         )}
-
+        </Animated.View>
+        
       </SafeAreaView>
     </ScrollView>
+    </View>
   );
 };
 
@@ -179,6 +166,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingBottom:70,
   },
   profileContainer: {
     paddingHorizontal: 16,
@@ -234,16 +222,29 @@ const styles = StyleSheet.create({
   detailContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    padding: 15,
+    marginVertical: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E5E5E5',
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 30,
+    height: 30,
     marginRight: 10,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   detailText: {
     fontSize: 16,
     color: '#333333',
+    fontWeight: 'bold',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -254,17 +255,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#fff',
-    borderColor: '#666',
+    borderColor: '#E5E5E5',
     borderWidth: 1,
     borderRadius: 15,
     marginHorizontal: 5,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   buttonText: {
     textAlign: 'center',
     color: '#000',
-  },
-  logoutButton: {
-    borderColor: 'blue',
   },
   tabContainer: {
     borderTopWidth: 1,

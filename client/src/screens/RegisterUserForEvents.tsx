@@ -5,6 +5,8 @@ import {
   Image,
   TextInput,
   FlatList,
+  StyleSheet,
+  Modal,
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -25,18 +27,15 @@ type Props = {
   route: any;
 };
 
-const RegisterUserForEvents = ({navigation,route}: Props) => {
+const RegisterUserForEvents = ({ navigation, route }: Props) => {
   const [data, setData] = useState([]);
   const [list, setList] = useState([]);
   const [reload, setReload] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const {item, postId} = route?.params;
-  console.log(item?._id, 'id');
-
-  const {users, user, isLoading, token} = useSelector(
-    (state: any) => state.user,
-  );
+  const { item, postId } = route?.params;
+  const { users, user, isLoading, token } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -49,7 +48,6 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
           },
         })
         .then((res: any) => {
-          console.log(res?.data?.registeredUsersWithInfo);
           setLoader(false);
           setData(res?.data?.registeredUsersWithInfo);
           setList(res?.data?.registeredUsersWithInfo);
@@ -57,11 +55,9 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
       dispatch;
     } catch (error) {
       setLoader(false);
-      console.error('Error getting reg leaders:', error);
+      console.error('Error getting registered users:', error);
     }
   }, [item]);
-
-
 
   const handleSearchChange = (e: any) => {
     if (e.length !== 0) {
@@ -74,12 +70,20 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
     }
   };
 
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(item?.url);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
   return (
     <>
       {loader ? (
         <Loader />
       ) : (
-        <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
           <HeaderCard />
           <View className="p-3">
             <Text className="text-[30px] text-[#000] font-[600]">
@@ -95,7 +99,7 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
                 className="absolute top-[20px] left-2"
               />
               <TextInput
-                onChangeText={e => handleSearchChange(e)}
+                onChangeText={(e) => handleSearchChange(e)}
                 placeholder="Search Users...."
                 placeholderTextColor={'#000'}
                 className="w-full h-[38px] bg-[#0000000e] rounded-[8px] pl-8 text-[#000] mt-[10px]"
@@ -104,127 +108,132 @@ const RegisterUserForEvents = ({navigation,route}: Props) => {
             <FlatList
               data={data}
               showsVerticalScrollIndicator={false}
-              renderItem={({item}: any) => {
-           
-
-                return (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('UserProfile', {
-                        item: item.userInfo,
-                      })
-                    }>
-                    <View className="flex-row my-3">
-                      <Image
-                        source={
-                          item?.userInfo?.avatar?.url
-                            ? {uri: item?.userInfo?.avatar?.url}
-                            : DefaultAvatar
-                        }
-                        width={30}
-                        height={30}
-                        borderRadius={100}
-                        style={{height: 40, width: 40}}
-                      />
-                      <View className="w-[90%] flex-row justify-between border-b border-[#00000020] pb-2">
-                        <View>
-                          <View className="flex-row items-center relative">
-                            <Text className="pl-3 text-[18px] text-black">
-                              {item.userInfo?.name}
-                            </Text>
-                            {item?.role === 'Admin' && (
-                              <Image
-                                source={{
-                                  uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828640.png',
-                                }}
-                                width={18}
-                                height={18}
-                                className="ml-1"
-                              />
-                            )}
-                          </View>
-                          <Text className="pl-3 mt-1 text-[16px] text-[#444]">
-                            {item.userInfo?.followers.length} followers
+              renderItem={({ item }: any) => (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('UserProfile', { item: item.userInfo })}
+                  onLongPress={() => handleImageClick(item.url)}>
+                  <View className="flex-row my-3">
+                    <Image
+                      source={
+                        item?.userInfo?.avatar?.url
+                          ? { uri: item?.userInfo?.avatar?.url }
+                          : DefaultAvatar
+                      }
+                      width={30}
+                      height={30}
+                      borderRadius={100}
+                      style={{ height: 40, width: 40 }}
+                    />
+                    <View className="w-[90%] flex-row justify-between border-b border-[#00000020] pb-2">
+                      <View>
+                        <View className="flex-row items-center relative">
+                          <Text className="pl-3 text-[18px] text-black">
+                            {item.userInfo?.name}
                           </Text>
+                          {item?.role === 'Admin' && (
+                            <Image
+                              source={{
+                                uri: 'https://cdn-icons-png.flaticon.com/128/1828/1828640.png',
+                              }}
+                              width={18}
+                              height={18}
+                              className="ml-1"
+                            />
+                          )}
                         </View>
-                        <View style={{paddingRight: 10, paddingTop: 18}}>
-                          <View style={{paddingRight: 10, paddingTop: 18}}>
-                            {/* {fromRemoveUser ? (
-                              <TouchableOpacity
-                                className="rounded-[8px] w-[100px] flex-row justify-center items-center h-[35px] border border-[#0000004b]"
-                                onPress={() => handleDeleteUser(item?._id)}>
-                                <Text className="text-black">Remove</Text>
-                              </TouchableOpacity>
-                            ) : null}
-                            {fromAddRegLead ? (
-                              <TouchableOpacity
-                                style={{padding: 10}}
-                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
-                                onPress={() =>
-                                  handleAddUserAsRegionalLeader(item)
-                                }>
-                                <Text className="text-black">
-                                  {item?.isRegionalLeader
-                                    ? 'Regional Leader'
-                                    : 'Add as Regional Leader'}
-                                </Text>
-                              </TouchableOpacity>
-                            ) : null}
-                            {fromAddDistGov ? (
-                              <TouchableOpacity
-                                style={{padding: 10}}
-                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
-                                onPress={() =>
-                                  handleAddUserAsDistrictGovernor(item)
-                                }>
-                                <Text className="text-black">
-                                  {item?.isDistrictGoverner
-                                    ? 'District Governer'
-                                    : 'Add as District Governer'}
-                                </Text>
-                              </TouchableOpacity>
-                            ) : null}
-                            {fromAddIndLead ? (
-                              <TouchableOpacity
-                                style={{padding: 10}}
-                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
-                                onPress={() =>
-                                  handleAddUserAsIndianLeader(item)
-                                }>
-                                <Text className="text-black">
-                                  {item?.isIndiaLeader
-                                    ? 'Indian Leader'
-                                    : 'Add as Indian Leader'}
-                                </Text>
-                              </TouchableOpacity>
-                            ) : null}
-                            {fromAddAdmin? (
-                              <TouchableOpacity
-                                style={{padding: 10}}
-                                className="rounded-[8px]  flex-row justify-center items-centerborder border border-[#0000004b]"
-                                onPress={() =>
-                                  handleAddUserAsAdmin(item)
-                                }>
-                                <Text className="text-black">
-                                  {item?.role==='admin'
-                                    ? 'Admin'
-                                    : 'Add as Admin'}
-                                </Text>
-                              </TouchableOpacity>
-                            ) : null} */}
+                        <Text className="pl-3 mt-1 text-[16px] text-[#444]">
+                          {item.userInfo?.clubName}
+                        </Text>
+                        {/* Render user image here */}
+                        <Image source={{ uri: item?.url }} style={{ height: 30, width: 10 }} />
+                        {/* Long press to show image preview */}
+                        <TouchableOpacity
+                          style={styles.avatarContainer}
+                          onPress={() => handleImageClick(item.url)}>
+                          <View style={styles.relativeContainer}>
+                            <Image
+                              source={{ uri: item?.url }}
+                              style={styles.avatarImage}
+                            />
                           </View>
-                        </View>
+                        </TouchableOpacity>
                       </View>
                     </View>
-                  </TouchableOpacity>
-                );
-              }}
+                  </View>
+                </TouchableOpacity>
+              )}
             />
           </View>
+
+          {/* Modal for Image Preview */}
+          <Modal
+            transparent
+            visible={selectedImage !== null}
+            onRequestClose={closeModal}>
+            <View style={styles.modalContainer}>
+              <TouchableOpacity style={styles.modalCloseButton} onPress={closeModal}>
+                <Text style={styles.modalCloseText}> X </Text>
+              </TouchableOpacity>
+              <Image source={
+                        item?.userInfo?.avatar?.url
+                          ? { uri: item?.userInfo?.avatar?.url }
+                          : DefaultAvatar
+                      } style={styles.modalImage} />
+            </View>
+          </Modal>
         </SafeAreaView>
       )}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  previewImage: {
+    height: 550,
+    width: 350,
+  },
+  avatarContainer: {
+    position: 'relative',
+    marginTop: 10,
+  },
+  relativeContainer: {
+    position: 'relative',
+  },
+  imagePreviewContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarImage: {
+    height: 85,
+    width: 85,
+    borderRadius: 100,
+  },
+  // Add new styles for Modal
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  modalCloseButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 8,
+  },
+  modalCloseText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  modalImage: {
+    width: '90%',
+    height: '50%',
+    borderRadius: 8,
+    resizeMode: 'contain',  // Add this line to ensure the image is fully visible
+  },
+});
 
 export default RegisterUserForEvents;

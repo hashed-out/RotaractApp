@@ -286,7 +286,7 @@ const GetAllUsersScreen = ({navigation, route}: Props) => {
                               {item.userName}
                             </Text>
                             <Text className="pl-3 mt-1 text-[16px] text-[#444]">
-                              {item.followers.length} followers
+                              {item.clubName}
                             </Text>
                           </View>
                           <View style={{paddingRight: 10, paddingTop: 18}}>

@@ -1,16 +1,14 @@
 import React from 'react';
-import {Center, NativeBaseProvider,Spinner, View} from 'native-base';
+import { Center, NativeBaseProvider, Spinner } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-import {  StyleSheet, Image} from 'react-native';
+import { StyleSheet, Image } from 'react-native';
+
 type Props = {};
 
 const Loader = (props: Props) => {
   return (
-    <LinearGradient
-    style={styles.container}
-      colors={['#fff', '#0074e4']}
-    >
+    <LinearGradient style={styles.container} colors={['#fff', '#0074e4']}>
       <Animatable.View
         animation="fadeInDown"
         duration={1500}
@@ -22,17 +20,17 @@ const Loader = (props: Props) => {
         />
         <Spinner size="lg" color="black" />
       </Animatable.View>
-      </LinearGradient>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    resizeMode: 'contain',
     flex: 1,
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    resizeMode:'cover',
   },
   logoContainer: {
     flex: 1,
@@ -50,7 +48,7 @@ export default () => {
   return (
     <NativeBaseProvider>
       <Center flex={1} px="3" backgroundColor={'#fff'}>
-        <Loader /> 
+        <Loader />
       </Center>
     </NativeBaseProvider>
   );

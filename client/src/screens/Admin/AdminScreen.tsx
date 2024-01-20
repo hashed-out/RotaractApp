@@ -158,14 +158,21 @@ const styles = StyleSheet.create({
   },
   adminButton: {
     backgroundColor: '#8FBFE8',
-    borderRadius: 5,
+    borderRadius: 10,
     marginTop: 20,
-    height: 74,
+    height: 70,
     width: 150,
     margin: 10,
-    alignItems:'center',
-    justifyContent:'center'
-    // width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   adminButtonText: {
     color: 'black',

@@ -1,13 +1,20 @@
-import {FlatList, Animated, Easing, RefreshControl} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {SafeAreaView} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {getAllPosts} from '../../redux/actions/postAction';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  FlatList,
+  Animated,
+  Easing,
+  RefreshControl,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPosts } from '../../redux/actions/postAction';
+import { getAllUsers } from '../../redux/actions/userAction';
 import PostCard from '../components/PostCard';
 import Loader from '../common/Loader';
 import Lottie from 'lottie-react-native';
-import { getAllUsers } from '../../redux/actions/userAction';
-import { Platform } from 'react-native';
 import HeaderCard from '../components/HeaderCard';
 const loader = require('../assets/animation_lkbqh8co.json');
 
@@ -16,7 +23,7 @@ type Props = {
 };
 
 const HomeScreen = (props: Props) => {
-  const {posts, isLoading} = useSelector((state: any) => state.post);
+  const { posts, isLoading } = useSelector((state: any) => state.post);
   const dispatch = useDispatch();
   const [offsetY, setOffsetY] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -32,9 +39,9 @@ const HomeScreen = (props: Props) => {
   }
 
   function onScroll(event: any) {
-    const {nativeEvent} = event;
-    const {contentOffset} = nativeEvent;
-    const {y} = contentOffset;
+    const { nativeEvent } = event;
+    const { contentOffset } = nativeEvent;
+    const { y } = contentOffset;
     setOffsetY(y);
   }
 
@@ -53,7 +60,7 @@ const HomeScreen = (props: Props) => {
     const { contentOffset } = nativeEvent;
     const { y } = contentOffset;
     setOffsetY(y);
-  
+
     if (y <= -refreshingHeight && !isRefreshing) {
       setIsRefreshing(true);
       setTimeout(() => {
@@ -91,10 +98,7 @@ const HomeScreen = (props: Props) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <SafeAreaView style={{
-          backgroundColor: '#337ccf',
-          flex:1,
-         }}>
+        <SafeAreaView style={styles.container}>
           <HeaderCard />
           <Lottie
             ref={lottieViewRef}
@@ -105,73 +109,85 @@ const HomeScreen = (props: Props) => {
               top: 15,
               left: 0,
               right: 0,
-              
             }}
             loop={false}
             source={loader}
             progress={progress}
           />
-          {/* custom loader not working in android that's why I used here built in loader for android and custom loader for android but both working perfectly */}
-         {
-          Platform.OS === 'ios' ? (
+          {Platform.OS === 'ios' ? (
             <FlatList
-            data={posts}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <PostCard navigation={props.navigation} item={item} />
-            )}
-            onScroll={onScroll}
-            onScrollEndDrag={onScrollEndDrag}
-            onResponderRelease={onRelease}
-            ListHeaderComponent={
-              <Animated.View
-                style={{
-                  paddingTop: extraPaddingTop,
-                }}
-              />
-            }
-          />
+              data={posts}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <PostCard navigation={props.navigation} item={item} />
+              )}
+              onScroll={onScroll}
+              onScrollEndDrag={onScrollEndDrag}
+              onResponderRelease={onRelease}
+              ListHeaderComponent={
+                <Animated.View
+                  style={{
+                    paddingTop: extraPaddingTop,
+                  }}
+                />
+              }
+            />
           ) : (
-            
             <FlatList
-            style={{
-              backgroundColor: '#337ccf',
-            }}
-            data={posts}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
-              <PostCard navigation={props.navigation} item={item} />
-            )}
-            onScroll={onScroll}
-            onScrollEndDrag={onScrollEndDrag}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={() => {
-                  setRefreshing(true);
-                  getAllPosts()(dispatch);
-                  getAllUsers()(dispatch).then(() => {
-                    setRefreshing(false);
-                  });
-                }}
-                progressViewOffset={refreshingHeight}
-              />
-            }
-            onResponderRelease={onRelease}
-            ListHeaderComponent={
-              <Animated.View
-                style={{
-                  paddingTop: extraPaddingTop,
-                }}
-              />
-            }
-          />
-          )
-         }
+              style={{
+                backgroundColor: '#fff',
+              }}
+              data={posts}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <PostCard navigation={props.navigation} item={item} />
+              )}
+              onScroll={onScroll}
+              onScrollEndDrag={onScrollEndDrag}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={() => {
+                    setRefreshing(true);
+                    getAllPosts()(dispatch);
+                    getAllUsers()(dispatch).then(() => {
+                      setRefreshing(false);
+                    });
+                  }}
+                  progressViewOffset={refreshingHeight}
+                />
+              }
+              onResponderRelease={onRelease}
+              ListHeaderComponent={
+                <Animated.View
+                  style={{
+                    paddingTop: extraPaddingTop,
+                  }}
+                />
+              }
+            />
+          )}
         </SafeAreaView>
       )}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  backIconContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 16,
+    zIndex: 1,
+  },
+  backIcon: {
+    width: 30,
+    height: 30,
+  },
+});
 
 export default HomeScreen;

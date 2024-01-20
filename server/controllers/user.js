@@ -606,8 +606,8 @@ exports.updateUserInfo = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.user.id);
 
     user.name = req.body.name;
-    user.userName = req.body.userName;
-    user.bio = req.body.bio;
+    user.contactNumber = req.body.contactNumber;
+    user.email = req.body.email;
 
     await user.save();
 
